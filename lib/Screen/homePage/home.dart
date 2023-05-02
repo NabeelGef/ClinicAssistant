@@ -2,8 +2,6 @@ import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
-import 'package:clinicassistant/clinicsPage/all_clinics_page.dart';
-import 'package:clinicassistant/doctorsPage/all_doctors_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

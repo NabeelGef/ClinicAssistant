@@ -1,9 +1,9 @@
 import 'package:clinicassistant/Constant/color.dart';
+import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Constant/font.dart';
 import '../homePage/home.dart';
 
 class Welcome4 extends StatelessWidget {

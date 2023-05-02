@@ -16,27 +16,15 @@ Map<String, dynamic> _$ClinicToJson(Clinic instance) => <String, dynamic>{
       'clinics': instance.clinics,
     };
 
-Clinics _$ClinicsFromJson(Map<String, dynamic> json) {
-  try {
-    return Clinics(
-      id: json['id'] as String?,
+Clinics _$ClinicsFromJson(Map<String, dynamic> json) => Clinics(
+      clinicId: json['clinicId'] as String?,
       clinicName: json['clinicName'] as String?,
       location: json['location'] as String?,
-      numDoctors: json['numDoctors'] as String?,
+      numDoctors: json['numDoctors'] as int?,
     );
-  }
-  catch(e){
-    print("Data : $e");
-    return Clinics(
-      id: json['id'] as String?,
-      clinicName: json['clinicName'] as String?,
-      location: json['location'] as String?,
-      numDoctors: json['numDoctors'] as String?,
-    );
-  }
-}
+
 Map<String, dynamic> _$ClinicsToJson(Clinics instance) => <String, dynamic>{
-      'id': instance.id,
+      'clinicId': instance.clinicId,
       'clinicName': instance.clinicName,
       'location': instance.location,
       'numDoctors': instance.numDoctors,

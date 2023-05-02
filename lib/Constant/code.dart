@@ -1,10 +1,10 @@
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
-import 'package:clinicassistant/clinicsPage/bloc/bloc.dart';
-import 'package:clinicassistant/clinicsPage/bloc/events.dart';
-import 'package:clinicassistant/doctorsPage/bloc/bloc.dart';
-import 'package:clinicassistant/doctorsPage/bloc/events.dart';
+import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
+import 'package:clinicassistant/Screen/clinicsPage/bloc/events.dart';
+import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
+import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

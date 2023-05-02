@@ -20,12 +20,12 @@ class Clinic {
 }
 @JsonSerializable()
 class Clinics {
-  String? id;
+  String? clinicId;
   String? clinicName;
   String? location;
-  String? numDoctors;
+  int? numDoctors;
 
-  Clinics({this.id, this.clinicName, this.location, this.numDoctors});
+  Clinics({this.clinicId, this.clinicName, this.location, this.numDoctors});
 
  factory Clinics.fromJson(Map<String, dynamic> json) {
     return _$ClinicsFromJson(json);

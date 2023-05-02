@@ -1,5 +1,5 @@
-import 'package:clinicassistant/doctorsPage/bloc/events.dart';
-import 'package:clinicassistant/doctorsPage/bloc/states.dart';
+import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
+import 'package:clinicassistant/Screen/doctorsPage/bloc/states.dart';
 import 'package:clinicassistant/model/specialist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,13 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clinicassistant/Constant/code.dart';
-import 'package:clinicassistant/welcomePage/welcome2.dart';
+import 'package:clinicassistant/Constant/color.dart';
+import 'package:clinicassistant/Constant/font.dart';
+import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../Constant/color.dart';
-import '../Constant/font.dart';
-import '../Constant/sizer.dart';
 
 class Welcome1 extends StatelessWidget {
   const Welcome1({Key? key}) : super(key: key);

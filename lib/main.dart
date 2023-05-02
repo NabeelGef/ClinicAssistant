@@ -1,13 +1,12 @@
 
 import 'package:clinicassistant/Constant/font.dart';
-import 'package:clinicassistant/clinicsPage/all_clinics_page.dart';
-import 'package:clinicassistant/doctorProfile/doctor_profile.dart';
-import 'package:clinicassistant/doctorsPage/all_doctors_page.dart';
-import 'package:clinicassistant/homePage/home.dart';
-import 'package:clinicassistant/welcomePage/welcom4.dart';
-import 'package:clinicassistant/welcomePage/welcome1.dart';
-import 'package:clinicassistant/welcomePage/welcome2.dart';
-import 'package:clinicassistant/welcomePage/welcome3.dart';
+import 'package:clinicassistant/Screen/clinicsPage/all_clinics_page.dart';
+import 'package:clinicassistant/Screen/doctorsPage/all_doctors_page.dart';
+import 'package:clinicassistant/Screen/homePage/home.dart';
+import 'package:clinicassistant/Screen/welcomePage/welcom4.dart';
+import 'package:clinicassistant/Screen/welcomePage/welcome1.dart';
+import 'package:clinicassistant/Screen/welcomePage/welcome2.dart';
+import 'package:clinicassistant/Screen/welcomePage/welcome3.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
