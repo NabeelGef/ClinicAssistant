@@ -113,12 +113,12 @@ class _AllDoctorsState extends State<AllDoctors> {
                               return ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
-                                itemCount: snapshot.data!.specialist!.length,
+                                itemCount: snapshot.data!.specialties!.length,
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
                                       AllDoctorsBloc.get(context).add(ChooseSpecialist(index ,
-                                          snapshot.data!.specialist![index].subspecialties!));
+                                          snapshot.data!.specialties![index].subSpecialties!));
                                       print("Index = $index");
                                     },
                                     child: Row(
@@ -132,7 +132,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                               :  Colors.white,
                                     ),
                                             child: Center(
-                                              child: Text(snapshot.data!.specialist![index].specialtyName!, textAlign: TextAlign.center,
+                                              child: Text(snapshot.data!.specialties![index].specialtyName!, textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontSize: Sizer.getTextSize(context, 0.05),
                                                     fontFamily: Font.fontfamily,
@@ -165,7 +165,7 @@ class _AllDoctorsState extends State<AllDoctors> {
         BlocConsumer<AllDoctorsBloc,AllDoctorStates>(
           listener: (context,AllDoctorStates state) {},
           builder: (context,AllDoctorStates state) {
-            List<Subspecialties> sub = AllDoctorsBloc.get(context).subspecialities;
+            List<SubSpecialties> sub = AllDoctorsBloc.get(context).subspecialities;
             return sub.length==0? Expanded(
               child: FutureBuilder(
                   future: API.getDoctors(),

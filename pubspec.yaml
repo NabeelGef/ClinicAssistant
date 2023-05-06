@@ -16,6 +16,7 @@ dependencies:
   json_annotation: ^4.8.0
   json_serializable: ^6.6.1
   flutter_bloc: ^7.2.0
+  fluro: ^2.0.5
   shimmer: ^2.0.0
   responsive_framework: ^0.2.0
   auto_size_text: ^3.0.0
@@ -26,7 +27,7 @@ dev_dependencies:
     sdk: flutter
 flutter_native_splash:
   color: '#FFFFFF'
-  image: assets/images/welcomtest.jpg
+  image: assets/images/start.jpg
   android_gravity: fill
   android: true
   flutter_lints: ^2.0.0
@@ -37,4 +38,8 @@ flutter:
   fonts:
   - family: Arabic
     fonts:
+    - asset: assets/fonts/inter.ttf
+  - family: Noto
+    fonts:
     - asset: assets/fonts/noto.ttf
+

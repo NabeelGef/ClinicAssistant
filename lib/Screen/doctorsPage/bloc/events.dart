@@ -10,6 +10,6 @@ abstract class AllDoctorsEvents{
 class SearchEventDoctor extends AllDoctorsEvents{}
 class ChooseSpecialist extends AllDoctorsEvents {
   final int index ;
-  final List<Subspecialties> subspecialties ;
+  final List<SubSpecialties> subspecialties ;
   ChooseSpecialist(this.index , this.subspecialties);
 }

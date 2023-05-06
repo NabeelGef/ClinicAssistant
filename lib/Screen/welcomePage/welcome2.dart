@@ -1,6 +1,7 @@
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
+import 'package:clinicassistant/Constant/router.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +15,6 @@ class Welcome2 extends StatelessWidget {
   Widget build(BuildContext context) {
    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);  // to re-show bars
     return Scaffold(
-      backgroundColor: Coloring.primary,
-      floatingActionButton: Code.getFloatingPoint(context, "/welcome3"),
       body: Body(context)
       /*Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -35,16 +34,51 @@ class Welcome2 extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/welcom2test.jpg"))
+              image: DecorationImage(image: AssetImage(
+                  Font.urlImage+"background.png"
+              ),fit: BoxFit.fill)
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(bottom: 50),
-          alignment: Alignment.bottomCenter,
-          child: Text("مجموعة من الأطباء الاختصاصين في مكان واحد فقط ",textAlign: TextAlign.center ,
-            style: TextStyle(color: Colors.purple , fontSize: Sizer.getTextSize(context, 0.07) , fontFamily: Font.fontfamily),),
+        Column(
+          children: [
+            Expanded(
+                flex: 2,
+                child: Image.asset(Font.urlImage+"bookingwelcome.jpg",fit: BoxFit.fill,)) ,
+            SizedBox(height: 36,),
+            Expanded(
+                child: Text(Font.header2 ,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: Font.fontfamily ,
+                        fontWeight: FontWeight.bold ,
+                        color: Coloring.secondary,
+                        fontSize: Sizer.getTextSize(context, 0.08)))),
+            InkWell(
+              onTap: () => RouterNav.fluroRouter.navigateTo(context, "/welcome3"),
+              child: Container(
+                alignment: Alignment.center,
+                width: Sizer.getWidth(context)/2,
+                height: Sizer.getHeight(context)/15,
+
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(61.sp),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+
+                      colors: [
+                        Coloring.primary,
+                        Coloring.primary2
+                      ],
+
+                    )           ),
+                child: Text("استمرار" , style: TextStyle(fontFamily: Font.fontfamily , fontSize:
+                Sizer.getTextSize(context, 0.06) , color: Colors.white),),
+              ),
+            ),
+            SizedBox(height: 75,)
+
+          ],
         )
       ],
     );

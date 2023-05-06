@@ -11,7 +11,7 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents , AllDoctorStates> {
   // when click on specialist button
   int clickspecialist = -1;
 
-  List<Subspecialties> subspecialities = [];
+  List<SubSpecialties> subspecialities = [];
   static AllDoctorsBloc get (BuildContext context){
     return BlocProvider.of(context);
   }
@@ -29,7 +29,7 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents , AllDoctorStates> {
     isSearch=!isSearch;
     yield SuccessAllDoctorStates();
   }
-  Stream<AllDoctorStates> _changeValue(int index, List<Subspecialties> subspecialties) async*{
+  Stream<AllDoctorStates> _changeValue(int index, List<SubSpecialties> subspecialties) async*{
     clickspecialist = index;
     subspecialities = subspecialties;
     yield SuccessAllDoctorStates();

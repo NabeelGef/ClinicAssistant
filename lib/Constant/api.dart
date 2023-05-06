@@ -10,6 +10,7 @@ class API{
   static String BaseUrlBack = "http://10.0.2.2:3000/";
   static String clinicsBack = "clinics";
   static String specialist = "doctorspecialties";
+  static String specialistBack = "specialties/subspecialties";
   static String clinics = "allclinics";
   static String doctors = "alldoctors";
   static String detailDoctors = "/profile";
@@ -20,7 +21,7 @@ class API{
   // To get All Specialists From API
   static Future<Specialists> getSpecialist() async {
     Specialists specialists = Specialists();
-    Response response =await  dio.get("$BaseUrl"+"$specialist");
+    Response response =await  dio.get("$BaseUrlBack"+"$specialistBack");
     if(response.statusCode==200){
       //print(response.data);
       specialists =  Specialists.fromJson(response.data);

@@ -7,37 +7,39 @@ part of 'specialist.dart';
 // **************************************************************************
 
 Specialists _$SpecialistsFromJson(Map<String, dynamic> json) => Specialists(
-      specialist: (json['specialist'] as List<dynamic>?)
+      specialties: (json['specialties'] as List<dynamic>?)
           ?.map((e) => Specialist.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$SpecialistsToJson(Specialists instance) =>
     <String, dynamic>{
-      'specialist': instance.specialist,
+      'specialties': instance.specialties,
     };
 
 Specialist _$SpecialistFromJson(Map<String, dynamic> json) => Specialist(
-      id: json['id'] as String?,
+      specialtyId: json['specialtyId'] as String?,
       specialtyName: json['specialtyName'] as String?,
-      subspecialties: (json['subspecialties'] as List<dynamic>?)
-          ?.map((e) => Subspecialties.fromJson(e as Map<String, dynamic>))
+      subSpecialties: (json['subSpecialties'] as List<dynamic>?)
+          ?.map((e) => SubSpecialties.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$SpecialistToJson(Specialist instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'specialtyId': instance.specialtyId,
       'specialtyName': instance.specialtyName,
-      'subspecialties': instance.subspecialties,
+      'subSpecialties': instance.subSpecialties,
     };
 
-Subspecialties _$SubspecialtiesFromJson(Map<String, dynamic> json) =>
-    Subspecialties(
+SubSpecialties _$SubSpecialtiesFromJson(Map<String, dynamic> json) =>
+    SubSpecialties(
+      subSpecialtyId: json['subSpecialtyId'] as String?,
       subSpecialtyName: json['subSpecialtyName'] as String?,
     );
 
-Map<String, dynamic> _$SubspecialtiesToJson(Subspecialties instance) =>
+Map<String, dynamic> _$SubSpecialtiesToJson(SubSpecialties instance) =>
     <String, dynamic>{
+      'subSpecialtyId': instance.subSpecialtyId,
       'subSpecialtyName': instance.subSpecialtyName,
     };

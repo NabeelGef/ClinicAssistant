@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
+import 'package:clinicassistant/Constant/router.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,35 +15,63 @@ class Welcome1 extends StatelessWidget {
   Widget build(BuildContext context) {
    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);  // to re-show bars
      return Scaffold(
-       floatingActionButton: Code.getFloatingPoint(context,'/welcome2'),
-        body: Container(
-          color: Coloring.primary,
-          child:
-          Column(
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Image(
-                      fit: BoxFit.cover,
-                      image:AssetImage("assets/images/logoword.png"))),
-              Expanded(child: Center(child:
-              Text("مساعد العيادات",
-                style: TextStyle(color: Coloring.customgrey ,
-                    fontSize:
-                    Sizer.getTextSize(context, 0.09)  ,
-                    fontFamily: Font.fontfamily),))),
-              Expanded(
-                flex: 2,
-                child: Center(child: AutoSizeText("التطبيق الأول في سورية لإدارة حجوزات المرضى في العيادات",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Coloring.customgrey ,fontWeight: FontWeight.bold,
-                      fontSize: Sizer.getTextSize(context, 0.06)
-                      , fontFamily: Font.fontfamily),)),
-              )
+       //floatingActionButton: Code.getFloatingPoint(context,'/welcome2'),
+        body: MyBody(context)
+   );
+  }
 
-            ],
+  MyBody(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(
+                  Font.urlImage+"background.png"
+              ),fit: BoxFit.fill)
           ),
         ),
-   );
+        Column(
+          children: [
+            Expanded(
+                flex: 2,
+                child: Image.asset(Font.urlImage+"doctorswelcome.jpg",fit: BoxFit.fill,)) ,
+            SizedBox(height: 50,),
+            Expanded(
+                child: Text(Font.header1 ,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: Font.fontfamily ,
+                        fontWeight: FontWeight.bold ,
+                        color: Coloring.secondary,
+                        fontSize: Sizer.getTextSize(context, 0.08)))),
+            InkWell(
+              onTap: () => RouterNav.fluroRouter.navigateTo(context, "/welcome2"),
+              child: Container(
+                alignment: Alignment.center,
+                width: Sizer.getWidth(context)/2,
+                height: Sizer.getHeight(context)/15,
+
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(61.sp),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+
+                      colors: [
+                        Coloring.primary,
+                        Coloring.primary2
+                      ],
+
+                    )           ),
+                child: Text("استمرار" , style: TextStyle(fontFamily: Font.fontfamily , fontSize:
+                Sizer.getTextSize(context, 0.06) , color: Colors.white),),
+              ),
+            ),
+            SizedBox(height: 75,)
+
+          ],
+        )
+      ],
+    );
   }
 }
