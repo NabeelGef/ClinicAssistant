@@ -5,56 +5,40 @@ part 'doctor.g.dart';
 /////////////////////////////
 //Model of Doctor and Doctors
 /////////////////////////////
-@JsonSerializable()
+
+
+@JsonSerializable(createToJson: false)
 class Doctor {
-  List<Doctors>? doctors;
+  Doctor({
+     this.doctors,
+  });
 
-  Doctor({this.doctors});
+   List<Doctors>? doctors;
 
-  factory Doctor.fromJson(Map<String, dynamic> json) {
-    return _$DoctorFromJson(json);
-  }
+  factory Doctor.fromJson(Map<String, dynamic> json) => _$DoctorFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return _$DoctorToJson(this);
-  }
 }
-@JsonSerializable()
+
+@JsonSerializable(createToJson: false)
 class Doctors {
+  Doctors({
+     this.id,
+     this.profilePicture,
+     this.firstName,
+     this.lastName,
+     this.evaluate,
+     this.specialtyName,
+     this.subSpecialtyName,
+  });
+
    String? id;
    String? profilePicture;
    String? firstName;
    String? lastName;
-   String? phoneNumber;
    int? evaluate;
-   int? checkupPrice;
    String? specialtyName;
-   bool? active;
-   String? description;
    String? subSpecialtyName;
-   int? numberOfPeopleWhoVoted;
-   List<Clinics>? clinics;
 
-  Doctors(
-      {
-         this.id,
-         this.profilePicture,
-         this.firstName,
-         this.lastName,
-         this.phoneNumber,
-         this.evaluate,
-         this.checkupPrice,
-         this.specialtyName,
-         this.active,
-         this.description,
-         this.subSpecialtyName,
-         this.numberOfPeopleWhoVoted,
-         this.clinics,
-      });
-   factory Doctors.fromJson(Map<String, dynamic> json) {
-    return _$DoctorsFromJson(json);
-   }
-  Map<String, dynamic> toJson() {
-   return _$DoctorsToJson(this);
-  }
+  factory Doctors.fromJson(Map<String, dynamic> json) => _$DoctorsFromJson(json);
+
 }

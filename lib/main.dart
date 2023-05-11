@@ -11,6 +11,7 @@ import 'package:clinicassistant/Screen/welcomePage/welcome2.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcome3.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+      statusBarColor: Coloring.primary,
+    ));
     return MaterialApp(
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),

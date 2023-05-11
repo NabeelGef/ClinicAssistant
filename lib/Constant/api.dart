@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 class API{
 
   //That is end points of Api
-  static String BaseUrl = "https://nabee4.free.beeceptor.com/";
+  static String BaseUrl = "https://nabeelo.free.beeceptor.com/";
   static String BaseUrlBack = "http://10.0.2.2:3000/";
   static String clinicsBack = "clinics";
   static String specialist = "doctorspecialties";

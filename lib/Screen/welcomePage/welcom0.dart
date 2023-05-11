@@ -16,9 +16,9 @@ class Welcome0 extends StatefulWidget {
 class _Welcome0State extends State<Welcome0> {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Coloring.primary
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Coloring.primary
+    // ));
     return Scaffold(
       body: MyBody(context),
     );

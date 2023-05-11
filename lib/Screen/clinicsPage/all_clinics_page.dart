@@ -28,7 +28,7 @@ class _AllClinicsState extends State<AllClinics> {
       child: Scaffold(
         key: _scaffoldkey,
         appBar: MyAppBar(),
-        drawer: Code.DrawerNative(context),
+        drawer: Code.DrawerNative(context , _scaffoldkey),
         body: BodyClinics(),
       ),
     );
@@ -104,8 +104,8 @@ class _AllClinicsState extends State<AllClinics> {
           listener: (context,AllClinicStates state) {},
           builder: (context , AllClinicStates state) {
             bool isSearchSelected = AllClinicsBloc.get(context).isSearch;
-    return Code.AppBarDoctorsAndClinics(_scaffoldkey,context, isSearchSelected ,false,
-    "أوجد عيادتك" , "أدخل اسم عيادتك ...");
+    return Code.AppBarDoctorsAndClinics(_scaffoldkey,context ,false,
+      "أدخل اسم عيادتك ...");
         }
       ),
     );
