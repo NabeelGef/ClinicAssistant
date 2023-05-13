@@ -52,19 +52,33 @@ class ApiSpecialistBloc extends Bloc<AllDoctorsEvents , SpecialistState>{
   Specialist? dropdownmain;
   int clickspecialist = -1;
   String dropdownsub = "";
+  late CheckBoxBloc checkBoxBloc;
+  set SetCheckBoxBloc(CheckBoxBloc checkBoxBloc){
+    this.checkBoxBloc = checkBoxBloc;
+  }
   Stream<SpecialistState> mapEventToState(AllDoctorsEvents events) async* {
      if(events is LoadingSpecialists){
        yield SpecialistState(state.specialists, "");
        try{
-         yield SpecialistState(await API.getSpecialist(), "");
+         Specialists? specialists = await API.getSpecialist();
+         if(specialists==null){
+           yield SpecialistState(specialists, "Failed To Load Items");
+         }else{
+           yield SpecialistState(specialists, "");
+         }
        }catch(e){
          yield SpecialistState(state.specialists, "Failed To Load Items");
        }
+     }
+     if(events is EditClickSpecialist){
+       clickspecialist = -1;
+       yield SuccessAllSpecialStates(state.specialists, "");
      }
      if(events is ChooseSpecialist) {
        dropdownmain = events.specialist;
        clickspecialist = events.index;
        dropdownsub = events.specialist.subSpecialties![0].subSpecialtyName!;
+       checkBoxBloc.add(EditCheckAll());
        yield SuccessAllSpecialStates(state.specialists, "");
      }
      if(events is ChooseSubSpecialist) {
@@ -72,4 +86,31 @@ class ApiSpecialistBloc extends Bloc<AllDoctorsEvents , SpecialistState>{
        yield SuccessAllSpecialStates(state.specialists, "");
      }
    }
+}
+class CheckBoxBloc extends Bloc<AllDoctorsEvents , List<bool>>{
+  CheckBoxBloc() : super([false , true]);
+  bool eval  = false, all = true;
+ late ApiSpecialistBloc apiSpecialistBloc;
+ set SetApiSpecialBloc(ApiSpecialistBloc apiSpecialistBloc){
+   this.apiSpecialistBloc = apiSpecialistBloc;
+ }
+  Stream<List<bool>> mapEventToState(AllDoctorsEvents event) async*{
+    if(event is CheckEvaluate){
+      eval = event.evaluate;
+      yield [event.evaluate , all];
+    }
+    if(event is CheckAll){
+      if(apiSpecialistBloc.clickspecialist==-1){
+        yield [eval , true];
+        // بسبب عدم اختيارك نوع الفلترة
+      }else{
+        all = event.evaluate;
+        apiSpecialistBloc.add(EditClickSpecialist());
+        yield [eval , event.evaluate];
+      }
+    }
+    if(event is EditCheckAll){
+      yield[eval , false];
+    }
+  }
 }

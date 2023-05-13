@@ -52,13 +52,13 @@ class Welcome2 extends StatelessWidget {
                         fontFamily: Font.fontfamily ,
                         fontWeight: FontWeight.bold ,
                         color: Coloring.secondary,
-                        fontSize: Sizer.getTextSize(context, 0.08)))),
+                        fontSize: Sizer.getTextSize(context, 0.06)))),
             InkWell(
               onTap: () => RouterNav.fluroRouter.navigateTo(context, "/welcome3"),
               child: Container(
                 alignment: Alignment.center,
                 width: Sizer.getWidth(context)/2,
-                height: Sizer.getHeight(context)/15,
+                height: Sizer.getHeight(context)/12,
 
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(61.sp),

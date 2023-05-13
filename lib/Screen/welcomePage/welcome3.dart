@@ -35,7 +35,7 @@ class Welcome3 extends StatelessWidget {
           children: [
             Expanded(
                 flex: 3,
-                child: Image.asset(Font.urlImage+"documentwelcome.jpeg",fit: BoxFit.fill,)) ,
+                child: Image.asset(Font.urlImage+"documentwelcome.jpeg",fit: BoxFit.fill  ,width: Sizer.getWidth(context),)) ,
             SizedBox(height: 44),
             Expanded(
                 child: Text(Font.header3 ,
@@ -44,13 +44,13 @@ class Welcome3 extends StatelessWidget {
                         fontFamily: Font.fontfamily ,
                         fontWeight: FontWeight.bold ,
                         color: Coloring.secondary,
-                        fontSize: Sizer.getTextSize(context, 0.08)))),
+                        fontSize: Sizer.getTextSize(context, 0.07)))),
             InkWell(
               onTap: () => RouterNav.fluroRouter.navigateTo(context, "/welcome4"),
               child: Container(
                 alignment: Alignment.center,
                 width: Sizer.getWidth(context)/2,
-                height: Sizer.getHeight(context)/15,
+                height: Sizer.getHeight(context)/12,
 
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(61.sp),

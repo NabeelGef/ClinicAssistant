@@ -56,13 +56,13 @@ class MyApp extends StatelessWidget {
       );
       return DevicePreview.appBuilder(context, child);
     },
-    debugShowCheckedModeBanner: false,
-    title: 'مساعد العيادات',
-    theme: ThemeData(
-      primaryColor: Coloring.primary,
-      fontFamily: Font.fontfamily,
-    ),
-    home: Welcome0(),
+      debugShowCheckedModeBanner: false,
+      title: 'مساعد العيادات',
+      theme: ThemeData(
+        primaryColor: Coloring.primary,
+        fontFamily: Font.fontfamily,
+      ),
+      home: Welcome0(),
 
     //initialRoute: "/",
     // routes: {

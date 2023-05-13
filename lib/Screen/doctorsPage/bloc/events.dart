@@ -15,9 +15,19 @@ class ChooseSpecialist extends AllDoctorsEvents {
   //final List<SubSpecialties> subspecialties ;
   ChooseSpecialist(this.index , this.specialist);
 }
+class EditClickSpecialist extends AllDoctorsEvents{}
 class ChooseSubSpecialist extends AllDoctorsEvents{
   final String sub;
   ChooseSubSpecialist(this.sub);
 }
 class LoadingSpecialists extends AllDoctorsEvents{}
 class LoadingDoctors extends AllDoctorsEvents{}
+class CheckEvaluate extends AllDoctorsEvents{
+  final bool evaluate;
+    CheckEvaluate(this.evaluate);
+}
+class CheckAll extends AllDoctorsEvents{
+  final bool evaluate;
+  CheckAll(this.evaluate);
+}
+class EditCheckAll extends AllDoctorsEvents{}

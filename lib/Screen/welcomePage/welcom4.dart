@@ -43,7 +43,7 @@ class Welcome4 extends StatelessWidget {
                         fontFamily: Font.fontfamily ,
                         fontWeight: FontWeight.bold ,
                         color: Coloring.secondary,
-                        fontSize: Sizer.getTextSize(context, 0.07)))),
+                        fontSize: Sizer.getTextSize(context, 0.05)))),
 
             InkWell(
               onTap: () => RouterNav.fluroRouter.navigateTo(context, "/home"),
@@ -51,7 +51,7 @@ class Welcome4 extends StatelessWidget {
 
                 alignment: Alignment.center,
                 width: Sizer.getWidth(context)/2,
-                height: Sizer.getHeight(context)/12,
+                height: Sizer.getHeight(context)/9,
 
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(61.sp),

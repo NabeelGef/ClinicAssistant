@@ -49,7 +49,7 @@ class _Welcome0State extends State<Welcome0> {
               child: Container(
                 alignment: Alignment.center,
                 width: Sizer.getWidth(context)/2,
-                height: Sizer.getHeight(context)/15,
+                height: Sizer.getHeight(context)/12,
                   decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(61.sp),
                   gradient: LinearGradient(

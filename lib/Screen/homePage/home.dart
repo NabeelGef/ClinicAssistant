@@ -30,48 +30,63 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   Body(BuildContext context){
     return Stack(
       children: [
-        ClipOval(
-          child: Container(
-            width: Sizer.getWidth(context),
-            height: Sizer.getHeight(context)/20,
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(50) ,
+                bottomLeft: Radius.circular(50),
+            ),
             color: Coloring.primary,
           ),
+          width: Sizer.getWidth(context),
+          height: Sizer.getHeight(context)/20,
         ),
         Column(
           children: [
             SizedBox(height: Sizer.getHeight(context)/20,),
             MyAppBar(context),
-            Expanded(child: Image.asset(Font.urlImage+'logo.png')) ,
-            Expanded(child: Row(
+            Expanded(child: Image.asset(Font.urlImage+'logo.png' )) ,
+            Expanded(
+
+                child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Coloring.primary
-                      ),
-                      child: Image.asset(Font.urlImage+'clinicIcon.png'),
-                    ),
-                    Text("العيادات",style: TextStyle(color: Coloring.secondary, fontFamily: Font.fontfamily ,
-                        fontSize: Sizer.getTextSize(context, 0.07)),)
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    RouterNav.fluroRouter.navigateTo(context, "/home/alldoctors");
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                  InkWell(
+                    onTap: () {
+                      // go To Clinic Page
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                       Container(
+                        width: Sizer.getWidth(context)/5,
+                        height: Sizer.getHeight(context)/10,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Coloring.primary
                         ),
-                        child: Image.asset(Font.urlImage+'doctorIcon.png'),
+                        child: Image.asset(Font.urlImage+'clinicIcon.png' , fit: BoxFit.fill,),
+                      ),
+                      Text("العيادات",style: TextStyle(color: Coloring.secondary, fontFamily: Font.fontfamily ,
+                          fontSize: Sizer.getTextSize(context, 0.07)),)
+                    ],
+                ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                    RouterNav.fluroRouter.navigateTo(context, "/home/alldoctors");
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      Container(
+                        width: Sizer.getWidth(context)/5,
+                        height: Sizer.getHeight(context)/10,
+
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Coloring.primary
+                        ),
+                        child: Image.asset(Font.urlImage+'doctorIcon.png' , fit: BoxFit.fill),
                       ),
                       Text("الأطبّاء",style: TextStyle(color: Coloring.secondary, fontFamily: Font.fontfamily ,
                           fontSize: Sizer.getTextSize(context, 0.07)),)
@@ -90,7 +105,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   //Make AppBar
   MyAppBar(BuildContext context) {
     return AppBar(
-      //toolbarHeight: Sizer.getHeight(context)/3.5,
+      toolbarHeight: Sizer.getHeight(context)/10,
       elevation: 0,
       backgroundColor: Colors.transparent,
       leading: InkWell(
