@@ -1,3 +1,4 @@
+import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Screen/doctorsPage/all_doctors_page.dart';
 import 'package:clinicassistant/Screen/homePage/home.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom0.dart';
@@ -41,13 +42,12 @@ class RouterNav{
       });
 
   static void setupRouter() {
-  fluroRouter.define("/", handler: welcome0 , transitionType: TransitionType.fadeIn);
-  fluroRouter.define("/welcome1", handler: welcome1 , transitionType: TransitionType.inFromRight);
-  fluroRouter.define("/welcome2", handler: welcome2 , transitionType: TransitionType.inFromRight);
-  fluroRouter.define("/welcome3", handler: welcome3 , transitionType: TransitionType.inFromRight);
-  fluroRouter.define("/welcome4", handler: welcome4 , transitionType: TransitionType.inFromRight);
-  fluroRouter.define("/home", handler: home , transitionType: TransitionType.inFromRight);
-  fluroRouter.define("/home/alldoctors", handler: alldoctors ,transitionType: TransitionType.nativeModal);
-
+  fluroRouter.define(RouteName.welcome0, handler: welcome0 , transitionType: TransitionType.fadeIn);
+  fluroRouter.define(RouteName.welcome1, handler: welcome1 , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.welcome2, handler: welcome2 , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.welcome3, handler: welcome3 , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.welcome4, handler: welcome4 , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.Home, handler: home , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.AllDoctors, handler: alldoctors ,transitionType: TransitionType.nativeModal);
   }
-  }
+}

@@ -1,6 +1,6 @@
 
+import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/font.dart';
-import 'package:clinicassistant/Constant/router.dart';
 import 'package:clinicassistant/Screen/clinicsPage/all_clinics_page.dart';
 import 'package:clinicassistant/Screen/doctorsPage/all_doctors_page.dart';
 import 'package:clinicassistant/Screen/homePage/home.dart';

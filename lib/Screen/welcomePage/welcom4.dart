@@ -1,6 +1,7 @@
+import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
-import 'package:clinicassistant/Constant/router.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,7 +47,7 @@ class Welcome4 extends StatelessWidget {
                         fontSize: Sizer.getTextSize(context, 0.05)))),
 
             InkWell(
-              onTap: () => RouterNav.fluroRouter.navigateTo(context, "/home"),
+              onTap: () => RouterNav.fluroRouter.navigateTo(context, RouteName.Home),
               child: Container(
 
                 alignment: Alignment.center,

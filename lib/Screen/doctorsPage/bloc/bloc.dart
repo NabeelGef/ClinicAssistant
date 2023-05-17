@@ -3,7 +3,7 @@ import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/states.dart';
 import 'package:clinicassistant/model/doctor.dart';
 import 'package:clinicassistant/model/specialist.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllDoctorsBloc extends Bloc<AllDoctorsEvents , DoctorsState> {

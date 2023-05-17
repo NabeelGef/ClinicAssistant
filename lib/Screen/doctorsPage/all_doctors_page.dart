@@ -116,10 +116,9 @@ class _AllDoctorsState extends State<AllDoctors> {
                                   borderRadius: BorderRadius.circular(10)
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Container(
-                                  height : Sizer.getHeight(context)/10,
-
+                                  height : Sizer.getHeight(context)/5,
                                   child: DropdownButton(
                                   dropdownColor : Colors.white,
                                   borderRadius: BorderRadius.circular(10),

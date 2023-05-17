@@ -1,6 +1,7 @@
+import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
-import 'package:clinicassistant/Constant/router.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +46,7 @@ class _Welcome0State extends State<Welcome0> {
               ),
             ) ,
             InkWell(
-              onTap: () => RouterNav.fluroRouter.navigateTo(context, "/welcome1"),
+              onTap: () => RouterNav.fluroRouter.navigateTo(context, RouteName.welcome1),
               child: Container(
                 alignment: Alignment.center,
                 width: Sizer.getWidth(context)/2,
