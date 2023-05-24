@@ -54,6 +54,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
                   InkWell(
                     onTap: () {
                       // go To Clinic Page
+                      RouterNav.fluroRouter.navigateTo(context, RouteName.AllClinics);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -7,6 +7,7 @@ import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Code {
@@ -228,6 +229,30 @@ class Code {
   }
 
   //Make a conts AppBar in Doctor and clinic page
+  static Widget AppBarProfile(GlobalKey<ScaffoldState> _scaffoldkey,
+      BuildContext context){
+    return AppBar(
+        toolbarHeight: Sizer.getHeight(context) / 6,
+          backgroundColor: Coloring.primary,
+          leading: InkWell(
+            onTap: () {},
+            child: Icon(Icons.notifications_none_outlined,
+          size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+          actions: [
+          InkWell(
+              onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
+              child: Container(
+                margin: EdgeInsets.only(right: 6.sp),
+                child: Icon(Icons.menu,
+                size: Sizer.getTextSize(context, 0.08),
+                color: Colors.white)))
+          ],
+          centerTitle: true,
+            title: Image.asset("${Font.urlImage}logo.png",width: Sizer.getWidth(context)/5,
+              height: Sizer.getHeight(context)/5
+              ,),
+    );
+    }
   static Widget AppBarDoctorsAndClinics(GlobalKey<ScaffoldState> _scaffoldkey,
       BuildContext context, bool isDoctor, String hint) {
     return AppBar(
@@ -238,10 +263,11 @@ class Code {
           child: Icon(Icons.notifications_none_outlined,
               size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
       actions: [
-        Container(
+        isDoctor? Container(
             margin: EdgeInsets.only(right: 6.sp),
             child: Icon(Icons.filter_alt,
-                size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+                size: Sizer.getTextSize(context, 0.08), color: Colors.white)):
+        Container(),
         InkWell(
             onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
             child: Container(
@@ -257,11 +283,6 @@ class Code {
             borderRadius: BorderRadius.circular(25), color: Coloring.third),
         child: Row(
           children: [
-            /*Expanded(
-             flex: 2,
-             child: Text("فلترة",style: TextStyle(color: Colors.white ,
-                 fontFamily: Font.fontfamily , fontWeight: FontWeight.bold)),
-           ),*/
             Expanded(
               flex: 6,
               child: Container(
@@ -296,13 +317,7 @@ class Code {
                             borderSide:
                                 BorderSide(color: Colors.red, width: 4)),
                         isDense: true,
-                        /*prefixIcon: Container(
-                         margin: EdgeInsets.only(left: 10.0),
-                         padding: EdgeInsets.only(right: 10.0),
-                         child: Icon(Icons.search ,size: Sizer.getTextSize(context, 0.09), color: Coloring.primary),
-                       ),*/
                         hintText: hint,
-                        //contentPadding: EdgeInsets.only( right: Sizer.getWidth(context)/15 , bottom: 20 ),
                         hintTextDirection: TextDirection.rtl,
                         hintStyle: TextStyle(
                           fontSize: Sizer.getTextSize(context, 0.038),
@@ -318,5 +333,60 @@ class Code {
       ),
       elevation: 0,
     );
+  }
+
+  static showRatingBar(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Coloring.primary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15)
+      ),
+      title: Center(
+        child: Text(":قيّم طبيبك  " , style: TextStyle(fontFamily: Font.fontfamily, fontSize:
+        Sizer.getTextSize(context, 0.05), color: Colors.white)),
+      ),
+      content: Container(
+        height: Sizer.getHeight(context)/6,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            RatingBar(
+                initialRating: 0,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                ratingWidget: RatingWidget(
+                    full:  Icon(Icons.star, color: Colors.orange),
+                    half:  Icon(
+                      Icons.star_half,
+                      color: Colors.orange,
+                    ),
+                    empty:  Icon(
+                      Icons.star_outline,
+                      color: Colors.white,
+                    )),
+                onRatingUpdate: (value) {
+                }),
+            InkWell(
+              onTap: () {
+               Navigator.pop(context);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: Sizer.getWidth(context)/2.5,
+                height: Sizer.getHeight(context)/15,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)
+                ),
+                child: Text("إضافة التقييم",style: TextStyle(fontFamily: Font.fontfamily, fontSize:
+                Sizer.getTextSize(context, 0.05), color: Coloring.primary)),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
   }
 }

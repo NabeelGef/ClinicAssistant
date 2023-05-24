@@ -29,8 +29,8 @@ class API{
     return specialists;
    }
   // To get All Clinics From API
-  static Future<Clinic> getClinics() async{
-     Clinic clinic = Clinic();
+  static Future<Clinic>? getClinics() async{
+    Clinic clinic = Clinic();
      Response response =await  dio.get("$BaseUrl"+"$clinics");
      if(response.statusCode==200){
        //print(response.data);
@@ -39,7 +39,7 @@ class API{
     return clinic;
    }
   // To get All Doctors From API
-   static Future<Doctor> getDoctors() async{
+   static Future<Doctor>? getDoctors() async{
     Doctor doctor = Doctor();
     Response response = await dio.get("$BaseUrl"+"$doctors");
     if(response.statusCode==200){

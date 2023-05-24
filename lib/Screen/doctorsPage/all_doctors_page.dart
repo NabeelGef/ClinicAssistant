@@ -1,3 +1,5 @@
+import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AllDoctors extends StatefulWidget {
@@ -412,91 +415,107 @@ class _AllDoctorsState extends State<AllDoctors> {
                             child: Column(
                               children: [
                                 SizedBox(height: 15),
-                                CircleAvatar(
-                                  radius: Sizer.getTextSize(context, 0.1),
-                                  backgroundImage: NetworkImage(state
-                                      .doctor!.doctors![index].profilePicture!),
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: Sizer.getTextSize(context, 0.1),
+                                        backgroundImage: NetworkImage(state
+                                            .doctor!.doctors![index].profilePicture!),
+                                      ),
+                                      Center(
+                                          child: Text(
+                                              "${state.doctor!.doctors![index].firstName} ${state.doctor!.doctors![index].lastName}",
+                                              style: TextStyle(
+                                                  color: Coloring.primary,
+                                                  fontSize: Sizer.getTextSize(
+                                                      context, 0.05),
+                                                  fontFamily: Font.fontfamily,
+                                                  fontWeight: FontWeight.bold))),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        textDirection: TextDirection.rtl,
+                                        children: [
+                                          Center(
+                                              child: Text(
+                                                  " الاختصاص : ${state.doctor!.doctors![index].specialtyName!}",
+                                                  style: TextStyle(
+                                                      color: Coloring.primary4,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontFamily: Font.fontfamily,
+                                                      fontSize: Sizer.getTextSize(
+                                                          context, 0.04)))),
+                                          state.doctor!.doctors![index]
+                                              .subSpecialtyName !=
+                                              null
+                                              ? Center(
+                                              child: Text(
+                                                  "${state.doctor!.doctors![index].subSpecialtyName!}-",
+                                                  style: TextStyle(
+                                                      color: Coloring.primary4,
+                                                      fontFamily: Font.fontfamily,
+                                                      fontSize: Sizer.getTextSize(
+                                                          context, 0.04))))
+                                              : Center(),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        textDirection: TextDirection.rtl,
+                                        children: [
+                                          Text(" :التقييم",
+                                              style: TextStyle(
+                                                  color: Coloring.primary,
+                                                  fontFamily: Font.fontfamily,
+                                                  fontSize: Sizer.getTextSize(
+                                                      context, 0.05),
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(
+                                              state.doctor!.doctors![index].evaluate
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Coloring.primary,
+                                                  fontFamily: Font.fontfamily,
+                                                  fontSize: Sizer.getTextSize(
+                                                      context, 0.05),
+                                                  fontWeight: FontWeight.bold)),
+                                          Container(
+                                            width: Sizer.getWidth(context) / 15,
+                                            height: Sizer.getWidth(context) / 15,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: AssetImage(
+                                                        Font.urlImage + "star.png"))),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Center(
-                                    child: Text(
-                                        "${state.doctor!.doctors![index].firstName} ${state.doctor!.doctors![index].lastName}",
+                                Expanded(
+                                  child: MaterialButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                    onPressed: () {
+                                      RouterNav.fluroRouter.navigateTo(context,
+                                        routeSettings: RouteSettings(arguments:
+                                         {'id' : state.doctor!.doctors![index].id}),
+                                        RouteName.ProfileDoctor+"/${state.doctor!.doctors![index].id}" );
+                                    },
+                                    color: Coloring.third4,
+                                    child: Text("عرض التفاصيل",
                                         style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize: Sizer.getTextSize(
-                                                context, 0.05),
-                                            fontFamily: Font.fontfamily,
-                                            fontWeight: FontWeight.bold))),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  textDirection: TextDirection.rtl,
-                                  children: [
-                                    Center(
-                                        child: Text(
-                                            " الاختصاص : ${state.doctor!.doctors![index].specialtyName!}",
-                                            style: TextStyle(
-                                                color: Coloring.primary4,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: Font.fontfamily,
-                                                fontSize: Sizer.getTextSize(
-                                                    context, 0.04)))),
-                                    state.doctor!.doctors![index]
-                                                .subSpecialtyName !=
-                                            null
-                                        ? Center(
-                                            child: Text(
-                                                "${state.doctor!.doctors![index].subSpecialtyName!}-",
-                                                style: TextStyle(
-                                                    color: Coloring.primary4,
-                                                    fontFamily: Font.fontfamily,
-                                                    fontSize: Sizer.getTextSize(
-                                                        context, 0.04))))
-                                        : Center(),
-                                  ],
+                                            color: Colors.white,
+                                            fontSize:
+                                                Sizer.getTextSize(context, 0.05),
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: Font.fontfamily)),
+                                  ),
+
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  textDirection: TextDirection.rtl,
-                                  children: [
-                                    Text(" :التقييم",
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontFamily: Font.fontfamily,
-                                            fontSize: Sizer.getTextSize(
-                                                context, 0.05),
-                                            fontWeight: FontWeight.bold)),
-                                    Text(
-                                        state.doctor!.doctors![index].evaluate
-                                            .toString(),
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontFamily: Font.fontfamily,
-                                            fontSize: Sizer.getTextSize(
-                                                context, 0.05),
-                                            fontWeight: FontWeight.bold)),
-                                    Container(
-                                      width: Sizer.getWidth(context) / 15,
-                                      height: Sizer.getWidth(context) / 15,
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: AssetImage(
-                                                  Font.urlImage + "star.png"))),
-                                    ),
-                                  ],
-                                ),
-                                MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)),
-                                  onPressed: () {},
-                                  color: Coloring.third4,
-                                  child: Text("عرض التفاصيل",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize:
-                                              Sizer.getTextSize(context, 0.05),
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: Font.fontfamily)),
-                                )
+                                SizedBox(height: 25.sp)
                               ],
                             ),
                           );
@@ -515,7 +534,7 @@ class _AllDoctorsState extends State<AllDoctors> {
   MyAppBar() {
     return Code.AppBarDoctorsAndClinics(
         _scaffoldkey, context, true, "ابحث عن طبيبك المناسب");
-    /*return BlocConsumer<AllDoctorsBloc , AllDoctorStates>(
+        /*return BlocConsumer<AllDoctorsBloc , AllDoctorStates>(
         listener: (context,AllDoctorStates state) {},
         builder: (context , AllDoctorStates state) {
           bool isSearchSelected = AllDoctorsBloc.get(context).isSearch;

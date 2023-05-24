@@ -4,10 +4,12 @@ import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
+import 'package:clinicassistant/Screen/clinicsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AllClinics extends StatefulWidget {
@@ -19,242 +21,190 @@ class AllClinics extends StatefulWidget {
 
 class _AllClinicsState extends State<AllClinics> {
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
+  final AllClinicsBloc allClinicsBloc = AllClinicsBloc(ClinicsStates(null, ""));
+
+  @override
+  void initState() {
+    allClinicsBloc.add(LoadingClinics());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        return AllClinicsBloc(InitialState());
-      },
-      child: Scaffold(
-        key: _scaffoldkey,
-        appBar: MyAppBar(),
-        drawer: Code.DrawerNative(context , _scaffoldkey),
-        body: BodyClinics(),
-      ),
+    return Scaffold(
+      backgroundColor: Coloring.third2,
+      key: _scaffoldkey,
+      appBar: MyAppBar(),
+      endDrawer: Code.DrawerNative(context , _scaffoldkey),
+      body: BodyClinics(),
     );
 
   }
-  /*Widget AppBarClinics(BuildContext context ,  bool isSearchSelected) {
-    return AppBar(
-      backgroundColor:  Colors.white,
-      systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.white
-      ),
-      leading: InkWell(
-          onTap: () {
-            _scaffoldkey.currentState!.openDrawer();
-          },
-          child: Icon(Icons.menu ,size: 30, color: Coloring.primary)),
-      actions: [
-        InkWell(onTap: () {
-          AllClinicsBloc.get(context).add(SearchEvent());
-        },
-            child:isSearchSelected ? Icon(Icons.cancel_outlined,size: 30, color: Coloring.primary)
-                :Icon(Icons.search ,size: 30, color: Coloring.primary)
-        ),
-        !isSearchSelected?Icon(Icons.notifications_none ,size: 30, color: Coloring.primary)
-            :Container()
-      ],
-      centerTitle: true,
-      title: !isSearchSelected? Text("أوجد عيادتك",style: TextStyle(
-          fontWeight: FontWeight.bold , fontFamily: Font.fontfamily , color: Coloring.customgrey))
-          :Container(
-             width: 350,
-              height: 35,
-            child: TextField(
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(21)
-            ],
-            textDirection: TextDirection.rtl,
-            style: TextStyle(fontSize: 18 ,fontFamily: Font.fontfamily ,color: Coloring.customgrey),
-            decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide(color: Coloring.primary)
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide(color: Coloring.primary)
-                ),
-                errorMaxLines: 21,
-                prefix: Padding(
-                    padding: EdgeInsets.only(top: 50 ,left: 15),
-                    child: Icon(Icons.search ,size: 25, color: Coloring.primary)),
-                hintText: 'أدخل اسم عيادتك ...',
-                contentPadding: EdgeInsets.only(top: 25 , right: 25),
-                hintTextDirection: TextDirection.rtl,
-                hintStyle: TextStyle(
-                  color: Coloring.customgrey,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                )
-            )
-        ),
-      ),
-      elevation: 1,
-    );
-  }
-  */
   //Make AppBar
   MyAppBar() {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(Sizer.getHeight(context)/8),
-      child: BlocConsumer<AllClinicsBloc , AllClinicStates>(
-          listener: (context,AllClinicStates state) {},
-          builder: (context , AllClinicStates state) {
-            bool isSearchSelected = AllClinicsBloc.get(context).isSearch;
-    return Code.AppBarDoctorsAndClinics(_scaffoldkey,context ,false,
-      "أدخل اسم عيادتك ...");
-        }
-      ),
-    );
+    return Code.AppBarDoctorsAndClinics(
+        _scaffoldkey, context, false, "ابحث عن عيادتك المناسبة");
   }
   //Make Body
   Widget BodyClinics() {
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Coloring.custompurble
-
-          ),
-          margin: EdgeInsets.all(15),
-          width: double.infinity,
-          height: Sizer.getHeight(context)/15,
-          child: Center(
-            child: Text("البحث حسب الموقع",textAlign: TextAlign.center, style: TextStyle(
-                 fontFamily: Font.fontfamily ,fontWeight: FontWeight.bold,fontSize: Sizer.getTextSize(context, 0.05), color: Colors.white),),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            width: Sizer.getWidth(context)/1.1,
-            child: FutureBuilder(
-              future: API.getClinics(),
-              builder: (context, snapshot)
-               {
-                if(snapshot.connectionState==ConnectionState.waiting){
-               return Shimmer.fromColors(
-               direction: ShimmerDirection.ttb,
-               loop: 10,
-               child: Container(
-               width: Sizer.getWidth(context)/1.1,
-               child: GridView.builder(gridDelegate:
-               SliverGridDelegateWithFixedCrossAxisCount(
-               crossAxisSpacing: 5,
-               mainAxisSpacing: 15,
-               crossAxisCount: 2,
-               mainAxisExtent : Sizer.getHeight(context)/1.8
-               ),
-               scrollDirection: Axis.vertical,
-               physics: ScrollPhysics(),
-               itemBuilder: (context, index) {
-               return Container(
+          SizedBox(height: 25.sp),
+           Expanded(
+           child:
+             Container(
+               alignment: Alignment.center,
+               width: Sizer.getWidth(context)/1.2,
                decoration: BoxDecoration(
-               color: Coloring.custompurble,
-               borderRadius: BorderRadius.circular(25),
-               ),
-               );
-               //   child: Shimmer.fromColors(
-               //       child: Container(
-               //   decoration: BoxDecoration(
-               //   borderRadius: BorderRadius.circular(25),
-               // ),
-               //   )
-               //       , baseColor: Coloring.customgrey, highlightColor: Coloring.primary),
-               // );
-               }),
-               )
-               , baseColor: Colors.white, highlightColor: Coloring.custompurble);
-               }else if (snapshot.hasData){
-                  return GridView.builder
-                    (
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 15,
-                    crossAxisCount: 2,
-                    mainAxisExtent : Sizer.getHeight(context)/1.8
-               ),
-                    scrollDirection: Axis.vertical,
-                    physics: ScrollPhysics(),
-                      itemCount: snapshot.data!.clinics!.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                            decoration: BoxDecoration(
-                              // gradient: SweepGradient(colors: [
-                              //   Colors.white,
-                              //   Coloring.custompurble,
-                              //   Colors.white,
-                              // ]),
-                              color: Coloring.customgrey2,
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(height: 15),
-                                Container(
-                                  width: Sizer.getWidth(context)/2,
-                                  height: Sizer.getHeight(context)/4,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                       image: AssetImage(
-                                        "assets/images/clinic1.png"),
-                                      alignment: Alignment.center,
-                                      fit: BoxFit.cover,
-                                      repeat: ImageRepeat.noRepeat,
-                                    ),
+               borderRadius: BorderRadius.circular(15),
+               color: Coloring.primary
+                ),
+                  child: Text("البحث حسب الموقع",style: TextStyle(
+                  color: Colors.white,
+                  fontSize: Sizer.getTextSize(
+                  context, 0.05),
+                  fontFamily: Font.fontfamily,
+                  fontWeight: FontWeight.bold)),
 
-                                    borderRadius: BorderRadius.circular(20),
+            )
+           ),
+           SizedBox(height: 25.sp,),
+           Expanded(
+            flex: 8,
+              child: Container(
+              color: Coloring.third2,
+              width: Sizer.getWidth(context),
+                child: BlocBuilder<AllClinicsBloc , ClinicsStates>(
+                  bloc: allClinicsBloc,
+                  builder: (context, state) {
+                    if (state.clinic == null) {
+                      if (state.error.isNotEmpty) {
+                        return Center(child: Text("${state.error}"));
+                      } else {
+                        return Shimmer.fromColors(
+                            direction: ShimmerDirection.ttb,
+                            loop: 10,
+                            child: Container(
+                              width: Sizer.getWidth(context) / 1.1,
+                              child: GridView.builder(
+                                  gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      crossAxisCount: 2,
+                                      mainAxisExtent:
+                                      Sizer.getHeight(context) / 2.8),
+                                  scrollDirection: Axis.vertical,
+                                  physics: ScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Coloring.primary,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            baseColor: Colors.white,
+                            highlightColor: Coloring.primary);
+                      }
+                    } else {
+                      return Container(
+                          width: Sizer.getWidth(context) / 1.01,
+                          child: GridView.builder(
+                              padding: EdgeInsets.all(5),
+                              itemCount: state.clinic!.clinics!.length,
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: Sizer.getTextSize(
+                                      context, 0.03),
+                                  mainAxisSpacing: Sizer.getTextSize(
+                                      context, 0.05),
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 1,
+                                  mainAxisExtent: Sizer.getTextSize(
+                                      context, 0.8)),
+                              scrollDirection: Axis.vertical,
+                              physics: ScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                //int countstar = snapshot.data!.doctors![index].evaluate!.toInt();
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Coloring.third3,
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                ),
-                                Center(
-                                    child: Text(snapshot.data!.clinics![index].clinicName!,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.black,
-                                        fontFamily: Font.fontfamily,
-                                        fontSize: Sizer.getTextSize(context, 0.05),
-                                        fontWeight: FontWeight.bold))),
-                                Expanded(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Divider(thickness: 5 , color: Colors.white,),
-                                      Center(child: Text("عدد الأطباء : ${snapshot.data!.clinics![index].numDoctors}",
-                                          style: TextStyle(color: Colors.black,
-                                              fontFamily: Font.fontfamily,
-                                              fontSize: Sizer.getTextSize(context, 0.05),
-                                              fontWeight: FontWeight.bold))),
-                                      Center(
-                                          child:
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.location_on_outlined,
-                                                color: Coloring.custompurble ,
-                                                size: Sizer.getTextSize(context, 0.04),),
-                                              Text(snapshot.data!.clinics![index].location!,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(color: Colors.black,
-                                                      fontFamily: Font.fontfamily,
-                                                      fontSize: Sizer.getTextSize(context, 0.04),
-                                                      fontWeight: FontWeight.bold)),
-                                            ],
-                                          )),
+                                      SizedBox(height: 15),
+                                      Expanded(
+                                        flex: 5,
+                                        child: Column(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: Sizer.getTextSize(context, 0.1),
+                                              backgroundImage: AssetImage(
+                                                  "${Font.urlImage}clinicavatar.png"),
+                                            ),Center(
+                                                child: Text(
+                                                    "${state.clinic!.clinics![index].clinicName}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Coloring.primary,
+                                                        fontSize: Sizer.getTextSize(
+                                                            context, 0.05),
+                                                        fontFamily: Font.fontfamily,
+                                                        fontWeight: FontWeight
+                                                            .bold))),
+                                            Center(
+                                                child: Text(
+                                                    "عدد الأطباء ${state.clinic!.clinics![index].numDoctors}",
+                                                    style: TextStyle(
+                                                        color: Coloring.primary4,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: Font.fontfamily,
+                                                        fontSize: Sizer.getTextSize(
+                                                            context, 0.04)))),
+                                            Center(
+                                                child: Text(
+                                                    "الموقع : ${state.clinic!.clinics![index].area!.name}",
+                                                    style: TextStyle(
+                                                        color: Coloring.primary4,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: Font.fontfamily,
+                                                        fontSize: Sizer.getTextSize(
+                                                            context, 0.04)))),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: MaterialButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  8)),
+                                          onPressed: () {
+                                            // RouterNav.fluroRouter.navigateTo(context,
+                                            // routeSettings: RouteSettings(arguments:
+                                            // {'id' : state.doctor!.doctors![index].id}),
+                                            // RouteName.ProfileDoctor+"/${state.doctor!.doctors![index].id}" );
+                                          },
+                                          color: Coloring.third4,
+                                          child: Text("عرض التفاصيل",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize:
+                                                  Sizer.getTextSize(
+                                                      context, 0.05),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: Font.fontfamily)),
+                                        ),
+                                      ),
+                                      SizedBox(height: 25.sp)
                                     ],
                                   ),
-                                ),
-                                ],
-                            ));
-                      });
-                }else{
-                 return Center(child: Text("NotFoundData!!"));
-                }
-              }
-            ),
-          ),
-        )
+                                );
+                              }));
+                    }
+                  }
+
+        )))
       ],
     );
   }

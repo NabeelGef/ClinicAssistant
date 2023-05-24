@@ -4,3 +4,4 @@ abstract class AllClinicsEvents{
 }
 
 class SearchEventClinic extends AllClinicsEvents{}
+class LoadingClinics extends AllClinicsEvents{}

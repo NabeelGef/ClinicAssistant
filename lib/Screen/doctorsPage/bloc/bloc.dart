@@ -18,18 +18,18 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents , DoctorsState> {
   }
   Stream<DoctorsState> mapEventToState(AllDoctorsEvents events) async*{
     //when event is Search button
-    if(events is SearchEventDoctor){
+  /*  if(events is SearchEventDoctor){
         yield*  _changeSearch();
-    }
+    }*/
     if(events is LoadingDoctors){
       yield* getDoctors();
     }
     //when event is Specailist
   }
-  Stream<DoctorsState> _changeSearch() async*{
+  /*Stream<DoctorsState> _changeSearch() async*{
     isSearch=!isSearch;
     yield SuccessAllDoctorStates(state.doctor, "");
-  }
+  }*/
   Stream<DoctorsState> getDoctors() async*{
      yield DoctorsState(state.doctor, "");
      try{
