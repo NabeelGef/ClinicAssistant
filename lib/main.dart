@@ -1,14 +1,7 @@
 
 import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/font.dart';
-import 'package:clinicassistant/Screen/clinicsPage/all_clinics_page.dart';
-import 'package:clinicassistant/Screen/doctorsPage/all_doctors_page.dart';
-import 'package:clinicassistant/Screen/homePage/home.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom0.dart';
-import 'package:clinicassistant/Screen/welcomePage/welcom4.dart';
-import 'package:clinicassistant/Screen/welcomePage/welcome1.dart';
-import 'package:clinicassistant/Screen/welcomePage/welcome2.dart';
-import 'package:clinicassistant/Screen/welcomePage/welcome3.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';

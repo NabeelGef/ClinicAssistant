@@ -1,7 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Constant/Route/router.dart';
-import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';

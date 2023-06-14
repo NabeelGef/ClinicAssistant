@@ -1,4 +1,4 @@
-class RouteName{
+class RouteName {
   static String welcome0 = "/";
   static String welcome1 = "/welcome1";
   static String welcome2 = "/welcome2";
@@ -8,4 +8,6 @@ class RouteName{
   static String AllDoctors = "/home/alldoctors";
   static String AllClinics = "/home/allclinics";
   static String ProfileDoctor = "/home/alldoctors/profiledoctor";
+  static String ProfileClinic = "/home/allclinics/profileclinic";
+  static String Booking = "/home/profile/book";
 }

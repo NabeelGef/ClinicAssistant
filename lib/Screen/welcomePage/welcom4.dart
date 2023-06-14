@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../homePage/home.dart';
 
 class Welcome4 extends StatelessWidget {
   const Welcome4({Key? key}) : super(key: key);

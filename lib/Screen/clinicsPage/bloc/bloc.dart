@@ -2,7 +2,6 @@ import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/states.dart';
 import 'package:clinicassistant/model/clinic.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllClinicsBloc extends Bloc<AllClinicsEvents , ClinicsStates> {
@@ -35,7 +34,7 @@ class AllClinicsBloc extends Bloc<AllClinicsEvents , ClinicsStates> {
         yield ClinicsStates(clinic, "");
       }
     }catch(e){
-      print("In Catch....");
+      print("In Catch....$e");
       yield ClinicsStates(state.clinic, "Failed To Load Items");
     }
   }

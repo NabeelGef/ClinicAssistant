@@ -20,6 +20,7 @@ dependencies:
   shimmer: ^2.0.0
   responsive_framework: ^0.2.0
   auto_size_text: ^3.0.0
+  google_maps_flutter: ^2.2.8
   dio: ^5.0.3
   flutter_rating_bar: ^4.0.1
 dev_dependencies:

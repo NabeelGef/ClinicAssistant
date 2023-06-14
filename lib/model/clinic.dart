@@ -1,3 +1,4 @@
+import 'package:clinicassistant/model/specialist.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'clinic.g.dart';
@@ -21,16 +22,27 @@ class ClinicElement {
   ClinicElement({
      this.clinicId,
      this.clinicName,
-     this.createdAt,
      this.numDoctors,
+     this.phonenumber,
      this.area,
+     this.specialty,
+     this.latitude,
+     this.longitude,
+
   });
 
   final String? clinicId;
   final String? clinicName;
-  final DateTime? createdAt;
   final int? numDoctors;
+  final String? phonenumber;
   final Area? area;
+  @JsonKey(name: 'Latitude')
+  final String? latitude;
+
+  @JsonKey(name: 'Longitude')
+  final String? longitude;
+  final Specialist? specialty;
+
 
   factory ClinicElement.fromJson(Map<String, dynamic> json) => _$ClinicElementFromJson(json);
 
@@ -43,14 +55,31 @@ class Area {
   Area({
      this.areaId,
      this.name,
+     this.governorate,
   });
-
+  final Governorate? governorate;
   final String? areaId;
   final String? name;
 
   factory Area.fromJson(Map<String, dynamic> json) => _$AreaFromJson(json);
 
   Map<String, dynamic> toJson() => _$AreaToJson(this);
+
+}
+
+@JsonSerializable()
+class Governorate {
+  Governorate({
+     this.governorateId,
+     this.name,
+  });
+
+  final String? governorateId;
+  final String? name;
+
+  factory Governorate.fromJson(Map<String, dynamic> json) => _$GovernorateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GovernorateToJson(this);
 
 }
 
