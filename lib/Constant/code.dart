@@ -209,24 +209,6 @@ class Code {
   }
   //Make a const FloatingPoint in Doctor and clinic page
 
-  static getFloatingPoint(BuildContext context, String path) {
-    return Container(
-      width: Sizer.getWidth(context) / 8,
-      height: Sizer.getWidth(context) / 8,
-      child: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, path);
-        },
-        backgroundColor: Coloring.custompurble,
-        child: Icon(
-          Icons.navigate_next,
-          color: Colors.grey,
-          size: 50,
-        ),
-      ),
-    );
-  }
-
   //Make a conts AppBar in Doctor and clinic page
   static Widget AppBarProfile(
       GlobalKey<ScaffoldState> _scaffoldkey, BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/event.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/state.dart';
 import 'package:clinicassistant/model/doctorClinicBook.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookPageBloc extends Bloc<BookEvent, BookState> {
@@ -70,6 +71,9 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
             SuccessDoctorClinicBook(doctorClinicBook, ""));
       }
     } catch (e, s) {
+      if (e is DioError) {
+        print("DioError : ${e.error}");
+      }
       print("Catch Error In DoctorClinicBook : $e in Line $s");
       yield BookState([imagecommunication, imagespecialist, imageaddress],
           SuccessDoctorClinicBook(null, "Error In Connection"));

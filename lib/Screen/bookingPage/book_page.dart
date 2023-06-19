@@ -2,6 +2,7 @@ import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/event.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/state.dart';
+import 'package:clinicassistant/widgets/AlertBook/alertBook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -347,84 +348,114 @@ class _BookPageState extends State<BookPage> {
                         ),
                       ]),
                   Divider(color: Colors.white, thickness: 2),
-                  Center(
-                    child: Text("الحجوزات المتاحة",
-                        style: TextStyle(
-                            color: Coloring.primary,
-                            fontSize: Sizer.getTextSize(context, 0.05),
-                            fontFamily: Font.fontfamily,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(15.sp),
-                    height: Sizer.getHeight(context) / 8,
-                    child: ListView.separated(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          DateTime? date = state
-                              .successDoctorClinicBook
-                              .doctorClinicBook!
-                              .doctorClinicDetails!
-                              .workTime![index]
-                              .date;
-                          return Container(
-                            padding: EdgeInsets.all(10.sp),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Coloring.third3),
-                            child: Row(
-                              children: [
-                                Icon(Icons.calendar_month,
-                                    color: Coloring.primary),
-                                Text(
-                                  "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.workTime![index].day} - " +
-                                      "${date?.year}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
-                                  style: TextStyle(
-                                      color: Coloring.primary,
-                                      fontSize:
-                                          Sizer.getTextSize(context, 0.04),
-                                      fontFamily: Font.fontfamily,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                  // Center(
+                  //   child: Text("الحجوزات المتاحة",
+                  //       style: TextStyle(
+                  //           color: Coloring.primary,
+                  //           fontSize: Sizer.getTextSize(context, 0.05),
+                  //           fontFamily: Font.fontfamily,
+                  //           fontWeight: FontWeight.bold)),
+                  // ),
+                  // Container(
+                  //   padding: EdgeInsets.all(15.sp),
+                  //   height: Sizer.getHeight(context) / 8,
+                  //   child: ListView.separated(
+                  //       shrinkWrap: true,
+                  //       scrollDirection: Axis.horizontal,
+                  //       itemBuilder: (context, index) {
+                  //         DateTime? date = state
+                  //             .successDoctorClinicBook
+                  //             .doctorClinicBook!
+                  //             .doctorClinicDetails!
+                  //             .workTime![index]
+                  //             .date;
+                  //         return Container(
+                  //           padding: EdgeInsets.all(10.sp),
+                  //           decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(25),
+                  //               color: Coloring.third3),
+                  //           child: Row(
+                  //             children: [
+                  //               Icon(Icons.calendar_month,
+                  //                   color: Coloring.primary),
+                  //               Text(
+                  //                 "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.workTime![index].day} - " +
+                  //                     "${date?.year}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
+                  //                 style: TextStyle(
+                  //                     color: Coloring.primary,
+                  //                     fontSize:
+                  //                         Sizer.getTextSize(context, 0.04),
+                  //                     fontFamily: Font.fontfamily,
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         );
+                  //       },
+                  //       separatorBuilder: (context, index) {
+                  //         return SizedBox(
+                  //           width: 15.sp,
+                  //         );
+                  //       },
+                  //       itemCount: state
+                  //           .successDoctorClinicBook
+                  //           .doctorClinicBook!
+                  //           .doctorClinicDetails!
+                  //           .workTime!
+                  //           .length),
+                  // ),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertBooking(
+                              nameDoctor: state
+                                      .successDoctorClinicBook
+                                      .doctorClinicBook!
+                                      .doctorClinicDetails!
+                                      .doctor!
+                                      .firstname! +
+                                  state
+                                      .successDoctorClinicBook
+                                      .doctorClinicBook!
+                                      .doctorClinicDetails!
+                                      .doctor!
+                                      .lastname!,
+                              clinicName: state
+                                  .successDoctorClinicBook
+                                  .doctorClinicBook!
+                                  .doctorClinicDetails!
+                                  .clinic!
+                                  .clinicName!,
+                              doctorId: widget.doctorId,
+                              clinicId: widget.clinicId,
+                            );
+                          });
+                    },
+                    child: Container(
+                        width: Sizer.getWidth(context) / 1.5,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Coloring.third3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "عرض كل المواعيد",
+                              style: TextStyle(
+                                  color: Coloring.primary,
+                                  fontSize: Sizer.getTextSize(context, 0.04),
+                                  fontFamily: Font.fontfamily,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(
-                            width: 15.sp,
-                          );
-                        },
-                        itemCount: state
-                            .successDoctorClinicBook
-                            .doctorClinicBook!
-                            .doctorClinicDetails!
-                            .workTime!
-                            .length),
+                            Icon(
+                              Icons.more_horiz,
+                              color: Coloring.primary,
+                            )
+                          ],
+                        )),
                   ),
-                  Container(
-                      padding: EdgeInsets.all(5.sp),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Coloring.third3),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "عرض كل المواعيد",
-                            style: TextStyle(
-                                color: Coloring.primary,
-                                fontSize: Sizer.getTextSize(context, 0.04),
-                                fontFamily: Font.fontfamily,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Icon(
-                            Icons.more_horiz,
-                            color: Coloring.primary,
-                          )
-                        ],
-                      )),
                   SizedBox(
                     height: 10.sp,
                   )

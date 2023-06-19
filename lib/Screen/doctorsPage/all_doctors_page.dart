@@ -458,12 +458,24 @@ class _AllDoctorsState extends State<AllDoctors> {
                                     child: Column(
                                       children: [
                                         CircleAvatar(
-                                          radius:
-                                              Sizer.getTextSize(context, 0.1),
-                                          backgroundImage: NetworkImage(state
-                                              .doctor!
-                                              .doctors[index]
-                                              .profilePicture!),
+                                          backgroundColor: Colors.transparent,
+                                          radius: Sizer.getWidth(context) / 10,
+                                          backgroundImage: state
+                                                      .doctor!
+                                                      .doctors[index]
+                                                      .profilePicture ==
+                                                  null
+                                              ? null
+                                              : NetworkImage(state
+                                                  .doctor!
+                                                  .doctors[index]
+                                                  .profilePicture!),
+                                          child: state.doctor!.doctors[index]
+                                                      .profilePicture ==
+                                                  null
+                                              ? Image.asset(
+                                                  "${Font.urlImage}doctoravatar.png")
+                                              : null,
                                         ),
                                         Center(
                                             child: Text(

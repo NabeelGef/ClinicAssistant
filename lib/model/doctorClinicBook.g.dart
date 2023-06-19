@@ -32,9 +32,6 @@ DoctorClinicDetails _$DoctorClinicDetailsFromJson(Map<String, dynamic> json) =>
           ? null
           : ClinicElement.fromJson(json['clinic'] as Map<String, dynamic>),
       isWorkingNow: json['isWorkingNow'] as bool?,
-      workTime: (json['workTime'] as List<dynamic>?)
-          ?.map((e) => WorkTime.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$DoctorClinicDetailsToJson(
@@ -44,7 +41,6 @@ Map<String, dynamic> _$DoctorClinicDetailsToJson(
       'doctor': instance.doctor,
       'clinic': instance.clinic,
       'isWorkingNow': instance.isWorkingNow,
-      'workTime': instance.workTime,
     };
 
 DoctorClinics _$DoctorClinicsFromJson(Map<String, dynamic> json) =>
@@ -59,21 +55,4 @@ Map<String, dynamic> _$DoctorClinicsToJson(DoctorClinics instance) =>
       'id': instance.id,
       'appointmentDuring': instance.appointmentDuring,
       'checkupPrice': instance.checkupPrice,
-    };
-
-WorkTime _$WorkTimeFromJson(Map<String, dynamic> json) => WorkTime(
-      workTimeId: json['workTimeId'] as String?,
-      startingTime: json['startingTime'] as String?,
-      finishingTime: json['finishingTime'] as String?,
-      day: json['day'] as String?,
-      date:
-          json['date'] == null ? null : DateTime.parse(json['date'] as String),
-    );
-
-Map<String, dynamic> _$WorkTimeToJson(WorkTime instance) => <String, dynamic>{
-      'workTimeId': instance.workTimeId,
-      'startingTime': instance.startingTime,
-      'finishingTime': instance.finishingTime,
-      'day': instance.day,
-      'date': instance.date?.toIso8601String(),
     };

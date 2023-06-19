@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
             color: Coloring.primary,
           ),
           width: Sizer.getWidth(context),
-          height: Sizer.getHeight(context) / 20,
+          height: Sizer.getHeight(context) / 15,
         ),
         Column(
           children: [

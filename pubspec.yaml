@@ -1,28 +1,29 @@
 ---
 name: clinicassistant
-description: This Project To Make Clicnic Assitant For Doctors and its clinics and
-  help patients to reserve easily
+description: This Project To Make Clicnic Assitant For Doctors and its clinics
+  and help patients to reserve easily
 publish_to: none
 version: 1.0.0+1
 environment:
   sdk: '>=2.19.1 <3.0.0'
 dependencies:
+  auto_size_text: ^3.0.0
+  build_runner: ^2.3.3
+  cupertino_icons: ^1.0.2
+  device_preview: ^1.1.0
+  dio: ^5.0.3
+  fluro: ^2.0.5
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  flutter_bloc: ^7.2.0
+  flutter_rating_bar: ^4.0.1
   flutter_screenutil: ^5.7.0
-  device_preview: ^1.1.0
-  build_runner: ^2.3.3
+  fluttertoast: ^8.2.2
+  google_maps_flutter: ^2.2.8
   json_annotation: ^4.8.0
   json_serializable: ^6.6.1
-  flutter_bloc: ^7.2.0
-  fluro: ^2.0.5
-  shimmer: ^2.0.0
   responsive_framework: ^0.2.0
-  auto_size_text: ^3.0.0
-  google_maps_flutter: ^2.2.8
-  dio: ^5.0.3
-  flutter_rating_bar: ^4.0.1
+  shimmer: ^2.0.0
 dev_dependencies:
   flutter_native_splash: ^2.2.12
   flutter_test:
@@ -36,12 +37,11 @@ flutter_native_splash:
 flutter:
   uses-material-design: true
   assets:
-  - assets/images/
+    - assets/images/
   fonts:
-  - family: Arabic
-    fonts:
-    - asset: assets/fonts/inter.ttf
-  - family: Noto
-    fonts:
-    - asset: assets/fonts/noto.ttf
-
+    - family: Arabic
+      fonts:
+        - asset: assets/fonts/inter.ttf
+    - family: Noto
+      fonts:
+        - asset: assets/fonts/noto.ttf

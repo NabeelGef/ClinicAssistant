@@ -26,13 +26,13 @@ class DoctorClinicDetails {
     this.doctor,
     this.clinic,
     this.isWorkingNow,
-    this.workTime,
+    // this.workTime,
   });
   final DoctorClinics? doctorClinics;
   final Doctors? doctor;
   final ClinicElement? clinic;
   final bool? isWorkingNow;
-  final List<WorkTime>? workTime;
+  //final List<WorkTime>? workTime;
 
   factory DoctorClinicDetails.fromJson(Map<String, dynamic> json) =>
       _$DoctorClinicDetailsFromJson(json);
@@ -57,27 +57,6 @@ class DoctorClinics {
   Map<String, dynamic> toJson() => _$DoctorClinicsToJson(this);
 }
 
-@JsonSerializable()
-class WorkTime {
-  WorkTime({
-    this.workTimeId,
-    this.startingTime,
-    this.finishingTime,
-    this.day,
-    this.date,
-  });
-
-  final String? workTimeId;
-  final String? startingTime;
-  final String? finishingTime;
-  final String? day;
-  final DateTime? date;
-
-  factory WorkTime.fromJson(Map<String, dynamic> json) =>
-      _$WorkTimeFromJson(json);
-
-  Map<String, dynamic> toJson() => _$WorkTimeToJson(this);
-}
 
 /*
 {

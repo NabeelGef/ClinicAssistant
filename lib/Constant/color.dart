@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Coloring{
+class Coloring {
   static Color primary = Color(0xff03045E);
   static Color primary2 = Color(0x9403045e);
   static Color primary3 = Color(0xc203045e);
@@ -10,7 +10,6 @@ class Coloring{
   static Color third2 = Color(0xff1F92B5);
   static Color third3 = Color(0xffADE8F4);
   static Color third4 = Color(0xff2B9DB9);
-  static Color customgrey = Color(0xff737373);
-  static Color custompurble = Color(0xff8c52ff);
-  static Color customgrey2 = Color(0xffd7d8f0);
+  static Color yellow = Color(0xffFFB703);
+  static Color noColor = Color(0x55FFFFFF);
 }

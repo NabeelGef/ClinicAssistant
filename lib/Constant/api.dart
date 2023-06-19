@@ -4,7 +4,10 @@ import 'package:clinicassistant/model/doctorClinicBook.dart';
 import 'package:clinicassistant/model/profileClinic.dart';
 import 'package:clinicassistant/model/profileDoctor.dart';
 import 'package:clinicassistant/model/specialist.dart';
+import 'package:clinicassistant/model/worktimeclock.dart';
 import 'package:dio/dio.dart';
+
+import '../model/worktime.dart';
 
 class API {
   //That is end points of Api
@@ -20,6 +23,9 @@ class API {
   static String alldoctors = "alldoctors";
   static String detailDoctors = "profile";
   static String clinicBack = "clinic";
+  static String testbook = "testbook";
+  static String worktime = "work-time";
+  static String appoitment = "appoitment";
   static Dio dio = Dio();
 
   //////////////////////////////////////////////////////////////////////
@@ -91,15 +97,90 @@ class API {
   static Future<DoctorClinicBook>? getDoctorClinicBook(
       String doctorId, String clinicId) async {
     DoctorClinicBook doctorClinicBook = DoctorClinicBook();
-    Response response = await dio.get("$BaseUrlBack" +
+    String path = "${BaseUrlBack}" +
         "$doctorsBack" +
         "/${clinicBack}" +
-        "/$doctorId" +
-        "/$clinicId");
+        "/$clinicId" +
+        "/$doctorId";
+    Response response =
+        await dio.fetch(RequestOptions(baseUrl: path, method: 'GET'));
     if (response.statusCode == 200) {
       doctorClinicBook = DoctorClinicBook.fromJson(response.data);
-      print("BOOK : ${response.data}");
     }
+
     return doctorClinicBook;
+  }
+
+  static Future<WorkTime>? getWorkTime(String doctorId, String clinicId) async {
+    WorkTime workTime = WorkTime();
+    String path = "${BaseUrlBack}" +
+        "$doctorsBack" +
+        "/${worktime}" +
+        "/$doctorId" +
+        "/$clinicId";
+    Response response =
+        await dio.fetch(RequestOptions(baseUrl: path, method: 'GET'));
+    if (response.statusCode == 200) {
+      workTime = WorkTime.fromJson(response.data);
+    }
+    return workTime;
+  }
+
+  static Future<WorkTimeClock>? getWorkTimeClocks(String workTimeId) async {
+    String path = "${BaseUrlBack}" +
+        "$doctorsBack" +
+        "/${appoitment}" +
+        "/$patientBack" +
+        "/$worktime" +
+        "/$workTimeId";
+    print(path);
+    WorkTimeClock workTimeClock = WorkTimeClock();
+    Response response =
+        await dio.fetch(RequestOptions(baseUrl: path, method: 'GET'));
+    if (response.statusCode == 200) {
+      workTimeClock = WorkTimeClock.fromJson(response.data);
+    }
+    return workTimeClock;
+  }
+
+  static Future<String?>? getRemainClocks(String appointmentId) async {
+    String? message;
+    Response response = await dio.fetch(
+      RequestOptions(
+          baseUrl: "${BaseUrlBack}" +
+              "${doctorsBack}" +
+              "/${appoitment}" +
+              "/${patientBack}" +
+              "/${appointmentId}",
+          method: 'GET'),
+    );
+    if (response.statusCode == 200) {
+      message = response.data['message'];
+    }
+    return message;
+  }
+
+  static Future<String?>? booknow(String appointmentId, String token) async {
+    String? message;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
+    Response response = await dio.fetch(
+      RequestOptions(
+          baseUrl: "${BaseUrlBack}" +
+              "${doctorsBack}" +
+              "/${appoitment}" +
+              "/${patientBack}" +
+              "/${appointmentId}",
+          headers: headers,
+          method: 'POST'),
+    );
+    print("APPIONTMENT ID : $appointmentId");
+    if (response.statusCode == 201) {
+      message = response.data['mesaage'];
+    }
+    return message;
   }
 }

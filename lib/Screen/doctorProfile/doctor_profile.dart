@@ -260,175 +260,160 @@ class _DoctorProfileState extends State<DoctorProfile> {
                         Container(
                             margin: EdgeInsets.only(top: 15.sp),
                             child: Divider(color: Colors.white, thickness: 2)),
-                        state.profileDoctor!.doctorProfile!.doctor
-                                    ?.phonenumber !=
-                                null
-                            ? Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: BlocBuilder<DoctorProfileBloc,
-                                        List<String>>(
-                                    bloc: doctorProfileBloc,
-                                    builder: (context, state3) {
-                                      var phone = state.profileDoctor!
-                                          .doctorProfile!.doctor?.phonenumber;
-                                      return ExpansionTile(
-                                          tilePadding: EdgeInsets.all(10.sp),
-                                          onExpansionChanged: (value) {
-                                            doctorProfileBloc.add(
-                                                ChangeCommunicationDropDown(
-                                                    value));
-                                            //print(value);
-                                          },
+                        if (state.profileDoctor!.doctorProfile!.doctor
+                                ?.phonenumber !=
+                            null) ...[
+                          Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: BlocBuilder<DoctorProfileBloc, List<String>>(
+                                bloc: doctorProfileBloc,
+                                builder: (context, state3) {
+                                  var phone = state.profileDoctor!
+                                      .doctorProfile!.doctor?.phonenumber;
+                                  return ExpansionTile(
+                                      tilePadding: EdgeInsets.all(10.sp),
+                                      onExpansionChanged: (value) {
+                                        doctorProfileBloc.add(
+                                            ChangeCommunicationDropDown(value));
+                                        //print(value);
+                                      },
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.phone_android_sharp,
-                                                    color: Coloring.primary),
-                                                Text(phone!,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize:
-                                                          Sizer.getTextSize(
-                                                              context, 0.05),
-                                                      fontFamily:
-                                                          Font.fontfamily,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                              ],
-                                            )
-                                          ],
-                                          trailing: Transform.translate(
-                                              offset: Offset(
-                                                  Sizer.getWidth(context) / 8,
-                                                  0),
-                                              child: Image.asset(
-                                                  "${Font.urlImage}${state3[1]}")),
-                                          title: Transform.translate(
-                                            offset: Offset(
-                                                -Sizer.getWidth(context) / 6,
-                                                0),
-                                            child: Text("عرض معلومات التّواصل",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Sizer.getTextSize(
-                                                        context, 0.05),
-                                                    fontFamily: Font.fontfamily,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ));
-                                    }),
-                              )
-                            : SizedBox(),
-                        Divider(color: Colors.white, thickness: 2),
-                        state.profileDoctor!.doctorProfile!.doctor!
-                                    .description !=
-                                null
-                            ? Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: BlocBuilder<DoctorProfileBloc,
-                                        List<String>>(
-                                    bloc: doctorProfileBloc,
-                                    builder: (context, state4) {
-                                      var description = state.profileDoctor!
-                                          .doctorProfile!.doctor!.description;
-                                      return ExpansionTile(
-                                          tilePadding: EdgeInsets.all(12.sp),
-                                          onExpansionChanged: (value) {
-                                            doctorProfileBloc
-                                                .add(ChangeDropDown(value));
-                                            //print(value);
-                                          },
-                                          children: [
-                                            Text(description!,
-                                                textAlign: TextAlign.center,
+                                            Icon(Icons.phone_android_sharp,
+                                                color: Coloring.primary),
+                                            Text(phone!,
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: Sizer.getTextSize(
                                                       context, 0.05),
                                                   fontFamily: Font.fontfamily,
                                                   fontWeight: FontWeight.bold,
-                                                ))
+                                                )),
                                           ],
-                                          trailing: Transform.translate(
-                                              offset: Offset(
-                                                  Sizer.getWidth(context) / 8.5,
-                                                  0),
-                                              child: Image.asset(
-                                                  "${Font.urlImage}${state4[0]}")),
-                                          title: Transform.translate(
-                                            offset: Offset(
-                                                -Sizer.getWidth(context) / 4,
-                                                0),
-                                            child: Text(" نبذة عن الطبيب",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Sizer.getTextSize(
-                                                        context, 0.05),
-                                                    fontFamily: Font.fontfamily,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ));
-                                    }),
-                              )
-                            : SizedBox(),
-                        Divider(color: Colors.white, thickness: 2),
-                        state.profileDoctor!.doctorProfile!.insurances != null
-                            ? Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: BlocBuilder<DoctorProfileBloc,
-                                        List<String>>(
-                                    bloc: doctorProfileBloc,
-                                    builder: (context, state5) {
-                                      var insurances = state.profileDoctor!
-                                          .doctorProfile!.insurances!;
-                                      print(insurances);
-                                      return ExpansionTile(
-                                          tilePadding: EdgeInsets.all(10.sp),
-                                          onExpansionChanged: (value) {
-                                            doctorProfileBloc.add(
-                                                ChangeInsurancesDropDown(
-                                                    value));
-                                            //print(value);
-                                          },
-                                          children: insurances.map((e) {
-                                            return Text(e.companyName!,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: Sizer.getTextSize(
-                                                      context, 0.05),
-                                                  fontFamily: Font.fontfamily,
-                                                  fontWeight: FontWeight.bold,
-                                                ));
-                                          }).toList(),
-                                          trailing: Transform.translate(
-                                              offset: Offset(
-                                                  Sizer.getWidth(context) / 8.5,
-                                                  0),
-                                              child: Image.asset(
-                                                  "${Font.urlImage}${state5[3]}")),
-                                          title: Transform.translate(
-                                            offset: Offset(
-                                                -Sizer.getWidth(context) / 4,
-                                                0),
-                                            child: Text("شركات التأمين ",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Sizer.getTextSize(
-                                                        context, 0.05),
-                                                    fontFamily: Font.fontfamily,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ));
-                                    }),
-                              )
-                            : Container(
-                                color: Colors.orange,
-                              ),
-                        Divider(color: Colors.white, thickness: 2),
+                                        )
+                                      ],
+                                      trailing: Transform.translate(
+                                          offset: Offset(
+                                              Sizer.getWidth(context) / 8, 0),
+                                          child: Image.asset(
+                                              "${Font.urlImage}${state3[1]}")),
+                                      title: Transform.translate(
+                                        offset: Offset(
+                                            -Sizer.getWidth(context) / 6, 0),
+                                        child: Text("عرض معلومات التّواصل",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.05),
+                                                fontFamily: Font.fontfamily,
+                                                fontWeight: FontWeight.bold)),
+                                      ));
+                                }),
+                          ),
+                          Divider(color: Colors.white, thickness: 2),
+                        ] else
+                          SizedBox(),
+                        if (state.profileDoctor!.doctorProfile!.doctor!
+                                .description !=
+                            null) ...[
+                          Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: BlocBuilder<DoctorProfileBloc, List<String>>(
+                                bloc: doctorProfileBloc,
+                                builder: (context, state4) {
+                                  var description = state.profileDoctor!
+                                      .doctorProfile!.doctor!.description;
+                                  return ExpansionTile(
+                                      tilePadding: EdgeInsets.all(12.sp),
+                                      onExpansionChanged: (value) {
+                                        doctorProfileBloc
+                                            .add(ChangeDropDown(value));
+                                        //print(value);
+                                      },
+                                      children: [
+                                        Text(description!,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: Sizer.getTextSize(
+                                                  context, 0.05),
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold,
+                                            ))
+                                      ],
+                                      trailing: Transform.translate(
+                                          offset: Offset(
+                                              Sizer.getWidth(context) / 8.5, 0),
+                                          child: Image.asset(
+                                              "${Font.urlImage}${state4[0]}")),
+                                      title: Transform.translate(
+                                        offset: Offset(
+                                            -Sizer.getWidth(context) / 4, 0),
+                                        child: Text(" نبذة عن الطبيب",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.05),
+                                                fontFamily: Font.fontfamily,
+                                                fontWeight: FontWeight.bold)),
+                                      ));
+                                }),
+                          ),
+                          Divider(color: Colors.white, thickness: 2),
+                        ] else
+                          SizedBox(),
+                        if (state.profileDoctor!.doctorProfile!.insurances !=
+                            null) ...[
+                          Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: BlocBuilder<DoctorProfileBloc, List<String>>(
+                                bloc: doctorProfileBloc,
+                                builder: (context, state5) {
+                                  var insurances = state.profileDoctor!
+                                      .doctorProfile!.insurances!;
+                                  print(insurances);
+                                  return ExpansionTile(
+                                      tilePadding: EdgeInsets.all(10.sp),
+                                      onExpansionChanged: (value) {
+                                        doctorProfileBloc.add(
+                                            ChangeInsurancesDropDown(value));
+                                        //print(value);
+                                      },
+                                      children: insurances.map((e) {
+                                        return Text(e.companyName!,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: Sizer.getTextSize(
+                                                  context, 0.05),
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold,
+                                            ));
+                                      }).toList(),
+                                      trailing: Transform.translate(
+                                          offset: Offset(
+                                              Sizer.getWidth(context) / 8.5, 0),
+                                          child: Image.asset(
+                                              "${Font.urlImage}${state5[3]}")),
+                                      title: Transform.translate(
+                                        offset: Offset(
+                                            -Sizer.getWidth(context) / 4, 0),
+                                        child: Text("شركات التأمين ",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.05),
+                                                fontFamily: Font.fontfamily,
+                                                fontWeight: FontWeight.bold)),
+                                      ));
+                                }),
+                          ),
+                          Divider(color: Colors.white, thickness: 2),
+                        ] else
+                          SizedBox(),
                         SizedBox(height: 15.sp),
                         Container(
                           height: Sizer.getHeight(context) / 3,
@@ -442,7 +427,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                               return Row(
                                 children: [
                                   Container(
-                                    width: Sizer.getWidth(context) / 2,
+                                    padding: EdgeInsets.all(10.sp),
                                     decoration: BoxDecoration(
                                         color: Coloring.third3,
                                         borderRadius:
@@ -509,7 +494,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 10.sp,
+                                    height: 10.sp,
                                   )
                                 ],
                               );
