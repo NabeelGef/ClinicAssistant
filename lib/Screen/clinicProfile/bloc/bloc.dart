@@ -25,7 +25,7 @@ class ClinicProfileBloc extends Bloc<ClinicProfileEvent, SuccessProfileStates> {
       }
     } catch (e) {
       print(e);
-      yield SuccessProfileStates(null, "Error In Connection");
+      yield SuccessProfileStates(null, "Not Found any data");
     }
   }
 }

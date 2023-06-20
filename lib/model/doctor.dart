@@ -6,36 +6,34 @@ part 'doctor.g.dart';
 @JsonSerializable()
 class Doctor {
   Doctor({
-    required this.doctors,
+    required this.doctor,
   });
 
-  final List<Doctors> doctors;
+  final List<Doctors> doctor;
 
   factory Doctor.fromJson(Map<String, dynamic> json) => _$DoctorFromJson(json);
 
   Map<String, dynamic> toJson() => _$DoctorToJson(this);
-
 }
 
 @JsonSerializable()
 class Doctors {
-  Doctors({
-     this.doctorId,
-     this.description,
-     this.email,
-     this.phonenumberForAdmin,
-     this.active,
-     this.password,
-     this.gender,
-     this.profilePicture,
-     this.firstname,
-     this.lastname,
-     this.evaluate,
-     this.numberOfPeopleWhoVoted,
-     this.phonenumber,
-     this.createdAt,
-     this.specialties
-  });
+  Doctors(
+      {this.doctorId,
+      this.description,
+      this.email,
+      this.phonenumberForAdmin,
+      this.active,
+      this.password,
+      this.gender,
+      this.profilePicture,
+      this.firstname,
+      this.lastname,
+      this.evaluate,
+      this.numberOfPeopleWhoVoted,
+      this.phonenumber,
+      this.createdAt,
+      this.specialties});
 
   final String? doctorId;
   final String? description;
@@ -53,10 +51,10 @@ class Doctors {
   final DateTime? createdAt;
   final List<Specialist>? specialties;
 
-  factory Doctors.fromJson(Map<String, dynamic> json) => _$DoctorsFromJson(json);
+  factory Doctors.fromJson(Map<String, dynamic> json) =>
+      _$DoctorsFromJson(json);
 
   Map<String, dynamic> toJson() => _$DoctorsToJson(this);
-
 }
 
 /*

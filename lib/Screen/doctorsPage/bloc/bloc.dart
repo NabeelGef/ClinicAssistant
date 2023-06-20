@@ -45,7 +45,7 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents, DoctorsState> {
       }
     } catch (e, stack) {
       print("Catchhhhhhh in AllDoctorBloc $e in Line $stack");
-      yield DoctorsState(null, "Not Found");
+      yield DoctorsState(null, "Not Found any data");
     }
   }
 }
@@ -72,7 +72,7 @@ class ApiSpecialistBloc extends Bloc<AllDoctorsEvents, SpecialistState> {
           yield SpecialistState(specialists, "");
         }
       } catch (e) {
-        yield SpecialistState(state.specialists, "Failed To Load Items");
+        yield SpecialistState(state.specialists, "Not Found any data");
       }
     }
     if (events is EditClickSpecialist) {
@@ -107,7 +107,6 @@ class CheckBoxBloc extends Bloc<AllDoctorsEvents, List<bool>> {
       if (eval) {
         yield [eval, false];
       } else {
-        print("Heeeeeeeeeeeeerrrreeeeeeee");
         yield [eval, true];
       }
     }

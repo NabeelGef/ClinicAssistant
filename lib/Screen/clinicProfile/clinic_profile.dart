@@ -102,7 +102,8 @@ class _ClinicProfileState extends State<ClinicProfile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset("${Font.urlImage}online.png"),
-                      Text("مفتوحة الأن من قبل الطبيب عيسى محمود ",
+                      Text(
+                          "مفتوحة الأن من قبل الطبيب ${state.profileClinic!.doctorWorkingNow!.firstname} ${state.profileClinic!.doctorWorkingNow!.lastname} ",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: Sizer.getTextSize(context, 0.04),
@@ -233,13 +234,15 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                         : null,
                                   ),
                                   Text(
-                                      "الطبيب ${doctor.firstname} ${doctor.lastname}",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontSize:
-                                              Sizer.getTextSize(context, 0.05),
-                                          fontFamily: Font.fontfamily,
-                                          fontWeight: FontWeight.bold)),
+                                    "الطبيب ${doctor.firstname} ${doctor.lastname}",
+                                    style: TextStyle(
+                                        color: Coloring.primary,
+                                        fontSize:
+                                            Sizer.getTextSize(context, 0.05),
+                                        fontFamily: Font.fontfamily,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  ),
                                   Text(
                                     "اختصاص: ${state.profileClinic!.clinic!.specialty!.specialtyName!}",
                                     style: TextStyle(
@@ -294,7 +297,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                           'doctorId': state.profileClinic!
                                               .doctors![index].doctorId,
                                           'clinicId': state
-                                              .profileClinic!.clinic!.clinicId
+                                              .profileClinic!.clinic!.clinicId,
                                         }),
                                       );
                                     },

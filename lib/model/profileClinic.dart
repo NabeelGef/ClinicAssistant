@@ -7,19 +7,34 @@ part 'profileClinic.g.dart';
 @JsonSerializable()
 class ProfileClinic {
   ProfileClinic({
-     this.clinic,
-     this.doctors,
-     this.doctorWorkingNow,
+    this.clinic,
+    this.doctors,
+    this.doctorWorkingNow,
   });
 
   final ClinicElement? clinic;
   final List<Doctors>? doctors;
-  final dynamic doctorWorkingNow;
+  final DoctorWorkingNow? doctorWorkingNow;
 
-  factory ProfileClinic.fromJson(Map<String, dynamic> json) => _$ProfileClinicFromJson(json);
+  factory ProfileClinic.fromJson(Map<String, dynamic> json) =>
+      _$ProfileClinicFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileClinicToJson(this);
+}
 
+@JsonSerializable()
+class DoctorWorkingNow {
+  String doctorId;
+  String firstname;
+  String lastname;
+
+  DoctorWorkingNow(
+      {required this.doctorId,
+      required this.firstname,
+      required this.lastname});
+  factory DoctorWorkingNow.fromJson(Map<String, dynamic> json) =>
+      _$DoctorWorkingNowFromJson(json);
+  Map<String, dynamic> toJson() => _$DoctorWorkingNowToJson(this);
 }
 
 /*

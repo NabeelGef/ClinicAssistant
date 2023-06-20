@@ -97,7 +97,7 @@ class DoctorProfileDataBloc
         yield SuccessProfileStates(profileDoctor, "");
       }
     } catch (e) {
-      yield SuccessProfileStates(null, "Error In Connection");
+      yield SuccessProfileStates(null, "Not Found any data");
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/event.dart';
@@ -6,13 +7,18 @@ import 'package:clinicassistant/widgets/AlertBook/alertBook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../Constant/Route/routename.dart';
 import '../../Constant/code.dart';
 import '../../Constant/color.dart';
 import '../../Constant/sizer.dart';
 
 // ignore: must_be_immutable
 class BookPage extends StatefulWidget {
-  BookPage({super.key, required this.doctorId, required this.clinicId});
+  BookPage({
+    super.key,
+    required this.doctorId,
+    required this.clinicId,
+  });
   String doctorId;
   String clinicId;
 
@@ -275,7 +281,20 @@ class _BookPageState extends State<BookPage> {
                               )
                             ]),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            RouterNav.fluroRouter.navigateTo(
+                                context,
+                                routeSettings: RouteSettings(arguments: {
+                                  'id': state
+                                      .successDoctorClinicBook
+                                      .doctorClinicBook!
+                                      .doctorClinicDetails!
+                                      .clinic!
+                                      .clinicId
+                                }),
+                                RouteName.ProfileClinic +
+                                    "/${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.clinicId}");
+                          },
                           child: Container(
                             padding: EdgeInsets.all(8.sp),
                             decoration: BoxDecoration(
@@ -295,57 +314,96 @@ class _BookPageState extends State<BookPage> {
                     ),
                   ),
                   Divider(color: Colors.white, thickness: 2),
+
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
-                            Text("سعر الكشفية",
-                                style: TextStyle(
-                                    color: Coloring.primary,
-                                    fontSize: Sizer.getTextSize(context, 0.04),
-                                    fontFamily: Font.fontfamily,
-                                    fontWeight: FontWeight.bold)),
-                            Row(
+                        if (state
+                                .successDoctorClinicBook
+                                .doctorClinicBook!
+                                .doctorClinicDetails!
+                                .doctorClinics!
+                                .checkupPrice !=
+                            null) ...[
+                          Column(
+                            children: [
+                              Text("سعر الكشفية",
+                                  style: TextStyle(
+                                      color: Coloring.primary,
+                                      fontSize:
+                                          Sizer.getTextSize(context, 0.04),
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold)),
+                              Row(
+                                children: [
+                                  Image.asset("${Font.urlImage}money.png"),
+                                  SizedBox(width: 10.sp),
+                                  Text(
+                                      "S.P ${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.checkupPrice}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              Sizer.getTextSize(context, 0.04),
+                                          fontFamily: Font.fontfamily,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text("مدّة المعاينة",
+                                  style: TextStyle(
+                                      color: Coloring.primary,
+                                      fontSize:
+                                          Sizer.getTextSize(context, 0.04),
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold)),
+                              Row(
+                                children: [
+                                  Image.asset("${Font.urlImage}time.png"),
+                                  SizedBox(width: 10.sp),
+                                  Text(
+                                      "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.appointmentDuring} دقيقة",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              Sizer.getTextSize(context, 0.04),
+                                          fontFamily: Font.fontfamily,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              )
+                            ],
+                          ),
+                        ] else ...[
+                          Center(
+                            child: Column(
                               children: [
-                                Image.asset("${Font.urlImage}money.png"),
-                                SizedBox(width: 10.sp),
-                                Text(
-                                    "S.P ${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.checkupPrice}",
+                                Text("مدّة المعاينة",
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: Coloring.primary,
                                         fontSize:
                                             Sizer.getTextSize(context, 0.04),
                                         fontFamily: Font.fontfamily,
-                                        fontWeight: FontWeight.bold))
+                                        fontWeight: FontWeight.bold)),
+                                Row(
+                                  children: [
+                                    Image.asset("${Font.urlImage}time.png"),
+                                    SizedBox(width: 10.sp),
+                                    Text(
+                                        "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.appointmentDuring} دقيقة",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: Sizer.getTextSize(
+                                                context, 0.04),
+                                            fontFamily: Font.fontfamily,
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text("مدّة المعاينة",
-                                style: TextStyle(
-                                    color: Coloring.primary,
-                                    fontSize: Sizer.getTextSize(context, 0.04),
-                                    fontFamily: Font.fontfamily,
-                                    fontWeight: FontWeight.bold)),
-                            Row(
-                              children: [
-                                Image.asset("${Font.urlImage}time.png"),
-                                SizedBox(width: 10.sp),
-                                Text(
-                                    "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.appointmentDuring} دقيقة",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize:
-                                            Sizer.getTextSize(context, 0.04),
-                                        fontFamily: Font.fontfamily,
-                                        fontWeight: FontWeight.bold))
-                              ],
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                        ]
                       ]),
                   Divider(color: Colors.white, thickness: 2),
                   // Center(

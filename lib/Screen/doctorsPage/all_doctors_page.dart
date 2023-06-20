@@ -430,7 +430,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                         textDirection: TextDirection.rtl,
                         child: GridView.builder(
                           padding: EdgeInsets.all(15),
-                          itemCount: state.doctor!.doctors.length,
+                          itemCount: state.doctor!.doctor.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisSpacing:
@@ -462,15 +462,15 @@ class _AllDoctorsState extends State<AllDoctors> {
                                           radius: Sizer.getWidth(context) / 10,
                                           backgroundImage: state
                                                       .doctor!
-                                                      .doctors[index]
+                                                      .doctor[index]
                                                       .profilePicture ==
                                                   null
                                               ? null
                                               : NetworkImage(state
                                                   .doctor!
-                                                  .doctors[index]
+                                                  .doctor[index]
                                                   .profilePicture!),
-                                          child: state.doctor!.doctors[index]
+                                          child: state.doctor!.doctor[index]
                                                       .profilePicture ==
                                                   null
                                               ? Image.asset(
@@ -479,7 +479,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                         ),
                                         Center(
                                             child: Text(
-                                                "${state.doctor!.doctors[index].firstname} ${state.doctor!.doctors[index].lastname}",
+                                                "${state.doctor!.doctor[index].firstname} ${state.doctor!.doctor[index].lastname}",
                                                 style: TextStyle(
                                                     color: Coloring.primary,
                                                     fontSize: Sizer.getTextSize(
@@ -494,7 +494,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                           children: [
                                             Center(
                                                 child: Text(
-                                                    "${state.doctor!.doctors[index].specialties![0].specialtyName!}",
+                                                    "${state.doctor!.doctor[index].specialties![0].specialtyName!}",
                                                     style: TextStyle(
                                                         color:
                                                             Coloring.primary4,
@@ -522,7 +522,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                                     fontWeight:
                                                         FontWeight.bold)),
                                             Text(
-                                                state.doctor!.doctors[index]
+                                                state.doctor!.doctor[index]
                                                     .evaluate
                                                     .toString(),
                                                 style: TextStyle(
@@ -560,10 +560,10 @@ class _AllDoctorsState extends State<AllDoctors> {
                                             routeSettings: RouteSettings(
                                                 arguments: {
                                                   'id': state.doctor!
-                                                      .doctors[index].doctorId
+                                                      .doctor[index].doctorId
                                                 }),
                                             RouteName.ProfileDoctor +
-                                                "/${state.doctor!.doctors[index].doctorId}");
+                                                "/${state.doctor!.doctor[index].doctorId}");
                                       },
                                       color: Coloring.third4,
                                       child: Text("عرض التفاصيل",

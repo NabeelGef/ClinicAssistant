@@ -61,7 +61,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
       yield StateAlertBook(
           successAlertBookClock: state.successAlertBookClock,
           successAlertBook:
-              SuccessAlertBook(workTime: null, error: "Error in Connection"));
+              SuccessAlertBook(workTime: null, error: "Not Found any data"));
     }
   }
 
@@ -92,7 +92,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
       print("Error In WorkTimesClock is : $e ,in $s");
       yield StateAlertBook(
           successAlertBookClock: SuccessAlertBookClock(
-              workTimeClock: null, error: "Error in Connection"),
+              workTimeClock: null, error: "Not Found any data"),
           successAlertBook: state.successAlertBook);
     }
   }
@@ -125,7 +125,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
           successAlertBookClock: state.successAlertBookClock,
           selectState: state.selectState,
           successRemain:
-              SuccessRemain(message: null, error: "Error in connection"));
+              SuccessRemain(message: null, error: "Not Found any data"));
     }
   }
 
@@ -161,8 +161,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
           successAlertBookClock: state.successAlertBookClock,
           selectState: state.selectState,
           successRemain: state.successRemain,
-          successBook:
-              SuccessBook(message: null, error: "Error in connection"));
+          successBook: SuccessBook(message: null, error: "Not Found any data"));
     }
   }
 }

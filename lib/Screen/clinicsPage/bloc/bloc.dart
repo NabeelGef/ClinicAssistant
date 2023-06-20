@@ -4,7 +4,7 @@ import 'package:clinicassistant/Screen/clinicsPage/bloc/states.dart';
 import 'package:clinicassistant/model/clinic.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AllClinicsBloc extends Bloc<AllClinicsEvents , ClinicsStates> {
+class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
   AllClinicsBloc(super.initialState);
   // when click on search button
   /*bool isSearch = false;
@@ -12,30 +12,29 @@ class AllClinicsBloc extends Bloc<AllClinicsEvents , ClinicsStates> {
     return BlocProvider.of(context);
   }*/
   @override
-  Stream<ClinicsStates> mapEventToState(AllClinicsEvents events) async*{
-
-    if(events is LoadingClinics){
-        yield*  getClinics();
-      }
+  Stream<ClinicsStates> mapEventToState(AllClinicsEvents events) async* {
+    if (events is LoadingClinics) {
+      yield* getClinics();
+    }
   }
   /*Stream<AllClinicStates> _changeSearch() async*{
     isSearch=!isSearch;
     yield SuccessAllClinicStates();
   }*/
 
-  Stream<ClinicsStates> getClinics() async*{
+  Stream<ClinicsStates> getClinics() async* {
     yield ClinicsStates(state.clinic, "");
-    try{
+    try {
       Clinic? clinic = await API.getClinics();
-      if(clinic==null){
+      if (clinic == null) {
         yield ClinicsStates(state.clinic, "Failed To Load Items");
-      }else{
+      } else {
         print("In Else....");
         yield ClinicsStates(clinic, "");
       }
-    }catch(e){
+    } catch (e) {
       print("In Catch....$e");
-      yield ClinicsStates(state.clinic, "Failed To Load Items");
+      yield ClinicsStates(state.clinic, "Not Found any data");
     }
   }
 }

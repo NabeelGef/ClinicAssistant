@@ -59,7 +59,7 @@ class API {
       'subSpecialtyId': subSpecialtyId,
       'filterName': filterName,
     };
-    Doctor doctor = Doctor(doctors: []);
+    Doctor doctor = Doctor(doctor: []);
     Response response = await dio
         .post("$BaseUrlBack" + "$doctorsBack" + "/$alldoctorsBack", data: data);
     if (response.statusCode == 201) {

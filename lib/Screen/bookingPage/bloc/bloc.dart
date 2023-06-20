@@ -76,7 +76,7 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
       }
       print("Catch Error In DoctorClinicBook : $e in Line $s");
       yield BookState([imagecommunication, imagespecialist, imageaddress],
-          SuccessDoctorClinicBook(null, "Error In Connection"));
+          SuccessDoctorClinicBook(null, "Not Found any data"));
     }
   }
 }
