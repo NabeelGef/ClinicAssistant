@@ -12,7 +12,12 @@ import 'package:clinicassistant/Screen/welcomePage/welcome2.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcome3.dart';
 import 'package:fluro/fluro.dart';
 
-class RouterNav {
+import '../../Screen/loginPage/login_page.dart';
+import '../../Screen/signup/signup.dart';
+import '../../Screen/signup2/signup2.dart';
+import '../../test.dart';
+
+class RouterNav{
   static FluroRouter fluroRouter = FluroRouter();
   static Handler welcome0 = Handler(handlerFunc: (context, parameters) {
     return Welcome0();
@@ -39,9 +44,38 @@ class RouterNav {
     return AllClinics();
   });
 
-  static Handler doctorprofile = Handler(handlerFunc: (context, parameters) {
-    return DoctorProfile(id: parameters['id']![0]);
+  static Handler doctorprofile = Handler(
+      handlerFunc: (context, parameters) {
+        return DoctorProfile(id: parameters['id']![0]);
+      });
+
+  static Handler login = Handler(
+      handlerFunc: (context , parameters){
+        return Login();
+      });
+
+  static Handler signup = Handler(
+      handlerFunc:(context , parameters)
+      {
+        return Signup() ;
+      });
+
+  static Handler signup2 = Handler(
+      handlerFunc: (context , parameters)
+      {
+        return SignUp2(
+            receivedFirstName: parameters['receivedFirstName']![0],
+            receivedLastName: parameters['receivedLastName']![0],
+            receivedUserName: parameters['receivedUserName']![0],
+            receivedPassword: parameters['receivedPassword']![0],);
+      });
+
+  static Handler testPage = Handler(
+  handlerFunc:(context , parameters)
+  {
+    return Test();
   });
+
   static Handler clinicprofile = Handler(handlerFunc: (context, parameters) {
     return ClinicProfile(id: parameters['id']![0]);
   });
@@ -74,5 +108,11 @@ class RouterNav {
         handler: clinicprofile);
     fluroRouter.define(RouteName.Booking + "/:doctorId" + "/:clinicId",
         handler: book);
+
+  fluroRouter.define(RouteName.login, handler: login , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.signup, handler: signup , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.signup2+"/:receivedFirstName/:receivedLastName/:receivedUserName/:receivedPassword" ,handler: signup2 , transitionType: TransitionType.inFromRight) ;
+  fluroRouter.define(RouteName.Home, handler: home , transitionType: TransitionType.inFromRight);
+  fluroRouter.define("/test", handler: testPage , transitionType: TransitionType.nativeModal) ;
   }
 }

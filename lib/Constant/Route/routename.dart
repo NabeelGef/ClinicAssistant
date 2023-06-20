@@ -4,6 +4,9 @@ class RouteName {
   static String welcome2 = "/welcome2";
   static String welcome3 = "/welcome3";
   static String welcome4 = "/welcome4";
+  static String login = "/login";
+  static String signup = "/signup";
+  static String signup2 = "/signup2";
   static String Home = "/home";
   static String AllDoctors = "/home/alldoctors";
   static String AllClinics = "/home/allclinics";

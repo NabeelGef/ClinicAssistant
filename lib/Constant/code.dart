@@ -9,6 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'Route/routename.dart';
+import 'Route/router.dart';
+
 class Code {
 //Make a const Drawer in Doctor and clinic page
 
@@ -25,7 +28,9 @@ class Code {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
-          child: ListView(children: [
+          child: ListView(
+              children: [
+
             /*Container(
                   height: Sizer.getHeight(context)/5,
                   child: DrawerHeader(
@@ -119,12 +124,19 @@ class Code {
                   SizedBox(
                     width: 20,
                   ),
-                  Text("تسجيل الدّخول",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: Font.fontfamily,
-                          fontSize: Sizer.getTextSize(context, 0.05),
-                          fontWeight: FontWeight.bold)),
+
+                  InkWell(
+                    onTap: ()
+                    {
+                      RouterNav.fluroRouter.navigateTo(context, RouteName.login);
+                    },
+                    child: Text("تسجيل الدّخول",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: Font.fontfamily,
+                            fontSize: Sizer.getTextSize(context, 0.05),
+                            fontWeight: FontWeight.bold)),
+                  ),
                   SizedBox(width: 20),
                 ],
               ),
@@ -414,6 +426,33 @@ class Code {
           ],
         ),
       ),
+    );
+
+  }
+
+  static void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32),
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
