@@ -20,14 +20,16 @@ class AlertBookClock extends StatefulWidget {
   String nameClinic;
   String day;
   DateTime date;
-  AlertBookClock({
-    Key? key,
-    required this.workTimeId,
-    required this.nameDoctor,
-    required this.nameClinic,
-    required this.day,
-    required this.date,
-  }) : super(key: key);
+  String token;
+  AlertBookClock(
+      {Key? key,
+      required this.workTimeId,
+      required this.nameDoctor,
+      required this.nameClinic,
+      required this.day,
+      required this.date,
+      required this.token})
+      : super(key: key);
 
   @override
   State<AlertBookClock> createState() => _AlertBookClockState();
@@ -203,7 +205,8 @@ class _AlertBookClockState extends State<AlertBookClock> {
                                       nameClinic: widget.nameClinic,
                                       appointmentId: appointment!.id!,
                                       day: widget.day,
-                                      date: widget.date);
+                                      date: widget.date,
+                                      token: widget.token);
                                 });
                           }
                         },

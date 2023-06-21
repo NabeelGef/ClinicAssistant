@@ -1,4 +1,3 @@
-
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Screen/bookingPage/book_page.dart';
 import 'package:clinicassistant/Screen/check_signup/check_signup.dart';
@@ -19,7 +18,7 @@ import '../../Screen/signup/signup.dart';
 import '../../Screen/signup2/signup2.dart';
 import '../../test.dart';
 
-class RouterNav{
+class RouterNav {
   static FluroRouter fluroRouter = FluroRouter();
   static Handler welcome0 = Handler(handlerFunc: (context, parameters) {
     return Welcome0();
@@ -37,65 +36,69 @@ class RouterNav{
     return Welcome4();
   });
   static Handler home = Handler(handlerFunc: (context, parameters) {
-    return Home();
+    String? isLoginParam = parameters['isLogin']?.first;
+    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
+    return Home(isLogin: isLogin);
   });
   static Handler alldoctors = Handler(handlerFunc: (context, parameters) {
-    return AllDoctors();
+    String? isLoginParam = parameters['isLogin']?.first;
+    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
+    return AllDoctors(isLogin: isLogin);
   });
   static Handler allclinics = Handler(handlerFunc: (context, parameters) {
-    return AllClinics();
+    String? isLoginParam = parameters['isLogin']?.first;
+    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
+    return AllClinics(isLogin: isLogin);
   });
 
-  static Handler doctorprofile = Handler(
-      handlerFunc: (context, parameters) {
-        return DoctorProfile(id: parameters['id']![0]);
-      });
+  static Handler doctorprofile = Handler(handlerFunc: (context, parameters) {
+    String? isLoginParam = parameters['isLogin']?.first;
+    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
+    return DoctorProfile(id: parameters['id']![0], isLogin: isLogin);
+  });
 
-  static Handler login = Handler(
-      handlerFunc: (context , parameters){
-        return Login();
-      });
+  static Handler login = Handler(handlerFunc: (context, parameters) {
+    return Login();
+  });
 
-  static Handler signup = Handler(
-      handlerFunc:(context , parameters)
-      {
-        return Signup() ;
-      });
+  static Handler signup = Handler(handlerFunc: (context, parameters) {
+    return Signup();
+  });
 
-  static Handler signup2 = Handler(
-      handlerFunc: (context , parameters)
-      {
-        return SignUp2(
-            receivedFirstName: parameters['receivedFirstName']![0],
-            receivedLastName: parameters['receivedLastName']![0],
-            receivedUserName: parameters['receivedUserName']![0],
-            receivedPassword: parameters['receivedPassword']![0],);
-      });
+  static Handler signup2 = Handler(handlerFunc: (context, parameters) {
+    return SignUp2(
+      receivedFirstName: parameters['receivedFirstName']![0],
+      receivedLastName: parameters['receivedLastName']![0],
+      receivedUserName: parameters['receivedUserName']![0],
+      receivedPassword: parameters['receivedPassword']![0],
+    );
+  });
 
-  static Handler testPage = Handler(
-  handlerFunc:(context , parameters)
-  {
+  static Handler testPage = Handler(handlerFunc: (context, parameters) {
     return Test();
   });
 
   static Handler clinicprofile = Handler(handlerFunc: (context, parameters) {
-    return ClinicProfile(id: parameters['id']![0]);
+    String? isLoginParam = parameters['isLogin']?.first;
+    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
+    return ClinicProfile(id: parameters['id']![0], isLogin: isLogin);
   });
   static Handler book = Handler(handlerFunc: (context, parameters) {
+    String? isLoginParam = parameters['isLogin']?.first;
+    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
     return BookPage(
-      doctorId: parameters['doctorId']!.first,
-      clinicId: parameters['clinicId']!.first,
-    );
+        doctorId: parameters['doctorId']!.first,
+        clinicId: parameters['clinicId']!.first,
+        token: parameters['token']!.first,
+        isLogin: isLogin);
   });
 
-  static Handler checkSignUp = Handler(
-      handlerFunc: ( context , parameters)
-      {
-       return CheckSignUp(
-         phoneNumberFromSignUp: parameters['phoneNumberFromSignUp']![0] ,
-         patientId: parameters['patientId']![0],
-       ) ;
-      }) ;
+  static Handler checkSignUp = Handler(handlerFunc: (context, parameters) {
+    return CheckSignUp(
+      phoneNumberFromSignUp: parameters['phoneNumberFromSignUp']![0],
+      patientId: parameters['patientId']![0],
+    );
+  });
 
   static void setupRouter() {
     fluroRouter.define(RouteName.welcome0,
@@ -108,23 +111,38 @@ class RouterNav{
         handler: welcome3, transitionType: TransitionType.inFromRight);
     fluroRouter.define(RouteName.welcome4,
         handler: welcome4, transitionType: TransitionType.inFromRight);
+    fluroRouter.define(RouteName.Home + "/:isLogin",
+        handler: home, transitionType: TransitionType.inFromRight);
+    fluroRouter.define(RouteName.AllDoctors + "/:isLogin",
+        handler: alldoctors, transitionType: TransitionType.nativeModal);
+    fluroRouter.define(RouteName.ProfileDoctor + "/:id" + "/:isLogin",
+        handler: doctorprofile);
+    fluroRouter.define(RouteName.AllClinics + "/:isLogin", handler: allclinics);
+    fluroRouter.define(RouteName.ProfileClinic + "/:id" + "/:isLogin",
+        handler: clinicprofile);
+    fluroRouter.define(
+        RouteName.Booking +
+            "/:doctorId" +
+            "/:clinicId" +
+            "/:token" +
+            "/:isLogin",
+        handler: book);
+    fluroRouter.define(RouteName.login,
+        handler: login, transitionType: TransitionType.inFromRight);
+    fluroRouter.define(RouteName.signup,
+        handler: signup, transitionType: TransitionType.inFromRight);
+    fluroRouter.define(
+        RouteName.checkSignUp + "/:phoneNumberFromSignUp/:patientId",
+        handler: checkSignUp,
+        transitionType: TransitionType.inFromRight);
+    fluroRouter.define(
+        RouteName.signup2 +
+            "/:receivedFirstName/:receivedLastName/:receivedUserName/:receivedPassword",
+        handler: signup2,
+        transitionType: TransitionType.inFromRight);
     fluroRouter.define(RouteName.Home,
         handler: home, transitionType: TransitionType.inFromRight);
-    fluroRouter.define(RouteName.AllDoctors,
-        handler: alldoctors, transitionType: TransitionType.nativeModal);
-    fluroRouter.define(RouteName.ProfileDoctor + "/:id",
-        handler: doctorprofile);
-    fluroRouter.define(RouteName.AllClinics, handler: allclinics);
-    fluroRouter.define(RouteName.ProfileClinic + "/:id",
-        handler: clinicprofile);
-    fluroRouter.define(RouteName.Booking + "/:doctorId" + "/:clinicId",
-        handler: book);
-
-  fluroRouter.define(RouteName.login, handler: login , transitionType: TransitionType.inFromRight);
-  fluroRouter.define(RouteName.signup, handler: signup , transitionType: TransitionType.inFromRight);
-  fluroRouter.define(RouteName.checkSignUp+"/:phoneNumberFromSignUp/:patientId", handler: checkSignUp , transitionType: TransitionType.inFromRight);
-  fluroRouter.define(RouteName.signup2+"/:receivedFirstName/:receivedLastName/:receivedUserName/:receivedPassword" ,handler: signup2 , transitionType: TransitionType.inFromRight) ;
-  fluroRouter.define(RouteName.Home, handler: home , transitionType: TransitionType.inFromRight);
-  fluroRouter.define("/test", handler: testPage , transitionType: TransitionType.nativeModal) ;
+    fluroRouter.define("/test",
+        handler: testPage, transitionType: TransitionType.nativeModal);
   }
 }

@@ -1,17 +1,13 @@
 import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Screen/check_signup/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/check_signup/bloc/event.dart';
 import 'package:clinicassistant/Screen/check_signup/bloc/states.dart';
-import 'package:clinicassistant/Screen/loginPage/bloc/bloc.dart';
-import 'package:clinicassistant/Screen/loginPage/bloc/event.dart';
-import 'package:clinicassistant/Screen/loginPage/bloc/states.dart';
 import 'package:clinicassistant/repository/check_signup_repo.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,13 +15,13 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 import '../../Constant/Route/router.dart';
 import '../../Constant/code.dart';
-import '../../repository/login_repo.dart';
-import 'bloc/bloc.dart';
 
 class CheckSignUp extends StatefulWidget {
-  final String phoneNumberFromSignUp ;
-  final String patientId ;
-  const CheckSignUp({Key? key , required this.phoneNumberFromSignUp , required this.patientId}) : super(key: key);
+  final String phoneNumberFromSignUp;
+  final String patientId;
+  const CheckSignUp(
+      {Key? key, required this.phoneNumberFromSignUp, required this.patientId})
+      : super(key: key);
 
   @override
   State<CheckSignUp> createState() => _CheckSignUpState();
@@ -34,13 +30,13 @@ class CheckSignUp extends StatefulWidget {
 class _CheckSignUpState extends State<CheckSignUp> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _formKey = GlobalKey<FormState>();
-  String code="" ;
+  String code = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.phoneNumberFromSignUp) ;
+    print(widget.phoneNumberFromSignUp);
   }
 
   @override
@@ -48,7 +44,7 @@ class _CheckSignUpState extends State<CheckSignUp> {
     ScreenUtil.init(context, designSize: const Size(360, 690));
     return BlocProvider<CheckSignUpBloc>(
       create: (BuildContext context) =>
-          CheckSignUpBloc(InitialCheckSignUpStates(), CheckSignUpRepository()),
+          CheckSignUpBloc(CheckSignUpRepository()),
       child: Stack(
         children: [
           Container(
@@ -56,22 +52,21 @@ class _CheckSignUpState extends State<CheckSignUp> {
                 image: DecorationImage(
                     image: AssetImage(Font.urlImage + 'background.png'),
                     alignment: Alignment.bottomCenter,
-                    fit: BoxFit.cover
-                )
-            ),
+                    fit: BoxFit.cover)),
           ),
-
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(50) ,
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(50),
                 bottomLeft: Radius.circular(50),
               ),
               color: Coloring.primary,
             ),
             width: Sizer.getWidth(context),
-            height: Sizer.getHeight(context)/15,
+            height: Sizer.getHeight(context) / 15,
           ),
           Scaffold(
+              resizeToAvoidBottomInset: false,
               backgroundColor: Colors.transparent,
               key: _scaffoldKey,
               endDrawer: Code.DrawerNative(context, _scaffoldKey), ////////////
@@ -83,150 +78,143 @@ class _CheckSignUpState extends State<CheckSignUp> {
 
   //Make Body
   Widget CheckSignUpBody(BuildContext contextCheckSignUp) {
-    return SafeArea(
+    return Center(
       child: Form(
         key: _formKey,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // MyAppBar(contextLogin),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // MyAppBar(contextLogin),
 
-              //This is the logo
-             Stack(
-               alignment: Alignment.bottomCenter,
-               children: [
+            //This is the logo
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  width: 260.w,
+                  height: 364.h,
+                  decoration: BoxDecoration(
+                      color: Coloring.loginMainContainer,
+                      borderRadius: BorderRadius.circular(25),
+                      border:
+                          Border.all(width: 1.3.w, color: Coloring.primary)),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 10.sp,
+                      ),
+                      Container(
+                        child: Text(
+                          "OTP تحقق ",
+                          style: TextStyle(
+                            color: Coloring.loginWhite,
+                            fontSize: 18.sp,
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        margin: EdgeInsets.only(top: 42),
+                      ),
+                      Container(
+                        child: Text(
+                          "لقد ارسلنا رسالة تتضمن رمزاً إلى الرقم",
+                          style: TextStyle(
+                              color: Coloring.loginWhite,
+                              fontSize: 15.sp,
+                              fontFamily: Font.fontfamily,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "+963  " + widget.phoneNumberFromSignUp,
+                          style: TextStyle(
+                              color: Coloring.loginWhite,
+                              fontSize: 18.sp,
+                              fontFamily: Font.fontfamily,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.sp,
+                      ),
+                      OtpTextField(
+                        numberOfFields: 5,
+                        borderColor: Coloring.loginWhite,
+                        focusedBorderColor: Coloring.primary,
+                        //set to true to show as box or false to show as dash
+                        //runs when a code is typed in
+                        onCodeChanged: (String code) {
+                          //handle validation or checks here
+                        },
+                        filled: true,
+                        decoration: InputDecoration(
 
-                 Container(
-                   alignment: Alignment.bottomCenter,
-                   width: 260.w,
-                   height: 364.h,
-                   decoration: BoxDecoration(
-                       color: Coloring.loginMainContainer,
-                       borderRadius: BorderRadius.circular(25),
-                       border: Border.all(width: 1.3.w, color: Coloring.primary)),
-                   padding: const EdgeInsets.all(16),
-                   child: Column(
-                     children: [
-
-                       Container(
-                         child: Text("تحقق OTP",
-                           style: TextStyle(
-                               color: Coloring.loginWhite,
-                               fontSize: 18,
-                               fontStyle: FontStyle.italic
-                           ),
-                         ),
-                         margin: EdgeInsets.only(top: 42),
-                       ),
-
-                       Container(
-                         child: Text(
-                             "لقد ارسلنا رسالة تتضمن رمزاً إلى الرقم:",
-                              style: TextStyle(
-                                color: Coloring.loginWhite,
-                                fontSize: 15,
-                                fontStyle: FontStyle.italic
-
-                              ),
-                                    ),
-
-                       ),
-
-                       Container(
-                         child: Text(
-                             "+963  "+widget.phoneNumberFromSignUp,
-                           style: TextStyle(
-                               color: Coloring.loginWhite,
-                               fontSize: 18,
-                               fontStyle: FontStyle.italic
-
-                           ),
-                         ),
-                       ),
-
-                       OtpTextField(
-                         numberOfFields: 5,
-                         borderColor: Coloring.loginWhite,
-                         focusedBorderColor: Coloring.primary,
-                         //set to true to show as box or false to show as dash
-                         showFieldAsBox: true,
-                         //runs when a code is typed in
-                         onCodeChanged: (String code) {
-                           //handle validation or checks here
-                         },
-                         fieldWidth: 40,
-                         filled: true,
-                         decoration: InputDecoration(
-                         ),
-                         fillColor: Coloring.loginWhite,
-                         //runs when every textfield is filled
-                         onSubmit: (String verificationCode){
-
-                           print("gfjlkkjkkj") ;
-                           code =verificationCode ;
-                         }, // end onSubmit
-                       ),
-
-                       makeConnection(),
-
-                     ],
-
-                   ),
-                 ),
-
-                 Container(
-                   margin: EdgeInsets.only(right:20 , bottom: 280),
-                   child:Image.asset(
-                     alignment: Alignment.topRight,
-                     height: 244.h,
-                     width: 378.w,
-                     Font.urlImage + 'lock_signup.png',
-                   ),
-                 )
-               ],
-             )
-            ],
-          ),
+                            /*enabledBorder: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(25)
+                       )*/
+                            ),
+                        fillColor: Coloring.loginWhite,
+                        //runs when every textfield is filled
+                        onSubmit: (String verificationCode) {
+                          code = verificationCode;
+                        }, // end onSubmit
+                      ),
+                      SizedBox(height: 25.sp),
+                      makeConnection(),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 20, bottom: 280),
+                  child: Image.asset(
+                    alignment: Alignment.topRight,
+                    height: 244.h,
+                    width: 378.w,
+                    Font.urlImage + 'lock_signup.png',
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
   }
 
-  Widget makeConnection()
-  {
-    return SizedBox(
-        width: 100,
-        height: 50,
-        child: BlocConsumer<CheckSignUpBloc, CheckSignUpStates>(
-            listener: (BuildContext context, CheckSignUpStates state) {
+  Widget makeConnection() {
+    return BlocConsumer<CheckSignUpBloc, CheckSignUpStates>(
+        listener: (BuildContext context, CheckSignUpStates state) {
+      if (state is SuccessCheckSignUpStates) {
+        RouterNav.fluroRouter.navigateTo(context, RouteName.login);
+      }
 
-              if (state is SuccessCheckSignUpStates)
-              {
-
-                RouterNav.fluroRouter.navigateTo(
-                    context,
-                    RouteName.login
-                );
-              }
-
-              if (state is LoadingCheckSignUpStates)
-              {
-                Code.showLoadingDialog(context);
-              }
-            }, builder: (BuildContext context, CheckSignUpStates state) {
-          return MaterialButton(
-              onPressed: ()
-              {
-                print("jkgfjglfkgjfjfl");
-                CheckSignUpBloc.get(context).add(CheckSignUpDataSend(patientId: widget.patientId, verificationCode: code)) ;
-              },
-            child: Text("Verify"),
-
-          );
-        })
-    );
+      if (state is LoadingCheckSignUpStates) {
+        print("Loading...");
+        // Code.showLoadingDialog(context);
+      }
+    }, builder: (BuildContext context, CheckSignUpStates state) {
+      return Container(
+        width: Sizer.getWidth(context) / 3,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25), color: Coloring.secondary),
+        child: MaterialButton(
+          onPressed: () {
+            CheckSignUpBloc.get(context).add(CheckSignUpDataSend(
+                patientId: widget.patientId, verificationCode: code));
+          },
+          child: Text("Verify",
+              style: TextStyle(
+                  color: Coloring.loginWhite,
+                  fontSize: 18.sp,
+                  fontFamily: Font.fontfamily,
+                  fontWeight: FontWeight.bold)),
+        ),
+      );
+    });
   }
 
   //Login code
@@ -257,9 +245,9 @@ class _CheckSignUpState extends State<CheckSignUp> {
         LoginBloc.get(contextLogin)
             .add(LoginDataEntry(email: email, password: password));
       }*/
-    }
-    //وضع شرط هنا أنه عند تأكيد تسجيل الدخول سوف يتم الذهاب للواجهة الرئيسية
   }
+  //وضع شرط هنا أنه عند تأكيد تسجيل الدخول سوف يتم الذهاب للواجهة الرئيسية
+}
 
   //Make AppBar
 /*  MyAppBar(BuildContext context) {

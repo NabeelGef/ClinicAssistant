@@ -269,10 +269,6 @@ class _TestState extends State<Test> {
   }
 }
 */
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
 class Test extends StatefulWidget {
@@ -283,7 +279,8 @@ class Test extends StatefulWidget {
 class _TestState extends State<Test> {
   final _formKey = GlobalKey<FormState>();
   final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
-  final List<TextEditingController> _controllers = List.generate(4, (_) => TextEditingController());
+  final List<TextEditingController> _controllers =
+      List.generate(4, (_) => TextEditingController());
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -374,35 +371,26 @@ class _TestState extends State<Test> {
     if (otp.length == 4) {
       // TODO: Validate OTP and Sign Up User
       showDialog(
-            context: context,
-            builder: (_) =>
-                AlertDialog(
-                  title: Text('خطأ أثناء الإدخال'),
-                  content: Text('Validating OTP...'),
-                ),
-
-          );
-          Future.delayed(Duration(seconds: 5), () {
-    Navigator.of(context).pop();
-
-    });
-
-    } else {
-
-      showDialog(
         context: context,
-        builder: (_) =>
-            AlertDialog(
-              title: Text('خطأ أثناء الإدخال'),
-              content: Text('Please enter 4-digit OTP'),
-            ),
-
+        builder: (_) => AlertDialog(
+          title: Text('خطأ أثناء الإدخال'),
+          content: Text('Validating OTP...'),
+        ),
       );
       Future.delayed(Duration(seconds: 5), () {
         Navigator.of(context).pop();
-
       });
-
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('خطأ أثناء الإدخال'),
+          content: Text('Please enter 4-digit OTP'),
+        ),
+      );
+      Future.delayed(Duration(seconds: 5), () {
+        Navigator.of(context).pop();
+      });
     }
   }
 }

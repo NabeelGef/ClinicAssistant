@@ -17,7 +17,8 @@ import '../../Constant/Route/router.dart';
 
 class ClinicProfile extends StatefulWidget {
   final String id;
-  const ClinicProfile({Key? key, required this.id}) : super(key: key);
+  final bool? isLogin;
+  ClinicProfile({Key? key, required this.id, this.isLogin}) : super(key: key);
 
   @override
   State<ClinicProfile> createState() => _ClinicProfileState();
@@ -39,7 +40,9 @@ class _ClinicProfileState extends State<ClinicProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldkey,
-      endDrawer: Code.DrawerNative(context, _scaffoldkey),
+      endDrawer: widget.isLogin == true
+          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+          : Code.DrawerNative(context, _scaffoldkey),
       appBar: MyAppBar(),
       backgroundColor: Coloring.third,
       body: MyBody(),
@@ -97,20 +100,21 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         //fontWeight: FontWeight.bold
                         ),
                   ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset("${Font.urlImage}online.png"),
-                      Text(
-                          "مفتوحة الأن من قبل الطبيب ${state.profileClinic!.doctorWorkingNow!.firstname} ${state.profileClinic!.doctorWorkingNow!.lastname} ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Sizer.getTextSize(context, 0.04),
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Font.fontfamily)),
-                    ],
-                  ),
+                  state.profileClinic!.doctorWorkingNow != null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("${Font.urlImage}online.png"),
+                            Text(
+                                "مفتوحة الأن من قبل الطبيب ${state.profileClinic!.doctorWorkingNow!.firstname} ${state.profileClinic!.doctorWorkingNow!.lastname} ",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: Sizer.getTextSize(context, 0.04),
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: Font.fontfamily)),
+                          ],
+                        )
+                      : SizedBox(),
                   Divider(
                     color: Colors.white,
                     thickness: 2,
@@ -287,22 +291,32 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                   MaterialButton(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8)),
-                                    onPressed: () {
-                                      RouterNav.fluroRouter.navigateTo(
-                                        context,
-                                        RouteName.Booking +
-                                            "/${state.profileClinic!.doctors![index].doctorId}/${state.profileClinic!.clinic!.clinicId}",
-                                        routeSettings:
-                                            RouteSettings(arguments: {
-                                          'doctorId': state.profileClinic!
-                                              .doctors![index].doctorId,
-                                          'clinicId': state
-                                              .profileClinic!.clinic!.clinicId,
-                                        }),
-                                      );
+                                    onPressed: () async {
+                                      bool? isLogin =
+                                          await Code.getDataLogin('isLogin');
+                                      String? token =
+                                          await Code.getData('token');
+                                      if (token == null) {
+                                        print("You're not logging");
+                                      } else {
+                                        RouterNav.fluroRouter.navigateTo(
+                                          context,
+                                          RouteName.Booking +
+                                              "/${state.profileClinic!.doctors![index].doctorId}/${state.profileClinic!.clinic!.clinicId}/$token/$isLogin",
+                                          routeSettings:
+                                              RouteSettings(arguments: {
+                                            'doctorId': state.profileClinic!
+                                                .doctors![index].doctorId,
+                                            'clinicId': state.profileClinic!
+                                                .clinic!.clinicId,
+                                            'token': token,
+                                            'isLogin': isLogin
+                                          }),
+                                        );
+                                      }
                                     },
                                     color: Coloring.third4,
-                                    child: Text("احجز الآن ",
+                                    child: Text("احجز الآن",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: Sizer.getTextSize(
@@ -329,28 +343,32 @@ class _ClinicProfileState extends State<ClinicProfile> {
   Communication(SuccessProfileStates state) {
     return Column(
       children: [
-        Text("للتواصل",
-            style: TextStyle(
-                color: Coloring.primary,
-                fontSize: Sizer.getTextSize(context, 0.05),
-                fontWeight: FontWeight.bold,
-                fontFamily: Font.fontfamily)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.phone, color: Coloring.primary),
-            Text(state.profileClinic!.clinic!.phonenumber!,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: Sizer.getTextSize(context, 0.05),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: Font.fontfamily))
-          ],
-        ),
-        Divider(
-          color: Colors.white,
-          thickness: 2,
-        ),
+        if (state.profileClinic!.clinic!.phonenumber != null) ...[
+          Text("للتواصل",
+              style: TextStyle(
+                  color: Coloring.primary,
+                  fontSize: Sizer.getTextSize(context, 0.05),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: Font.fontfamily)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.phone, color: Coloring.primary),
+              Text(state.profileClinic!.clinic!.phonenumber!,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizer.getTextSize(context, 0.05),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: Font.fontfamily))
+            ],
+          ),
+          Divider(
+            color: Colors.white,
+            thickness: 2,
+          ),
+        ] else ...[
+          SizedBox()
+        ]
       ],
     );
   }

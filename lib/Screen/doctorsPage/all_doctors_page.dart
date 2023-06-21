@@ -18,8 +18,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+// ignore: must_be_immutable
 class AllDoctors extends StatefulWidget {
-  const AllDoctors({Key? key}) : super(key: key);
+  bool? isLogin;
+  AllDoctors({Key? key, this.isLogin}) : super(key: key);
 
   @override
   State<AllDoctors> createState() => _AllDoctorsState();
@@ -71,7 +73,9 @@ class _AllDoctorsState extends State<AllDoctors> {
             allClinicsBloc: allClinicsBloc,
             searchClicked: searchClicked),
       ),
-      endDrawer: Code.DrawerNative(context, _scaffoldkey),
+      endDrawer: widget.isLogin == true
+          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+          : Code.DrawerNative(context, _scaffoldkey),
       body: BodyDoctors(),
     );
   }
@@ -554,16 +558,19 @@ class _AllDoctorsState extends State<AllDoctors> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8)),
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        bool? isLogin =
+                                            await Code.getDataLogin('isLogin');
                                         RouterNav.fluroRouter.navigateTo(
                                             context,
                                             routeSettings: RouteSettings(
                                                 arguments: {
                                                   'id': state.doctor!
-                                                      .doctor[index].doctorId
+                                                      .doctor[index].doctorId,
+                                                  'isLogin': isLogin
                                                 }),
                                             RouteName.ProfileDoctor +
-                                                "/${state.doctor!.doctor[index].doctorId}");
+                                                "/${state.doctor!.doctor[index].doctorId}/$isLogin");
                                       },
                                       color: Coloring.third4,
                                       child: Text("عرض التفاصيل",

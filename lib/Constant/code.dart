@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Route/routename.dart';
 import 'Route/router.dart';
@@ -28,9 +29,7 @@ class Code {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
-          child: ListView(
-              children: [
-
+          child: ListView(children: [
             /*Container(
                   height: Sizer.getHeight(context)/5,
                   child: DrawerHeader(
@@ -124,11 +123,10 @@ class Code {
                   SizedBox(
                     width: 20,
                   ),
-
                   InkWell(
-                    onTap: ()
-                    {
-                      RouterNav.fluroRouter.navigateTo(context, RouteName.login);
+                    onTap: () {
+                      RouterNav.fluroRouter
+                          .navigateTo(context, RouteName.login);
                     },
                     child: Text("تسجيل الدّخول",
                         style: TextStyle(
@@ -335,7 +333,7 @@ class Code {
                       InkWell(
                         onTap: ()
                         {
-                          RouterNav.fluroRouter.navigateTo(context, RouteName.login);
+                          //RouterNav.fluroRouter.navigateTo(context, RouteName.login);
                         },
                         child: Text("الملف الشخصي",
                             style: TextStyle(
@@ -406,31 +404,6 @@ class Code {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.archive_rounded,
-                          color: Colors.white,
-                          size: Sizer.getTextSize(context, 0.08)),
-                      SizedBox(width: 10),
-                      Text("السجل الطبي",
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.05),
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-
-                Divider(color: Colors.white, thickness: 2),
-                SizedBox(height: Sizer.getHeight(context) / 50),
-                InkWell(
-                  onTap: () {
-                    // Go To Privacy
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
                       Icon(Icons.logout,
                           color: Colors.white,
                           size: Sizer.getTextSize(context, 0.08)),
@@ -450,6 +423,25 @@ class Code {
         ),
       ),
     );
+  }
+
+  static Future<void> saveData(String key, String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
+  }
+  static Future<void> saveDataLogin(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
+
+// Retrieving data from SharedPreferences
+  static Future<bool?> getDataLogin(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key);
+  }
+  static Future<String?> getData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
   }
   //Make a const FloatingPoint in Doctor and clinic page
 
@@ -659,13 +651,11 @@ class Code {
         ),
       ),
     );
-
   }
 
   static void showLoadingDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (_) {
         return WillPopScope(
           onWillPop: () async => false,

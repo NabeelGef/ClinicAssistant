@@ -9,9 +9,9 @@ class RouteName {
   static String signup2 = "/signup2";
   static String checkSignUp = "/checksignup";
   static String Home = "/home";
-  static String AllDoctors = "/home/alldoctors";
-  static String AllClinics = "/home/allclinics";
-  static String ProfileDoctor = "/home/alldoctors/profiledoctor";
-  static String ProfileClinic = "/home/allclinics/profileclinic";
-  static String Booking = "/home/profile/book";
+  static String AllDoctors = "/alldoctors";
+  static String AllClinics = "/allclinics";
+  static String ProfileDoctor = "/profiledoctor";
+  static String ProfileClinic = "/profileclinic";
+  static String Booking = "/profile/book";
 }

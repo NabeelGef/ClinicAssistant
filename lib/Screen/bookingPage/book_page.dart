@@ -14,14 +14,16 @@ import '../../Constant/sizer.dart';
 
 // ignore: must_be_immutable
 class BookPage extends StatefulWidget {
-  BookPage({
-    super.key,
-    required this.doctorId,
-    required this.clinicId,
-  });
+  BookPage(
+      {super.key,
+      required this.doctorId,
+      required this.clinicId,
+      required this.token,
+      this.isLogin});
   String doctorId;
   String clinicId;
-
+  String token;
+  bool? isLogin;
   @override
   State<BookPage> createState() => _BookPageState();
 }
@@ -41,7 +43,9 @@ class _BookPageState extends State<BookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldkey,
-      endDrawer: Code.DrawerNative(context, _scaffoldkey),
+      endDrawer: widget.isLogin == true
+          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+          : Code.DrawerNative(context, _scaffoldkey),
       appBar: MyAppBar(),
       backgroundColor: Coloring.third,
       body: MyBody(),
@@ -191,15 +195,33 @@ class _BookPageState extends State<BookPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset("${Font.urlImage}telephone.png"),
-                              Text(
-                                "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.phonenumber}",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: Sizer.getTextSize(context, 0.04),
-                                    fontFamily: Font.fontfamily,
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.bold),
-                              )
+                              state
+                                          .successDoctorClinicBook
+                                          .doctorClinicBook!
+                                          .doctorClinicDetails!
+                                          .clinic!
+                                          .phonenumber !=
+                                      null
+                                  ? Text(
+                                      "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.phonenumber}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              Sizer.getTextSize(context, 0.04),
+                                          fontFamily: Font.fontfamily,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Text(
+                                      "غير متوفّر حالياً",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              Sizer.getTextSize(context, 0.04),
+                                          fontFamily: Font.fontfamily,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold),
+                                    )
                             ])
                       ],
                     ),
@@ -281,7 +303,8 @@ class _BookPageState extends State<BookPage> {
                               )
                             ]),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            bool? isLogin = await Code.getDataLogin('isLogin');
                             RouterNav.fluroRouter.navigateTo(
                                 context,
                                 routeSettings: RouteSettings(arguments: {
@@ -290,10 +313,11 @@ class _BookPageState extends State<BookPage> {
                                       .doctorClinicBook!
                                       .doctorClinicDetails!
                                       .clinic!
-                                      .clinicId
+                                      .clinicId,
+                                  'isLogin': isLogin
                                 }),
                                 RouteName.ProfileClinic +
-                                    "/${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.clinicId}");
+                                    "/${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.clinicId}/$isLogin");
                           },
                           child: Container(
                             padding: EdgeInsets.all(8.sp),
@@ -488,6 +512,7 @@ class _BookPageState extends State<BookPage> {
                                   .clinicName!,
                               doctorId: widget.doctorId,
                               clinicId: widget.clinicId,
+                              token: widget.token,
                             );
                           });
                     },

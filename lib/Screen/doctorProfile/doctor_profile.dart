@@ -14,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorProfile extends StatefulWidget {
   final String id;
-  const DoctorProfile({Key? key, required this.id}) : super(key: key);
+  final bool? isLogin;
+  DoctorProfile({Key? key, required this.id, this.isLogin}) : super(key: key);
 
   @override
   State<DoctorProfile> createState() => _DoctorProfileState();
@@ -49,7 +50,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
         backgroundColor: Coloring.third,
         key: _scaffoldkey,
         appBar: MyAppBar(),
-        endDrawer: Code.DrawerNative(context, _scaffoldkey),
+        endDrawer: widget.isLogin == true
+            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+            : Code.DrawerNative(context, _scaffoldkey),
         //backgroundColor: Coloring.primary,
         body: BodyDetail(context));
   }
@@ -419,6 +422,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           height: Sizer.getHeight(context) / 3,
                           width: double.infinity,
                           child: ListView.builder(
+                            padding: EdgeInsets.all(10),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
                             itemCount: state
                                 .profileDoctor!.doctorProfile!.clinics!.length,
                             itemBuilder: (context, index) {
@@ -457,29 +463,42 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8)),
-                                          onPressed: () {
-                                            RouterNav.fluroRouter.navigateTo(
-                                              context,
-                                              RouteName.Booking +
-                                                  "/${state.profileDoctor!.doctorProfile!.doctor!.doctorId}/${state.profileDoctor!.doctorProfile!.clinics![index].clinicId}",
-                                              routeSettings:
-                                                  RouteSettings(arguments: {
-                                                'doctorId': state
-                                                    .profileDoctor!
-                                                    .doctorProfile!
-                                                    .doctor!
-                                                    .doctorId,
-                                                'clinicId': state
-                                                    .profileDoctor!
-                                                    .doctorProfile!
-                                                    .clinics![index]
-                                                    .clinicId
-                                              }),
-                                            );
-                                            // RouterNav.fluroRouter.navigateTo(context,
-                                            //     routeSettings: RouteSettings(arguments:
-                                            //     {'id' : state.doctor!.doctors![index].id}),
-                                            //     RouteName.ProfileDoctor+"/${state.doctor!.doctors![index].id}" );
+                                          onPressed: () async {
+                                            bool? isLogin =
+                                                await Code.getDataLogin(
+                                                    'isLogin');
+
+                                            String? token =
+                                                await Code.getData('token');
+                                            if (token == null) {
+                                              print("You're not logging");
+                                            } else {
+                                              RouterNav.fluroRouter.navigateTo(
+                                                context,
+                                                RouteName.Booking +
+                                                    "/${state.profileDoctor!.doctorProfile!.doctor!.doctorId}/${state.profileDoctor!.doctorProfile!.clinics![index].clinicId}/$token/$isLogin",
+                                                routeSettings:
+                                                    RouteSettings(arguments: {
+                                                  'doctorId': state
+                                                      .profileDoctor!
+                                                      .doctorProfile!
+                                                      .doctor!
+                                                      .doctorId,
+                                                  'clinicId': state
+                                                      .profileDoctor!
+                                                      .doctorProfile!
+                                                      .clinics![index]
+                                                      .clinicId,
+                                                  'token': token,
+                                                  'isLogin': isLogin
+                                                }),
+                                              );
+                                              // RouterNav.fluroRouter.navigateTo(context,
+                                              //     routeSettings: RouteSettings(arguments:
+                                              //     {'id' : state.doctor!.doctors![index].id}),
+                                              //
+                                              //     RouteName.ProfileDoctor+"/${state.doctor!.doctors![index].id}" );
+                                            }
                                           },
                                           color: Coloring.third4,
                                           child: Text("احجز الآن ",
@@ -494,16 +513,13 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 10.sp,
+                                    width: 10.sp,
                                   )
                                 ],
                               );
                             },
-                            padding: EdgeInsets.all(10),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
                           ),
-                        )
+                        ),
                       ],
                     );
                   }

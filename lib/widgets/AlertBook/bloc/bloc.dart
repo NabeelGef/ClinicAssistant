@@ -44,7 +44,8 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
         successAlertBookClock: state.successAlertBookClock,
         successAlertBook: SuccessAlertBook(workTime: null, error: ""));
     try {
-      WorkTime? workTime = await API.getWorkTime(doctorId, clinicId);
+      WorkTime? workTime = await API.getWorkTime(doctorId, clinicId,
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
       if (workTime == null) {
         yield StateAlertBook(
             successAlertBookClock: state.successAlertBookClock,
@@ -71,7 +72,8 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
             SuccessAlertBookClock(workTimeClock: null, error: ""),
         successAlertBook: state.successAlertBook);
     try {
-      WorkTimeClock? workTimeClock = await API.getWorkTimeClocks(workTimeId);
+      WorkTimeClock? workTimeClock = await API.getWorkTimeClocks(workTimeId,
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
       if (workTimeClock == null) {
         yield StateAlertBook(
             successAlertBookClock:

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:clinicassistant/widgets/AlertBook/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,6 @@ import 'package:clinicassistant/widgets/AlertBook/bloc/state.dart';
 import '../../Constant/color.dart';
 import '../../Constant/font.dart';
 import '../../Constant/sizer.dart';
-import 'bloc/bloc.dart';
 
 // ignore: must_be_immutable
 class AlertBooking extends StatefulWidget {
@@ -18,13 +18,15 @@ class AlertBooking extends StatefulWidget {
   String doctorId;
   String clinicId;
   String nameDoctor;
-  AlertBooking({
-    Key? key,
-    required this.clinicName,
-    required this.doctorId,
-    required this.clinicId,
-    required this.nameDoctor,
-  }) : super(key: key);
+  String token;
+  AlertBooking(
+      {Key? key,
+      required this.clinicName,
+      required this.doctorId,
+      required this.clinicId,
+      required this.nameDoctor,
+      required this.token})
+      : super(key: key);
 
   @override
   State<AlertBooking> createState() => _AlertBooking();
@@ -114,16 +116,18 @@ class _AlertBooking extends State<AlertBooking> {
                                         .doctorClinicWorkTime!
                                         .workTimes![index];
                                     return AlertBookClock(
-                                        nameDoctor: widget.nameDoctor,
-                                        nameClinic: widget.clinicName,
-                                        day: worktime!.day!,
-                                        date: worktime.date!,
-                                        workTimeId: state
-                                            .successAlertBook
-                                            ?.workTime!
-                                            .doctorClinicWorkTime!
-                                            .workTimes![index]
-                                            .workTimeId);
+                                      nameDoctor: widget.nameDoctor,
+                                      nameClinic: widget.clinicName,
+                                      day: worktime!.day!,
+                                      date: worktime.date!,
+                                      workTimeId: state
+                                          .successAlertBook
+                                          ?.workTime!
+                                          .doctorClinicWorkTime!
+                                          .workTimes![index]
+                                          .workTimeId,
+                                      token: widget.token,
+                                    );
                                   },
                                 );
                               }

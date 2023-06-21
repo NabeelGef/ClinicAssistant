@@ -12,7 +12,8 @@ import '../model/worktime.dart';
 class API {
   //That is end points of Api
   static String BaseUrl = "https://nabee4.free.beeceptor.com/";
-  static String BaseUrlBack = "http://10.0.2.2:3000/";
+  static String IP = /*"192.168.43.206"*/ "10.0.2.2";
+  static String BaseUrlBack = "http://$IP:3000/";
   static String clinicsBack = "clinics";
   static String patientBack = "patient";
   static String doctorsBack = "doctors";
@@ -65,7 +66,6 @@ class API {
     if (response.statusCode == 201) {
       doctor = Doctor.fromJson(response.data);
     } else if (response.statusCode == 404) {
-      print("Response 404");
       throw Exception();
     }
     return doctor;
@@ -95,15 +95,19 @@ class API {
   }
 
   static Future<DoctorClinicBook>? getDoctorClinicBook(
-      String doctorId, String clinicId) async {
+      String doctorId, String clinicId, String token) async {
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
     DoctorClinicBook doctorClinicBook = DoctorClinicBook();
     String path = "${BaseUrlBack}" +
         "$doctorsBack" +
         "/${clinicBack}" +
         "/$clinicId" +
         "/$doctorId";
-    Response response =
-        await dio.fetch(RequestOptions(baseUrl: path, method: 'GET'));
+    Response response = await dio
+        .fetch(RequestOptions(baseUrl: path, method: 'GET', headers: headers));
     if (response.statusCode == 200) {
       doctorClinicBook = DoctorClinicBook.fromJson(response.data);
     }
@@ -111,22 +115,34 @@ class API {
     return doctorClinicBook;
   }
 
-  static Future<WorkTime>? getWorkTime(String doctorId, String clinicId) async {
+  static Future<WorkTime>? getWorkTime(
+      String doctorId, String clinicId, String token) async {
     WorkTime workTime = WorkTime();
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
     String path = "${BaseUrlBack}" +
         "$doctorsBack" +
         "/${worktime}" +
         "/$doctorId" +
         "/$clinicId";
-    Response response =
-        await dio.fetch(RequestOptions(baseUrl: path, method: 'GET'));
+    Response response = await dio
+        .fetch(RequestOptions(baseUrl: path, method: 'GET', headers: headers));
     if (response.statusCode == 200) {
       workTime = WorkTime.fromJson(response.data);
     }
     return workTime;
   }
 
-  static Future<WorkTimeClock>? getWorkTimeClocks(String workTimeId) async {
+  static Future<WorkTimeClock>? getWorkTimeClocks(
+      String workTimeId, String token) async {
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
     String path = "${BaseUrlBack}" +
         "$doctorsBack" +
         "/${appoitment}" +
@@ -135,8 +151,8 @@ class API {
         "/$workTimeId";
     print(path);
     WorkTimeClock workTimeClock = WorkTimeClock();
-    Response response =
-        await dio.fetch(RequestOptions(baseUrl: path, method: 'GET'));
+    Response response = await dio
+        .fetch(RequestOptions(baseUrl: path, method: 'GET', headers: headers));
     if (response.statusCode == 200) {
       workTimeClock = WorkTimeClock.fromJson(response.data);
     }

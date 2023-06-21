@@ -1,15 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:clinicassistant/widgets/AlertBook/bloc/bloc.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/event.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../Constant/color.dart';
 import '../../Constant/font.dart';
 import '../../Constant/sizer.dart';
-import 'bloc/bloc.dart';
 
 // ignore: must_be_immutable
 class BookNow extends StatefulWidget {
@@ -18,14 +19,16 @@ class BookNow extends StatefulWidget {
   String appointmentId;
   String day;
   DateTime date;
-  BookNow({
-    Key? key,
-    required this.nameDoctor,
-    required this.nameClinic,
-    required this.appointmentId,
-    required this.day,
-    required this.date,
-  }) : super(key: key);
+  String token;
+  BookNow(
+      {Key? key,
+      required this.nameDoctor,
+      required this.nameClinic,
+      required this.appointmentId,
+      required this.day,
+      required this.date,
+      required this.token})
+      : super(key: key);
 
   @override
   State<BookNow> createState() => _BookNowState();
@@ -150,9 +153,8 @@ class _BookNowState extends State<BookNow> {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  alertBookBloc.add(BookNowEvent(
-                      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIyIiwidHlwZSI6NCwiaWF0IjoxNjg3MTY3MTk1LCJleHAiOjE2ODcyNTM1OTV9.GZEUfvJC4E6tZggD0J652LXePZTRXZSwbjGaZR5yuCw",
-                      widget.appointmentId));
+                  alertBookBloc
+                      .add(BookNowEvent(widget.token, widget.appointmentId));
                   Navigator.pop(context);
                   showDialog(
                       context: context,
@@ -192,8 +194,8 @@ class _BookNowState extends State<BookNow> {
                                 WidgetsBinding.instance
                                     .addPostFrameCallback((_) {
                                   Navigator.pop(context);
-                                  print("Sucesssssss") ;
-                                 /* Fluttertoast.showToast(
+                                  print("Sucesssssss");
+                                   Fluttertoast.showToast(
                                     msg: "تمّت عملية الحجز بنجاح",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.TOP,
@@ -201,7 +203,7 @@ class _BookNowState extends State<BookNow> {
                                     backgroundColor: Coloring.yellow,
                                     textColor: Colors.black,
                                     fontSize: 25.sp,
-                                  );*/
+                                  );
                                 });
                                 return SizedBox();
                               }

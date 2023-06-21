@@ -6,28 +6,16 @@ import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
+  bool? isLogin;
+  Home({Key? key, this.isLogin}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   // Storing data in SharedPreferences
-  Future<void> saveData(String key, String value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
-  }
-
-// Retrieving data from SharedPreferences
-  Future<String?> getData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
-  }
-
   @override
   Widget build(BuildContext context) {
-    saveData('login', 'false') ;
     return Stack(
       children: [
         Image.asset(Font.urlImage + 'background.png',
@@ -38,7 +26,9 @@ class Home extends StatelessWidget {
             backgroundColor: Colors.transparent,
             key: _scaffoldKey,
             //appBar: MyAppBar(context),
-            endDrawer: Code.DrawerNative(context, _scaffoldKey),
+            endDrawer: isLogin == true
+                ? Code.DrawerNativeSeconde(context, _scaffoldKey)
+                : Code.DrawerNative(context, _scaffoldKey),
             body: Body(context)),
       ],
     );
@@ -71,10 +61,14 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: () {
-                    // go To Clinic Page
-                    RouterNav.fluroRouter
-                        .navigateTo(context, RouteName.AllClinics);
+                  onTap: () async {
+                    bool? isLogin = await Code.getDataLogin('isLogin');
+                    RouterNav.fluroRouter.navigateTo(
+                        context,
+                        routeSettings: RouteSettings(arguments: {
+                          'isLogin': isLogin,
+                        }),
+                        RouteName.AllClinics + "/$isLogin");
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -101,9 +95,14 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    RouterNav.fluroRouter
-                        .navigateTo(context, RouteName.AllDoctors);
+                  onTap: () async {
+                    bool? isLogin = await Code.getDataLogin('isLogin');
+                    RouterNav.fluroRouter.navigateTo(
+                        context,
+                        routeSettings: RouteSettings(arguments: {
+                          'isLogin': isLogin,
+                        }),
+                        RouteName.AllDoctors + "/$isLogin");
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

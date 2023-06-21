@@ -15,8 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+// ignore: must_be_immutable
 class AllClinics extends StatefulWidget {
-  const AllClinics({Key? key}) : super(key: key);
+  bool? isLogin;
+  AllClinics({Key? key, this.isLogin}) : super(key: key);
 
   @override
   State<AllClinics> createState() => _AllClinicsState();
@@ -40,7 +42,9 @@ class _AllClinicsState extends State<AllClinics> {
       backgroundColor: Coloring.third2,
       key: _scaffoldkey,
       appBar: MyAppBar(),
-      endDrawer: Code.DrawerNative(context, _scaffoldkey),
+      endDrawer: widget.isLogin == true
+          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+          : Code.DrawerNative(context, _scaffoldkey),
       body: BodyClinics(),
     );
   }
@@ -200,19 +204,18 @@ class _AllClinicsState extends State<AllClinics> {
                                                                     0.04)))),
                                                 Center(
                                                     child: Text(
-                                                        """  الموقع : ${state.clinic!.clinics![index].area!.governorate!.name} - ${state.clinic!.clinics![index].area!.name}
-                        """,
-                                                        style: TextStyle(
-                                                            color: Coloring
-                                                                .primary4,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                Font.fontfamily,
-                                                            fontSize: Sizer
-                                                                .getTextSize(
-                                                                    context,
-                                                                    0.04)))),
+                                                  """  الموقع : ${state.clinic!.clinics![index].area!.governorate!.name} - ${state.clinic!.clinics![index].area!.name}""",
+                                                  style: TextStyle(
+                                                      color: Coloring.primary4,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily:
+                                                          Font.fontfamily,
+                                                      fontSize:
+                                                          Sizer.getTextSize(
+                                                              context, 0.04)),
+                                                  textAlign: TextAlign.center,
+                                                )),
                                               ],
                                             ),
                                           ),
@@ -221,19 +224,28 @@ class _AllClinicsState extends State<AllClinics> {
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(8)),
-                                              onPressed: () {
-                                                RouterNav.fluroRouter.navigateTo(
-                                                    context,
-                                                    routeSettings:
-                                                        RouteSettings(
-                                                            arguments: {
-                                                          'id': state
-                                                              .clinic!
-                                                              .clinics![index]
-                                                              .clinicId
-                                                        }),
-                                                    RouteName.ProfileClinic +
-                                                        "/${state.clinic!.clinics![index].clinicId}");
+                                              onPressed: () async {
+                                                bool? isLogin =
+                                                    await Code.getDataLogin(
+                                                        'isLogin');
+
+                                                RouterNav.fluroRouter
+                                                    .navigateTo(
+                                                        context,
+                                                        routeSettings:
+                                                            RouteSettings(
+                                                                arguments: {
+                                                              'id': state
+                                                                  .clinic!
+                                                                  .clinics![
+                                                                      index]
+                                                                  .clinicId,
+                                                              'isLogin':
+                                                                  isLogin,
+                                                            }),
+                                                        RouteName
+                                                                .ProfileClinic +
+                                                            "/${state.clinic!.clinics![index].clinicId}/$isLogin");
                                               },
                                               color: Coloring.third4,
                                               child: Text("عرض التفاصيل",

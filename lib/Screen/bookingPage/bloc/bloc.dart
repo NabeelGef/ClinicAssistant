@@ -62,7 +62,8 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
         SuccessDoctorClinicBook(doctorClinicBook, ""));
 
     try {
-      doctorClinicBook = await API.getDoctorClinicBook(doctorId, clinicId);
+      doctorClinicBook = await API.getDoctorClinicBook(doctorId, clinicId,
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
       if (doctorClinicBook == null) {
         yield BookState([imagecommunication, imagespecialist, imageaddress],
             SuccessDoctorClinicBook(null, "Couldn't Find any Data!!"));
