@@ -1,7 +1,7 @@
-import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Screen/clinicProfile/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicProfile/bloc/state.dart';
 import 'package:clinicassistant/model/profileClinic.dart';
+import 'package:clinicassistant/repository/clinic_profile_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClinicProfileBloc extends Bloc<ClinicProfileEvent, SuccessProfileStates> {
@@ -17,7 +17,8 @@ class ClinicProfileBloc extends Bloc<ClinicProfileEvent, SuccessProfileStates> {
   Stream<SuccessProfileStates> getProfileInfo(String clinicId) async* {
     yield SuccessProfileStates(null, "");
     try {
-      ProfileClinic? profileClinic = await API.getDetailClinic(clinicId);
+      ProfileClinic? profileClinic =
+          await ClinicProfileRepository.getDetailClinic(clinicId);
       if (profileClinic == null) {
         yield SuccessProfileStates(null, "Couldn't Find any Data!!");
       } else {

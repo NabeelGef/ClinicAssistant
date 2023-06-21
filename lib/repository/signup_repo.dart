@@ -1,11 +1,8 @@
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/model/signup_post.dart';
-import 'package:dio/dio.dart';
 
 class SignUp2Repository {
   //التعامل مع قاعدة البيانات
-  static Dio dio = Dio();
-  String BASEURL = "http://192.168.43.206:3000/patients";
-  String LOGINURL = "/signup";
 
   Future<SignUpPost?> signUpRepo(
       String firstName,
@@ -19,8 +16,10 @@ class SignUp2Repository {
       String gender) async {
     SignUpPost patientId = SignUpPost();
     try {
-      var response = await dio.post(
-        '$BASEURL' + '$LOGINURL',
+      print(
+          "PATH = '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.signupBack}");
+      var response = await API.dio.post(
+        '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.signupBack}',
         data: {
           "phoneNumber": phoneNumber,
           "password": password,

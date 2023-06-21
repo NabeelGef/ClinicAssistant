@@ -1,8 +1,9 @@
-import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/states.dart';
 import 'package:clinicassistant/model/doctor.dart';
 import 'package:clinicassistant/model/specialist.dart';
+import 'package:clinicassistant/repository/allDoctors_repo.dart';
+import 'package:clinicassistant/repository/allSpecialist_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllDoctorsBloc extends Bloc<AllDoctorsEvents, DoctorsState> {
@@ -37,7 +38,8 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents, DoctorsState> {
       String? name, int? subId, bool? isOrder) async* {
     yield DoctorsState(state.doctor, "");
     try {
-      Doctor? doctor = await API.getDoctors(isOrder, subId, name);
+      Doctor? doctor =
+          await AllDoctorsRepository.getDoctors(isOrder, subId, name);
       if (doctor == null) {
         yield DoctorsState(state.doctor, "Failed To Load Items");
       } else {
@@ -65,7 +67,7 @@ class ApiSpecialistBloc extends Bloc<AllDoctorsEvents, SpecialistState> {
     if (events is LoadingSpecialists) {
       yield SpecialistState(state.specialists, "");
       try {
-        Specialists? specialists = await API.getSpecialist();
+        Specialists? specialists = await SpecialRepository.getSpecialist();
         if (specialists == null) {
           yield SpecialistState(specialists, "Failed To Load Items");
         } else {

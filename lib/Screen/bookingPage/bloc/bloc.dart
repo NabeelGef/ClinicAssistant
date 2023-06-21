@@ -1,7 +1,7 @@
-import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/event.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/state.dart';
 import 'package:clinicassistant/model/doctorClinicBook.dart';
+import 'package:clinicassistant/repository/BookRepository/doctor_clinic_book_repo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,7 +62,9 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
         SuccessDoctorClinicBook(doctorClinicBook, ""));
 
     try {
-      doctorClinicBook = await API.getDoctorClinicBook(doctorId, clinicId,
+      doctorClinicBook = await DoctorClinicBookRepository.getDoctorClinicBook(
+          doctorId,
+          clinicId,
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
       if (doctorClinicBook == null) {
         yield BookState([imagecommunication, imagespecialist, imageaddress],

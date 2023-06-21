@@ -1,18 +1,16 @@
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/model/verify.dart';
-import 'package:dio/dio.dart';
 
 class CheckSignUpRepository {
   //التعامل مع قاعدة البيانات
-  static Dio dio = Dio();
-  String BASEURL = "http://192.168.43.206:3000/patients";
-  String VERIFYURL = "/verify";
   String? returnMessage;
   Verify verify = Verify();
   Future<String?> checkSignUpRepo(
       String patientId, String verificationCode) async {
     try {
       int code = int.parse(verificationCode);
-      var response = await dio.post('$BASEURL' + '$VERIFYURL',
+      var response = await API.dio.post(
+          '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.verifyBack}',
           data: {'patientId': patientId, 'code': code});
       verify = Verify.fromJson(response.data);
       print(response.statusCode);

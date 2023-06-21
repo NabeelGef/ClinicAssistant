@@ -39,7 +39,9 @@ class _AlertBooking extends State<AlertBooking> {
   @override
   void initState() {
     alertBookBloc.add(LoadingEventAlertBook(
-        doctorId: widget.doctorId, clinicId: widget.clinicId));
+        doctorId: widget.doctorId,
+        clinicId: widget.clinicId,
+        token: widget.token));
     super.initState();
   }
 

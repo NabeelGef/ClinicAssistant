@@ -7,10 +7,12 @@ abstract class AlertBookEvent {
 class LoadingEventAlertBook extends AlertBookEvent {
   final String doctorId;
   final String clinicId;
+  final String token;
 
   LoadingEventAlertBook({
     required this.doctorId,
     required this.clinicId,
+    required this.token,
   });
 }
 

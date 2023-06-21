@@ -1,6 +1,9 @@
-import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/model/worktime.dart';
 import 'package:clinicassistant/model/worktimeclock.dart';
+import 'package:clinicassistant/repository/BookRepository/book_now_repo.dart';
+import 'package:clinicassistant/repository/BookRepository/clock_time_repo.dart';
+import 'package:clinicassistant/repository/BookRepository/remain_repo.dart';
+import 'package:clinicassistant/repository/BookRepository/work_time_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'event.dart';
@@ -12,7 +15,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
   @override
   Stream<StateAlertBook> mapEventToState(AlertBookEvent event) async* {
     if (event is LoadingEventAlertBook) {
-      yield* Loading(event.doctorId, event.clinicId);
+      yield* Loading(event.doctorId, event.clinicId, event.token);
     }
     if (event is LoadingEventAlertBookClock) {
       yield* LoadingClocks(event.workTimeId);
@@ -39,13 +42,14 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
     }
   }
 
-  Stream<StateAlertBook> Loading(String doctorId, String clinicId) async* {
+  Stream<StateAlertBook> Loading(
+      String doctorId, String clinicId, String token) async* {
     yield StateAlertBook(
         successAlertBookClock: state.successAlertBookClock,
         successAlertBook: SuccessAlertBook(workTime: null, error: ""));
     try {
-      WorkTime? workTime = await API.getWorkTime(doctorId, clinicId,
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
+      WorkTime? workTime =
+          await WorkTimeRepository.getWorkTime(doctorId, clinicId, token);
       if (workTime == null) {
         yield StateAlertBook(
             successAlertBookClock: state.successAlertBookClock,
@@ -72,7 +76,8 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
             SuccessAlertBookClock(workTimeClock: null, error: ""),
         successAlertBook: state.successAlertBook);
     try {
-      WorkTimeClock? workTimeClock = await API.getWorkTimeClocks(workTimeId,
+      WorkTimeClock? workTimeClock = await ClockTimeRepository.getWorkTimeClocks(
+          workTimeId,
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
       if (workTimeClock == null) {
         yield StateAlertBook(
@@ -106,7 +111,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
         selectState: state.selectState,
         successRemain: SuccessRemain(message: null, error: ""));
     try {
-      String? message = await API.getRemainClocks(appointmentId);
+      String? message = await RemainRepository.getRemainClocks(appointmentId);
       if (message == null) {
         yield StateAlertBook(
             successAlertBook: state.successAlertBook,
@@ -140,7 +145,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
         successRemain: state.successRemain,
         successBook: SuccessBook(message: null, error: ""));
     try {
-      String? message = await API.booknow(appointmentId, token);
+      String? message = await BookNowRepository.booknow(appointmentId, token);
       if (message == null) {
         yield StateAlertBook(
             successAlertBook: state.successAlertBook,

@@ -1,7 +1,7 @@
-import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/states.dart';
 import 'package:clinicassistant/model/clinic.dart';
+import 'package:clinicassistant/repository/allClinics_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
@@ -25,7 +25,7 @@ class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
   Stream<ClinicsStates> getClinics() async* {
     yield ClinicsStates(state.clinic, "");
     try {
-      Clinic? clinic = await API.getClinics();
+      Clinic? clinic = await AllClinicsRepository.getClinics();
       if (clinic == null) {
         yield ClinicsStates(state.clinic, "Failed To Load Items");
       } else {

@@ -1,16 +1,14 @@
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/model/login_token.dart';
-import 'package:dio/dio.dart';
 
 class LoginRepository {
   //التعامل مع قاعدة البيانات
-  static Dio dio = Dio();
-  String BASEURL = "http://192.168.43.206:3000/patients";
-  String LOGINURL = "/login";
 
   Future<AccessToken> loginRepo(String email, String password) async {
     AccessToken accessToken = AccessToken();
     try {
-      var response = await dio.post('$BASEURL' + '$LOGINURL',
+      var response = await API.dio.post(
+          '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.loginBack}',
           data: {'phoneNumber': email, 'password': password});
 
       print(response.statusCode);
