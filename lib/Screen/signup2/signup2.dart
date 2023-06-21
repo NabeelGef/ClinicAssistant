@@ -534,7 +534,16 @@ class _SignUp2State extends State<SignUp2> {
 
                             if (state is SuccessSignUp2States)
                             {
-                              RouterNav.fluroRouter.navigateTo(context, RouteName.login);
+
+                              RouterNav.fluroRouter.navigateTo(
+                                  context,
+                                  routeSettings: RouteSettings(
+                                    arguments: {
+                                      'phoneNumberFromSignUp' :_phoneNumberInput,
+                                    }
+                                  ),
+                                  RouteName.checkSignUp+"/$_phoneNumberInput"+"/${state.successMessage}"
+                              );
                             }
 
                             if (state is LoadingSignUp2States)

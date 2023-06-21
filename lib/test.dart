@@ -272,6 +272,8 @@ class _TestState extends State<Test> {
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class Test extends StatefulWidget {
   @override
@@ -279,39 +281,128 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-  bool _isMoved = false;
+  final _formKey = GlobalKey<FormState>();
+  final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
+  final List<TextEditingController> _controllers = List.generate(4, (_) => TextEditingController());
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    for (var node in _focusNodes) {
+      node.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Move Container'),
+        title: Text('Check OTP Sign Up'),
       ),
-      body: Center(
-        child: Stack(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            AnimatedPositioned(
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-              top: _isMoved ? 200 : 100,
-              left: _isMoved ? 100 : 200,
-              child: Container(
-                width: 100,
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Image.asset(
+                'assets/images/lock.png',
                 height: 100,
-                color: Colors.blue,
+                width: 100,
               ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildOTPTextField(0),
+                SizedBox(width: 20),
+                _buildOTPTextField(1),
+                SizedBox(width: 20),
+                _buildOTPTextField(2),
+                SizedBox(width: 20),
+                _buildOTPTextField(3),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _submitOTP,
+              child: Text('Sign Up'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _isMoved = !_isMoved;
-          });
+    );
+  }
+
+  Widget _buildOTPTextField(int index) {
+    return SizedBox(
+      width: 50,
+      child: TextFormField(
+        controller: _controllers[index],
+        keyboardType: TextInputType.number,
+        textAlign: TextAlign.center,
+        maxLength: 1,
+        decoration: InputDecoration(
+          counter: Offstage(),
+          contentPadding: EdgeInsets.symmetric(vertical: 10),
+          border: OutlineInputBorder(),
+        ),
+        focusNode: _focusNodes[index],
+        onChanged: (value) {
+          if (value.isNotEmpty) {
+            _focusNodes[index].unfocus();
+            if (index < 3) {
+              _focusNodes[index + 1].requestFocus();
+            }
+          } else {
+            if (index > 0) {
+              _focusNodes[index - 1].requestFocus();
+            }
+          }
         },
-        child: Icon(Icons.arrow_forward),
       ),
     );
+  }
+
+  void _submitOTP() {
+    String otp = _controllers.map((controller) => controller.text).join();
+    if (otp.length == 4) {
+      // TODO: Validate OTP and Sign Up User
+      showDialog(
+            context: context,
+            builder: (_) =>
+                AlertDialog(
+                  title: Text('خطأ أثناء الإدخال'),
+                  content: Text('Validating OTP...'),
+                ),
+
+          );
+          Future.delayed(Duration(seconds: 5), () {
+    Navigator.of(context).pop();
+
+    });
+
+    } else {
+
+      showDialog(
+        context: context,
+        builder: (_) =>
+            AlertDialog(
+              title: Text('خطأ أثناء الإدخال'),
+              content: Text('Please enter 4-digit OTP'),
+            ),
+
+      );
+      Future.delayed(Duration(seconds: 5), () {
+        Navigator.of(context).pop();
+
+      });
+
+    }
   }
 }

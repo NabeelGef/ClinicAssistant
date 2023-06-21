@@ -28,7 +28,7 @@ class SignUp2Bloc extends Bloc<SignUp2Events , SignUp2States>
 
       SignUpPost? signUpPost = await _signUp2Repository.signUpRepo( events.firstName! , events.lastName! , events.userName! , events.phoneNumber! , events.password! , events.day! , events.month! , events.year! ,events.gender!) ;
      // print(accessToken.accessToken?.accessToken);
-      yield SuccessSignUp2States("Login is successfully done");
+      yield SuccessSignUp2States(signUpPost!.patientId!);
     }
     // هنا اكتب الاحداث التي من المفترض أن تحدث مثلا ارسال بيانات التسجيل
 

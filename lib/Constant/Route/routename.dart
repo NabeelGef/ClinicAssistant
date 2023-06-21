@@ -7,6 +7,7 @@ class RouteName {
   static String login = "/login";
   static String signup = "/signup";
   static String signup2 = "/signup2";
+  static String checkSignUp = "/checksignup";
   static String Home = "/home";
   static String AllDoctors = "/home/alldoctors";
   static String AllClinics = "/home/allclinics";

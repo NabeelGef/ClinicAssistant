@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Constant/Route/router.dart';
 import '../../Constant/code.dart';
@@ -31,7 +32,7 @@ class _LoginState extends State<Login> {
   String _passwordInput="" ;
   String _trimPassword="" ;
   String _trimNumber="" ;
-
+  late SharedPreferences _prefs;
 
   FocusNode _emailFocusNode = FocusNode();
   TextEditingController _emailController = TextEditingController();
@@ -79,6 +80,12 @@ class _LoginState extends State<Login> {
     _emailController.dispose();
     _emailFocusNode.dispose();
     super.dispose();
+  }
+
+  // Storing data in SharedPreferences
+  Future<void> saveData(String key, String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
   }
 
   @override
@@ -238,7 +245,8 @@ class _LoginState extends State<Login> {
                         height: 43.h,
                         child: BlocConsumer<LoginBloc, LoginStates>(
                             listener: (BuildContext context, LoginStates state) {
-                          if (state is SuccessLoginStates) {
+                          if (state is SuccessLoginStates)  {
+                            saveData('login', 'true') ;
                             RouterNav.fluroRouter.navigateTo(context, RouteName.Home);
                           }
                           if (state is LoadingLoginStates) {

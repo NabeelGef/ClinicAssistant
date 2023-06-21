@@ -1,5 +1,7 @@
+
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Screen/bookingPage/book_page.dart';
+import 'package:clinicassistant/Screen/check_signup/check_signup.dart';
 import 'package:clinicassistant/Screen/clinicProfile/clinic_profile.dart';
 import 'package:clinicassistant/Screen/clinicsPage/all_clinics_page.dart';
 import 'package:clinicassistant/Screen/doctorProfile/doctor_profile.dart';
@@ -86,6 +88,15 @@ class RouterNav{
     );
   });
 
+  static Handler checkSignUp = Handler(
+      handlerFunc: ( context , parameters)
+      {
+       return CheckSignUp(
+         phoneNumberFromSignUp: parameters['phoneNumberFromSignUp']![0] ,
+         patientId: parameters['patientId']![0],
+       ) ;
+      }) ;
+
   static void setupRouter() {
     fluroRouter.define(RouteName.welcome0,
         handler: welcome0, transitionType: TransitionType.fadeIn);
@@ -111,6 +122,7 @@ class RouterNav{
 
   fluroRouter.define(RouteName.login, handler: login , transitionType: TransitionType.inFromRight);
   fluroRouter.define(RouteName.signup, handler: signup , transitionType: TransitionType.inFromRight);
+  fluroRouter.define(RouteName.checkSignUp+"/:phoneNumberFromSignUp/:patientId", handler: checkSignUp , transitionType: TransitionType.inFromRight);
   fluroRouter.define(RouteName.signup2+"/:receivedFirstName/:receivedLastName/:receivedUserName/:receivedPassword" ,handler: signup2 , transitionType: TransitionType.inFromRight) ;
   fluroRouter.define(RouteName.Home, handler: home , transitionType: TransitionType.inFromRight);
   fluroRouter.define("/test", handler: testPage , transitionType: TransitionType.nativeModal) ;

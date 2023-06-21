@@ -219,6 +219,238 @@ class Code {
       ),
     );
   }
+
+  //Make Second drawer native for login one
+  static Widget DrawerNativeSeconde(
+      BuildContext context, GlobalKey<ScaffoldState> key) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Container(
+        //color: Colors.red,
+        height: Sizer.getHeight(context) / 1.7,
+        width: Sizer.getWidth(context),
+        child: Drawer(
+          backgroundColor: Coloring.primary3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: ListView(
+              children: [
+
+                /*Container(
+                  height: Sizer.getHeight(context)/5,
+                  child: DrawerHeader(
+                    curve: Curves.easeIn,
+
+                    decoration: BoxDecoration(
+
+                        color: Coloring.primary
+                    ),
+                    child:Row(
+                      children: [
+                        SizedBox(width: 5),
+                        Container(
+                            alignment: Alignment.center,
+                            width: Sizer.getWidth(context)/5,
+                            height: Sizer.getWidth(context)/5  ,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  alignment: Alignment.center,
+                                  fit: BoxFit.cover,
+                                  repeat: ImageRepeat.noRepeat,
+                                  image: AssetImage("assets/images/logo.png")),
+                              borderRadius: BorderRadius.circular(200),
+                              color: Colors.grey[100],
+                            ),
+                            */ /*child:Center(
+                              child: Image(fit: BoxFit.fill
+                                   image:AssetImage("assets/images/logo.png"
+                                  )),
+                            )*/ /*
+                        ),
+                        SizedBox(width: 10),
+                        Text("مساعد العيادات",style: TextStyle(color: Colors.black ,
+                            fontFamily: Font.fontfamily ,
+                            fontSize: Sizer.getTextSize(context, 0.05),
+                            fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ),
+                ),*/
+
+                SizedBox(height: Sizer.getHeight(context) / 20),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: InkWell(
+                    onTap: () {
+                      //Close EndDrawer
+                      key.currentState!.closeEndDrawer();
+                    },
+                    child: Icon(Icons.close,
+                        size: Sizer.getTextSize(context, 0.09),
+                        color: Colors.white),
+                  ),
+                ),
+                SizedBox(height: Sizer.getHeight(context) / 50),
+                InkWell(
+                  onTap: () {
+                    //Go To Home
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.home,
+                          color: Colors.white,
+                          size: Sizer.getTextSize(context, 0.08)),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text("الصّفحة الرّئيسيّة",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: Font.fontfamily,
+                              fontSize: Sizer.getTextSize(context, 0.05),
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+
+                Divider(color: Colors.white, thickness: 2),
+                SizedBox(height: Sizer.getHeight(context) / 50),
+                InkWell(
+                  onTap: () {
+                    // Go To Loginpage
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.person,
+                          color: Colors.white,
+                          size: Sizer.getTextSize(context, 0.08)),
+                      SizedBox(
+                        width: 20,
+                      ),
+
+                      InkWell(
+                        onTap: ()
+                        {
+                          RouterNav.fluroRouter.navigateTo(context, RouteName.login);
+                        },
+                        child: Text("الملف الشخصي",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: Font.fontfamily,
+                                fontSize: Sizer.getTextSize(context, 0.05),
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                  thickness: 2,
+                ),
+                SizedBox(height: Sizer.getHeight(context) / 50),
+                InkWell(
+                  onTap: () {
+                    //Go To AboutPage
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.info_outline_rounded,
+                          color: Colors.white,
+                          size: Sizer.getTextSize(context, 0.08)),
+                      SizedBox(width: 20),
+                      Text("حول النّظام",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: Font.fontfamily,
+                              fontSize: Sizer.getTextSize(context, 0.05),
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.white, thickness: 2),
+                SizedBox(height: Sizer.getHeight(context) / 50),
+                InkWell(
+                  onTap: () {
+                    // Go To Settings
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.settings,
+                          color: Colors.white,
+                          size: Sizer.getTextSize(context, 0.08)),
+                      SizedBox(width: 20),
+                      Text("الإعدادات",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: Font.fontfamily,
+                              fontSize: Sizer.getTextSize(context, 0.05),
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.white, thickness: 2),
+                SizedBox(height: Sizer.getHeight(context) / 50),
+                InkWell(
+                  onTap: () {
+                    // Go To Privacy
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.archive_rounded,
+                          color: Colors.white,
+                          size: Sizer.getTextSize(context, 0.08)),
+                      SizedBox(width: 10),
+                      Text("السجل الطبي",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: Font.fontfamily,
+                              fontSize: Sizer.getTextSize(context, 0.05),
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+
+                Divider(color: Colors.white, thickness: 2),
+                SizedBox(height: Sizer.getHeight(context) / 50),
+                InkWell(
+                  onTap: () {
+                    // Go To Privacy
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.logout,
+                          color: Colors.white,
+                          size: Sizer.getTextSize(context, 0.08)),
+                      SizedBox(width: 10),
+                      Text("تسجيل خروج",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: Font.fontfamily,
+                              fontSize: Sizer.getTextSize(context, 0.05),
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+              ]),
+        ),
+      ),
+    );
+  }
   //Make a const FloatingPoint in Doctor and clinic page
 
   //Make a conts AppBar in Doctor and clinic page

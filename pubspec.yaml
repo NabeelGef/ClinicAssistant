@@ -24,6 +24,7 @@ dependencies:
   shimmer: ^2.0.0
   image_picker: ^0.8.7+4
   shared_preferences: ^2.1.2
+  flutter_otp_text_field: ^1.1.0+2
   responsive_framework: ^0.2.0
   dio: ^5.0.3
   flutter_rating_bar: ^4.0.1
