@@ -4,34 +4,55 @@ import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/blocShared/state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
 class Home extends StatelessWidget {
-  bool? isLogin;
-  Home({Key? key, this.isLogin}) : super(key: key);
+  Home({Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   // Storing data in SharedPreferences
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.asset(Font.urlImage + 'background.png',
-            fit: BoxFit.fill,
-            height: Sizer.getHeight(context),
-            width: Sizer.getWidth(context)),
-        Scaffold(
-            backgroundColor: Colors.transparent,
-            key: _scaffoldKey,
-            //appBar: MyAppBar(context),
-            endDrawer: isLogin == true
-                ? Code.DrawerNativeSeconde(context, _scaffoldKey)
-                : Code.DrawerNative(context, _scaffoldKey),
-            body: Body(context)),
-      ],
-    );
+    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+      if (state.getLoginState == null) {
+        return Stack(
+          children: [
+            Image.asset(Font.urlImage + 'background.png',
+                fit: BoxFit.fill,
+                height: Sizer.getHeight(context),
+                width: Sizer.getWidth(context)),
+            Scaffold(
+                backgroundColor: Colors.transparent,
+                key: _scaffoldKey,
+                //appBar: MyAppBar(context),
+                endDrawer: Code.DrawerNative(context, _scaffoldKey),
+                body: Body(context)),
+          ],
+        );
+      } else {
+        return Stack(
+          children: [
+            Image.asset(Font.urlImage + 'background.png',
+                fit: BoxFit.fill,
+                height: Sizer.getHeight(context),
+                width: Sizer.getWidth(context)),
+            Scaffold(
+                backgroundColor: Colors.transparent,
+                key: _scaffoldKey,
+                //appBar: MyAppBar(context),
+                endDrawer: state.getLoginState!.isLogin == true
+                    ? Code.DrawerNativeSeconde(context, _scaffoldKey)
+                    : Code.DrawerNative(context, _scaffoldKey),
+                body: Body(context)),
+          ],
+        );
+      }
+    });
   }
 
   //Make Body
@@ -61,14 +82,9 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: () async {
-                    bool? isLogin = await Code.getDataLogin('isLogin');
-                    RouterNav.fluroRouter.navigateTo(
-                        context,
-                        routeSettings: RouteSettings(arguments: {
-                          'isLogin': isLogin,
-                        }),
-                        RouteName.AllClinics + "/$isLogin");
+                  onTap: () {
+                    RouterNav.fluroRouter
+                        .navigateTo(context, RouteName.AllClinics);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -95,14 +111,9 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () async {
-                    bool? isLogin = await Code.getDataLogin('isLogin');
-                    RouterNav.fluroRouter.navigateTo(
-                        context,
-                        routeSettings: RouteSettings(arguments: {
-                          'isLogin': isLogin,
-                        }),
-                        RouteName.AllDoctors + "/$isLogin");
+                  onTap: () {
+                    RouterNav.fluroRouter
+                        .navigateTo(context, RouteName.AllDoctors);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

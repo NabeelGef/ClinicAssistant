@@ -6,6 +6,8 @@ import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/clinicProfile/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/clinicProfile/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicProfile/bloc/state.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/blocShared/state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Constant/Route/router.dart';
+import '../../main.dart';
 
 class ClinicProfile extends StatefulWidget {
   final String id;
-  final bool? isLogin;
-  ClinicProfile({Key? key, required this.id, this.isLogin}) : super(key: key);
+  ClinicProfile({Key? key, required this.id}) : super(key: key);
 
   @override
   State<ClinicProfile> createState() => _ClinicProfileState();
@@ -38,15 +40,26 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldkey,
-      endDrawer: widget.isLogin == true
-          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-          : Code.DrawerNative(context, _scaffoldkey),
-      appBar: MyAppBar(),
-      backgroundColor: Coloring.third,
-      body: MyBody(),
-    );
+    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+      if (state.getLoginState != null) {
+        return Scaffold(
+          key: _scaffoldkey,
+          endDrawer: Code.DrawerNative(context, _scaffoldkey),
+          appBar: MyAppBar(),
+          backgroundColor: Coloring.third,
+          body: MyBody(state),
+        );
+      }
+      return Scaffold(
+        key: _scaffoldkey,
+        endDrawer: state.getLoginState!.isLogin == true
+            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+            : Code.DrawerNative(context, _scaffoldkey),
+        appBar: MyAppBar(),
+        backgroundColor: Coloring.third,
+        body: MyBody(state),
+      );
+    });
   }
 
   /*void _onMapCreated(GoogleMapController controller) {
@@ -60,7 +73,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
     return Code.AppBarProfile(_scaffoldkey, context);
   }
 
-  MyBody() {
+  MyBody(SharedState sharedState) {
     return SingleChildScrollView(
         child: BlocBuilder<ClinicProfileBloc, SuccessProfileStates>(
             bloc: clinicProfileBloc,
@@ -292,17 +305,14 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8)),
                                     onPressed: () async {
-                                      bool? isLogin =
-                                          await Code.getDataLogin('isLogin');
-                                      String? token =
-                                          await Code.getData('token');
-                                      if (token == null) {
+                                      if (sharedState.getTokenState!.token ==
+                                          null) {
                                         print("You're not logging");
                                       } else {
                                         RouterNav.fluroRouter.navigateTo(
                                           context,
                                           RouteName.Booking +
-                                              "/${state.profileClinic!.doctors![index].doctorId}/${state.profileClinic!.clinic!.clinicId}/$token/$isLogin",
+                                              "/${state.profileClinic!.doctors![index].doctorId}/${state.profileClinic!.clinic!.clinicId}/${sharedState.getTokenState!.token}",
                                           routeSettings:
                                               RouteSettings(arguments: {
                                             'doctorId': state.profileClinic!
@@ -310,7 +320,6 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                             'clinicId': state.profileClinic!
                                                 .clinic!.clinicId,
                                             'token': token,
-                                            'isLogin': isLogin
                                           }),
                                         );
                                       }

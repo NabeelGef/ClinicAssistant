@@ -3,6 +3,8 @@ import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/blocShared/state.dart';
 import 'package:clinicassistant/widgets/searchBarView.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
@@ -20,8 +22,7 @@ import 'package:shimmer/shimmer.dart';
 
 // ignore: must_be_immutable
 class AllDoctors extends StatefulWidget {
-  bool? isLogin;
-  AllDoctors({Key? key, this.isLogin}) : super(key: key);
+  AllDoctors({Key? key}) : super(key: key);
 
   @override
   State<AllDoctors> createState() => _AllDoctorsState();
@@ -58,26 +59,49 @@ class _AllDoctorsState extends State<AllDoctors> {
       }
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      key: _scaffoldkey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.sp),
-        child: SearchBarView(
-            scaffoldkey: _scaffoldkey,
-            form: form,
-            textEditingController: textEditingController,
-            isDoctor: true,
-            hint: "ابحث عن طبيبك المناسب",
-            allDoctorsBloc: allDoctorsBloc,
-            allClinicsBloc: allClinicsBloc,
-            searchClicked: searchClicked),
-      ),
-      endDrawer: widget.isLogin == true
-          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-          : Code.DrawerNative(context, _scaffoldkey),
-      body: BodyDoctors(),
-    );
+    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+      if (state.getLoginState == null) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldkey,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(100.sp),
+            child: SearchBarView(
+                scaffoldkey: _scaffoldkey,
+                form: form,
+                textEditingController: textEditingController,
+                isDoctor: true,
+                hint: "ابحث عن طبيبك المناسب",
+                allDoctorsBloc: allDoctorsBloc,
+                allClinicsBloc: allClinicsBloc,
+                searchClicked: searchClicked),
+          ),
+          endDrawer: Code.DrawerNative(context, _scaffoldkey),
+          body: BodyDoctors(),
+        );
+      } else {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldkey,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(100.sp),
+            child: SearchBarView(
+                scaffoldkey: _scaffoldkey,
+                form: form,
+                textEditingController: textEditingController,
+                isDoctor: true,
+                hint: "ابحث عن طبيبك المناسب",
+                allDoctorsBloc: allDoctorsBloc,
+                allClinicsBloc: allClinicsBloc,
+                searchClicked: searchClicked),
+          ),
+          endDrawer: state.getLoginState!.isLogin == true
+              ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+              : Code.DrawerNative(context, _scaffoldkey),
+          body: BodyDoctors(),
+        );
+      }
+    });
   }
 
   //Make Body
@@ -559,18 +583,15 @@ class _AllDoctorsState extends State<AllDoctors> {
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       onPressed: () async {
-                                        bool? isLogin =
-                                            await Code.getDataLogin('isLogin');
                                         RouterNav.fluroRouter.navigateTo(
                                             context,
-                                            routeSettings: RouteSettings(
-                                                arguments: {
-                                                  'id': state.doctor!
-                                                      .doctor[index].doctorId,
-                                                  'isLogin': isLogin
-                                                }),
+                                            routeSettings:
+                                                RouteSettings(arguments: {
+                                              'id': state.doctor!.doctor[index]
+                                                  .doctorId,
+                                            }),
                                             RouteName.ProfileDoctor +
-                                                "/${state.doctor!.doctor[index].doctorId}/$isLogin");
+                                                "/${state.doctor!.doctor[index].doctorId}");
                                       },
                                       color: Coloring.third4,
                                       child: Text("عرض التفاصيل",

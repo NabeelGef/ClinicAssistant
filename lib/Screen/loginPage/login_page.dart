@@ -4,6 +4,8 @@ import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Screen/loginPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/loginPage/bloc/event.dart';
 import 'package:clinicassistant/Screen/loginPage/bloc/states.dart';
+import 'package:clinicassistant/blocShared/event.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/repository/login_repo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -252,13 +254,17 @@ class _LoginState extends State<Login> {
                       BlocConsumer<LoginBloc, LoginStates>(listener:
                           (BuildContext context, LoginStates state) async {
                         if (state is SuccessLoginStates) {
-                          bool? isLogin = await Code.getDataLogin('isLogin');
+                          context
+                              .read<SharedBloc>()
+                              .add(SaveDataToken(token: state.token));
+                          context
+                              .read<SharedBloc>()
+                              .add(SaveDataLogin(isLogin: state.isLogin));
+
                           RouterNav.fluroRouter.navigateTo(
                               context,
-                              routeSettings: RouteSettings(arguments: {
-                                'isLogin': isLogin,
-                              }),
-                              RouteName.Home + "/$isLogin");
+                              routeSettings: RouteSettings(arguments: {}),
+                              RouteName.Home);
                         }
                         if (state is LoadingLoginStates) {
                           print("Loading...");

@@ -9,6 +9,8 @@ import 'package:clinicassistant/Screen/clinicsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/states.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/states.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/blocShared/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +19,7 @@ import 'package:shimmer/shimmer.dart';
 
 // ignore: must_be_immutable
 class AllClinics extends StatefulWidget {
-  bool? isLogin;
-  AllClinics({Key? key, this.isLogin}) : super(key: key);
+  AllClinics({Key? key}) : super(key: key);
 
   @override
   State<AllClinics> createState() => _AllClinicsState();
@@ -38,15 +39,26 @@ class _AllClinicsState extends State<AllClinics> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Coloring.third2,
-      key: _scaffoldkey,
-      appBar: MyAppBar(),
-      endDrawer: widget.isLogin == true
-          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-          : Code.DrawerNative(context, _scaffoldkey),
-      body: BodyClinics(),
-    );
+    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+      if (state.getLoginState == null) {
+        return Scaffold(
+          backgroundColor: Coloring.third2,
+          key: _scaffoldkey,
+          appBar: MyAppBar(),
+          endDrawer: Code.DrawerNative(context, _scaffoldkey),
+          body: BodyClinics(),
+        );
+      }
+      return Scaffold(
+        backgroundColor: Coloring.third2,
+        key: _scaffoldkey,
+        appBar: MyAppBar(),
+        endDrawer: state.getLoginState!.isLogin == true
+            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+            : Code.DrawerNative(context, _scaffoldkey),
+        body: BodyClinics(),
+      );
+    });
   }
 
   //Make AppBar
@@ -225,10 +237,6 @@ class _AllClinicsState extends State<AllClinics> {
                                                   borderRadius:
                                                       BorderRadius.circular(8)),
                                               onPressed: () async {
-                                                bool? isLogin =
-                                                    await Code.getDataLogin(
-                                                        'isLogin');
-
                                                 RouterNav.fluroRouter
                                                     .navigateTo(
                                                         context,
@@ -240,12 +248,10 @@ class _AllClinicsState extends State<AllClinics> {
                                                                   .clinics![
                                                                       index]
                                                                   .clinicId,
-                                                              'isLogin':
-                                                                  isLogin,
                                                             }),
                                                         RouteName
                                                                 .ProfileClinic +
-                                                            "/${state.clinic!.clinics![index].clinicId}/$isLogin");
+                                                            "/${state.clinic!.clinics![index].clinicId}");
                                               },
                                               color: Coloring.third4,
                                               child: Text("عرض التفاصيل",

@@ -1,4 +1,3 @@
-import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Screen/loginPage/bloc/event.dart';
 import 'package:clinicassistant/Screen/loginPage/bloc/states.dart';
 import 'package:clinicassistant/model/login_token.dart';
@@ -25,9 +24,10 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       AccessToken accessToken =
           await _loginRepository.loginRepo(events.email, events.password);
       print(accessToken.accessToken?.accessToken);
-      await Code.saveData('token', accessToken.accessToken!.accessToken!);
-      await Code.saveDataLogin('isLogin', true);
-      yield SuccessLoginStates("Login is successfully done");
+      // await Code.saveData('token', accessToken.accessToken!.accessToken!);
+      // await Code.saveDataLogin('isLogin', true);
+      yield SuccessLoginStates("Login is successfully done",
+          accessToken.accessToken!.accessToken, true);
     }
     // هنا اكتب الاحداث التي من المفترض أن تحدث مثلا ارسال بيانات التسجيل
   }

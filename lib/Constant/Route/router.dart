@@ -36,25 +36,17 @@ class RouterNav {
     return Welcome4();
   });
   static Handler home = Handler(handlerFunc: (context, parameters) {
-    String? isLoginParam = parameters['isLogin']?.first;
-    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
-    return Home(isLogin: isLogin);
+    return Home();
   });
   static Handler alldoctors = Handler(handlerFunc: (context, parameters) {
-    String? isLoginParam = parameters['isLogin']?.first;
-    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
-    return AllDoctors(isLogin: isLogin);
+    return AllDoctors();
   });
   static Handler allclinics = Handler(handlerFunc: (context, parameters) {
-    String? isLoginParam = parameters['isLogin']?.first;
-    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
-    return AllClinics(isLogin: isLogin);
+    return AllClinics();
   });
 
   static Handler doctorprofile = Handler(handlerFunc: (context, parameters) {
-    String? isLoginParam = parameters['isLogin']?.first;
-    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
-    return DoctorProfile(id: parameters['id']![0], isLogin: isLogin);
+    return DoctorProfile(id: parameters['id']![0]);
   });
 
   static Handler login = Handler(handlerFunc: (context, parameters) {
@@ -77,20 +69,15 @@ class RouterNav {
   static Handler testPage = Handler(handlerFunc: (context, parameters) {
     return Test();
   });
-
   static Handler clinicprofile = Handler(handlerFunc: (context, parameters) {
-    String? isLoginParam = parameters['isLogin']?.first;
-    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
-    return ClinicProfile(id: parameters['id']![0], isLogin: isLogin);
+    return ClinicProfile(id: parameters['id']![0]);
   });
   static Handler book = Handler(handlerFunc: (context, parameters) {
-    String? isLoginParam = parameters['isLogin']?.first;
-    bool isLogin = isLoginParam != null ? isLoginParam == 'true' : false;
     return BookPage(
-        doctorId: parameters['doctorId']!.first,
-        clinicId: parameters['clinicId']!.first,
-        token: parameters['token']!.first,
-        isLogin: isLogin);
+      doctorId: parameters['doctorId']!.first,
+      clinicId: parameters['clinicId']!.first,
+      token: parameters['token']!.first,
+    );
   });
 
   static Handler checkSignUp = Handler(handlerFunc: (context, parameters) {
@@ -111,21 +98,17 @@ class RouterNav {
         handler: welcome3, transitionType: TransitionType.inFromRight);
     fluroRouter.define(RouteName.welcome4,
         handler: welcome4, transitionType: TransitionType.inFromRight);
-    fluroRouter.define(RouteName.Home + "/:isLogin",
+    fluroRouter.define(RouteName.Home,
         handler: home, transitionType: TransitionType.inFromRight);
-    fluroRouter.define(RouteName.AllDoctors + "/:isLogin",
+    fluroRouter.define(RouteName.AllDoctors,
         handler: alldoctors, transitionType: TransitionType.nativeModal);
-    fluroRouter.define(RouteName.ProfileDoctor + "/:id" + "/:isLogin",
+    fluroRouter.define(RouteName.ProfileDoctor + "/:id",
         handler: doctorprofile);
-    fluroRouter.define(RouteName.AllClinics + "/:isLogin", handler: allclinics);
-    fluroRouter.define(RouteName.ProfileClinic + "/:id" + "/:isLogin",
+    fluroRouter.define(RouteName.AllClinics, handler: allclinics);
+    fluroRouter.define(RouteName.ProfileClinic + "/:id",
         handler: clinicprofile);
     fluroRouter.define(
-        RouteName.Booking +
-            "/:doctorId" +
-            "/:clinicId" +
-            "/:token" +
-            "/:isLogin",
+        RouteName.Booking + "/:doctorId" + "/:clinicId" + "/:token",
         handler: book);
     fluroRouter.define(RouteName.login,
         handler: login, transitionType: TransitionType.inFromRight);

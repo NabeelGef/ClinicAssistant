@@ -12,10 +12,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../blocShared/sharedBloc.dart';
+import '../../blocShared/state.dart';
+import '../../main.dart';
+
 class DoctorProfile extends StatefulWidget {
   final String id;
-  final bool? isLogin;
-  DoctorProfile({Key? key, required this.id, this.isLogin}) : super(key: key);
+  DoctorProfile({Key? key, required this.id}) : super(key: key);
 
   @override
   State<DoctorProfile> createState() => _DoctorProfileState();
@@ -46,19 +49,30 @@ class _DoctorProfileState extends State<DoctorProfile> {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //   statusBarColor: null, // Set your desired color here
     // ));
-    return Scaffold(
-        backgroundColor: Coloring.third,
-        key: _scaffoldkey,
-        appBar: MyAppBar(),
-        endDrawer: widget.isLogin == true
-            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-            : Code.DrawerNative(context, _scaffoldkey),
-        //backgroundColor: Coloring.primary,
-        body: BodyDetail(context));
+    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+      if (state.getLoginState == null) {
+        return Scaffold(
+            backgroundColor: Coloring.third,
+            key: _scaffoldkey,
+            appBar: MyAppBar(),
+            endDrawer: Code.DrawerNative(context, _scaffoldkey),
+            //backgroundColor: Coloring.primary,
+            body: BodyDetail(context, state));
+      }
+      return Scaffold(
+          backgroundColor: Coloring.third,
+          key: _scaffoldkey,
+          appBar: MyAppBar(),
+          endDrawer: state.getLoginState!.isLogin == true
+              ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+              : Code.DrawerNative(context, _scaffoldkey),
+          //backgroundColor: Coloring.primary,
+          body: BodyDetail(context, state));
+    });
   }
 
   //Make Body
-  BodyDetail(BuildContext context) {
+  BodyDetail(BuildContext context, SharedState sharedState) {
     return SingleChildScrollView(
         child:
             /*  if(snapshot.connectionState==ConnectionState.waiting){
@@ -464,19 +478,15 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                               borderRadius:
                                                   BorderRadius.circular(8)),
                                           onPressed: () async {
-                                            bool? isLogin =
-                                                await Code.getDataLogin(
-                                                    'isLogin');
-
-                                            String? token =
-                                                await Code.getData('token');
-                                            if (token == null) {
+                                            if (sharedState
+                                                    .getTokenState!.token ==
+                                                null) {
                                               print("You're not logging");
                                             } else {
                                               RouterNav.fluroRouter.navigateTo(
                                                 context,
                                                 RouteName.Booking +
-                                                    "/${state.profileDoctor!.doctorProfile!.doctor!.doctorId}/${state.profileDoctor!.doctorProfile!.clinics![index].clinicId}/$token/$isLogin",
+                                                    "/${state.profileDoctor!.doctorProfile!.doctor!.doctorId}/${state.profileDoctor!.doctorProfile!.clinics![index].clinicId}/${sharedState.getTokenState!.token}",
                                                 routeSettings:
                                                     RouteSettings(arguments: {
                                                   'doctorId': state
@@ -490,7 +500,6 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                                       .clinics![index]
                                                       .clinicId,
                                                   'token': token,
-                                                  'isLogin': isLogin
                                                 }),
                                               );
                                               // RouterNav.fluroRouter.navigateTo(context,

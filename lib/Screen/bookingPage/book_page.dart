@@ -3,6 +3,8 @@ import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/event.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/state.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/blocShared/state.dart';
 import 'package:clinicassistant/widgets/AlertBook/alertBook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,12 +20,10 @@ class BookPage extends StatefulWidget {
       {super.key,
       required this.doctorId,
       required this.clinicId,
-      required this.token,
-      this.isLogin});
+      required this.token});
   String doctorId;
   String clinicId;
   String token;
-  bool? isLogin;
   @override
   State<BookPage> createState() => _BookPageState();
 }
@@ -41,15 +41,26 @@ class _BookPageState extends State<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldkey,
-      endDrawer: widget.isLogin == true
-          ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-          : Code.DrawerNative(context, _scaffoldkey),
-      appBar: MyAppBar(),
-      backgroundColor: Coloring.third,
-      body: MyBody(),
-    );
+    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+      if (state.getLoginState == null) {
+        return Scaffold(
+          key: _scaffoldkey,
+          endDrawer: Code.DrawerNative(context, _scaffoldkey),
+          appBar: MyAppBar(),
+          backgroundColor: Coloring.third,
+          body: MyBody(),
+        );
+      }
+      return Scaffold(
+        key: _scaffoldkey,
+        endDrawer: state.getLoginState!.isLogin == true
+            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+            : Code.DrawerNative(context, _scaffoldkey),
+        appBar: MyAppBar(),
+        backgroundColor: Coloring.third,
+        body: MyBody(),
+      );
+    });
   }
 
   MyAppBar() {
