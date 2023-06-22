@@ -315,7 +315,6 @@ class _BookPageState extends State<BookPage> {
                             ]),
                         InkWell(
                           onTap: () async {
-                            bool? isLogin = await Code.getDataLogin('isLogin');
                             RouterNav.fluroRouter.navigateTo(
                                 context,
                                 routeSettings: RouteSettings(arguments: {
@@ -325,10 +324,9 @@ class _BookPageState extends State<BookPage> {
                                       .doctorClinicDetails!
                                       .clinic!
                                       .clinicId,
-                                  'isLogin': isLogin
                                 }),
                                 RouteName.ProfileClinic +
-                                    "/${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.clinicId}/$isLogin");
+                                    "/${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.clinicId}");
                           },
                           child: Container(
                             padding: EdgeInsets.all(8.sp),

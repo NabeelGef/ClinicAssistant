@@ -4,11 +4,13 @@ import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
+import 'package:clinicassistant/blocShared/event.dart';
+import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Route/routename.dart';
 import 'Route/router.dart';
@@ -232,10 +234,8 @@ class Code {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
-          child: ListView(
-              children: [
-
-                /*Container(
+          child: ListView(children: [
+            /*Container(
                   height: Sizer.getHeight(context)/5,
                   child: DrawerHeader(
                     curve: Curves.easeIn,
@@ -276,173 +276,210 @@ class Code {
                   ),
                 ),*/
 
-                SizedBox(height: Sizer.getHeight(context) / 20),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: InkWell(
+            SizedBox(height: Sizer.getHeight(context) / 20),
+            Align(
+              alignment: Alignment.topLeft,
+              child: InkWell(
+                onTap: () {
+                  //Close EndDrawer
+                  key.currentState!.closeEndDrawer();
+                },
+                child: Icon(Icons.close,
+                    size: Sizer.getTextSize(context, 0.09),
+                    color: Colors.white),
+              ),
+            ),
+            SizedBox(height: Sizer.getHeight(context) / 50),
+            InkWell(
+              onTap: () {
+                //Go To Home
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.home,
+                      color: Colors.white,
+                      size: Sizer.getTextSize(context, 0.08)),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text("الصّفحة الرّئيسيّة",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(width: 20),
+                ],
+              ),
+            ),
+            Divider(color: Colors.white, thickness: 2),
+            SizedBox(height: Sizer.getHeight(context) / 50),
+            InkWell(
+              onTap: () {
+                // Go To Loginpage
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.person,
+                      color: Colors.white,
+                      size: Sizer.getTextSize(context, 0.08)),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  InkWell(
                     onTap: () {
-                      //Close EndDrawer
-                      key.currentState!.closeEndDrawer();
+                      //RouterNav.fluroRouter.navigateTo(context, RouteName.login);
                     },
-                    child: Icon(Icons.close,
-                        size: Sizer.getTextSize(context, 0.09),
-                        color: Colors.white),
+                    child: Text("الملف الشخصي",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: Font.fontfamily,
+                            fontSize: Sizer.getTextSize(context, 0.05),
+                            fontWeight: FontWeight.bold)),
                   ),
-                ),
-                SizedBox(height: Sizer.getHeight(context) / 50),
-                InkWell(
-                  onTap: () {
-                    //Go To Home
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.home,
+                  SizedBox(width: 20),
+                ],
+              ),
+            ),
+            Divider(
+              color: Colors.white,
+              thickness: 2,
+            ),
+            SizedBox(height: Sizer.getHeight(context) / 50),
+            InkWell(
+              onTap: () {
+                //Go To AboutPage
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.info_outline_rounded,
+                      color: Colors.white,
+                      size: Sizer.getTextSize(context, 0.08)),
+                  SizedBox(width: 20),
+                  Text("حول النّظام",
+                      style: TextStyle(
                           color: Colors.white,
-                          size: Sizer.getTextSize(context, 0.08)),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text("الصّفحة الرّئيسيّة",
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(width: 20),
+                ],
+              ),
+            ),
+            Divider(color: Colors.white, thickness: 2),
+            SizedBox(height: Sizer.getHeight(context) / 50),
+            InkWell(
+              onTap: () {
+                // Go To Settings
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.settings,
+                      color: Colors.white,
+                      size: Sizer.getTextSize(context, 0.08)),
+                  SizedBox(width: 20),
+                  Text("الإعدادات",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(width: 20),
+                ],
+              ),
+            ),
+            Divider(color: Colors.white, thickness: 2),
+            SizedBox(height: Sizer.getHeight(context) / 50),
+            InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor: Coloring.third,
+                        title: Text(
+                          "هل تريد تأكيد تسجيل الخروج؟؟",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.05),
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-
-                Divider(color: Colors.white, thickness: 2),
-                SizedBox(height: Sizer.getHeight(context) / 50),
-                InkWell(
-                  onTap: () {
-                    // Go To Loginpage
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.person,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.sp),
+                        ),
+                        content: Container(
+                          width: Sizer.getWidth(context) / 2,
+                          height: Sizer.getHeight(context) / 5,
+                        ),
+                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                        actions: [
+                          InkWell(
+                            onTap: () {
+                              context.read<SharedBloc>().add(SignoutLogin());
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: Sizer.getWidth(context) / 5,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Coloring.loginWhite),
+                              child: Text("نعم",
+                                  style: TextStyle(
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.sp)),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: Sizer.getWidth(context) / 5,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Coloring.loginWhite),
+                              child: Text("لا",
+                                  style: TextStyle(
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.sp)),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.logout,
+                      color: Colors.white,
+                      size: Sizer.getTextSize(context, 0.08)),
+                  SizedBox(width: 10),
+                  Text("تسجيل خروج",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
                           color: Colors.white,
-                          size: Sizer.getTextSize(context, 0.08)),
-                      SizedBox(
-                        width: 20,
-                      ),
-
-                      InkWell(
-                        onTap: ()
-                        {
-                          //RouterNav.fluroRouter.navigateTo(context, RouteName.login);
-                        },
-                        child: Text("الملف الشخصي",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: Font.fontfamily,
-                                fontSize: Sizer.getTextSize(context, 0.05),
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-                Divider(
-                  color: Colors.white,
-                  thickness: 2,
-                ),
-                SizedBox(height: Sizer.getHeight(context) / 50),
-                InkWell(
-                  onTap: () {
-                    //Go To AboutPage
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.info_outline_rounded,
-                          color: Colors.white,
-                          size: Sizer.getTextSize(context, 0.08)),
-                      SizedBox(width: 20),
-                      Text("حول النّظام",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.05),
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-                Divider(color: Colors.white, thickness: 2),
-                SizedBox(height: Sizer.getHeight(context) / 50),
-                InkWell(
-                  onTap: () {
-                    // Go To Settings
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.settings,
-                          color: Colors.white,
-                          size: Sizer.getTextSize(context, 0.08)),
-                      SizedBox(width: 20),
-                      Text("الإعدادات",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.05),
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-                Divider(color: Colors.white, thickness: 2),
-                SizedBox(height: Sizer.getHeight(context) / 50),
-                InkWell(
-                  onTap: () {
-                    // Go To Privacy
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.logout,
-                          color: Colors.white,
-                          size: Sizer.getTextSize(context, 0.08)),
-                      SizedBox(width: 10),
-                      Text("تسجيل خروج",
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.05),
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-              ]),
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(width: 20),
+                ],
+              ),
+            ),
+          ]),
         ),
       ),
     );
   }
 
-  static Future<void> saveData(String key, String value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
-  }
-  static Future<void> saveDataLogin(String key, bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(key, value);
-  }
-
-// Retrieving data from SharedPreferences
-  static Future<bool?> getDataLogin(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key);
-  }
-  static Future<String?> getData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
-  }
   //Make a const FloatingPoint in Doctor and clinic page
 
   //Make a conts AppBar in Doctor and clinic page
