@@ -13,8 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Constant/color.dart';
 
-bool? isLogin;
-String? token;
 void main() async {
   // isLogin = await Code.getDataLogin('isLogin');
   // token = await Code.getData('token');

@@ -17,8 +17,9 @@ class LoadingEventAlertBook extends AlertBookEvent {
 }
 
 class LoadingEventAlertBookClock extends AlertBookEvent {
+  final String token;
   final String workTimeId;
-  LoadingEventAlertBookClock(this.workTimeId);
+  LoadingEventAlertBookClock(this.workTimeId, this.token);
 }
 
 class SelectTime extends AlertBookEvent {

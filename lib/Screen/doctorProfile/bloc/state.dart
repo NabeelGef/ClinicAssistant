@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:clinicassistant/model/profileDoctor.dart';
 
 abstract class DoctorProfileState {
@@ -17,5 +18,15 @@ class CommunicationDropDownStates extends DoctorProfileState {
 class SuccessProfileStates extends DoctorProfileState {
   final ProfileDoctor? profileDoctor;
   final String error;
-  SuccessProfileStates(this.profileDoctor, this.error);
+  final EvaluateState? evaluateState;
+  SuccessProfileStates(this.profileDoctor, this.error, this.evaluateState);
+}
+
+class EvaluateState {
+  final String? evaluate;
+  String? error;
+  EvaluateState({
+    this.evaluate,
+    this.error,
+  });
 }

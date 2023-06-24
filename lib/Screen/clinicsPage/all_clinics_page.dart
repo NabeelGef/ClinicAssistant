@@ -42,6 +42,7 @@ class _AllClinicsState extends State<AllClinics> {
     return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
       if (state.getLoginState == null) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Coloring.third2,
           key: _scaffoldkey,
           appBar: MyAppBar(),
@@ -50,6 +51,7 @@ class _AllClinicsState extends State<AllClinics> {
         );
       }
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Coloring.third2,
         key: _scaffoldkey,
         appBar: MyAppBar(),
@@ -111,7 +113,10 @@ class _AllClinicsState extends State<AllClinics> {
                         return mainAxisExtent;
                       }
 
-                      if (state.clinic == null) {
+                      if (state.clinic ==
+                              null /*||
+                          state.clinic?.clinics == null*/
+                          ) {
                         if (state.error.isNotEmpty) {
                           return Center(child: Text("${state.error}"));
                         } else {
@@ -146,132 +151,119 @@ class _AllClinicsState extends State<AllClinics> {
                       } else {
                         return Container(
                             width: Sizer.getWidth(context) / 1.01,
-                            child:
-                                LayoutBuilder(builder: (context, constraints) {
-                              return GridView.builder(
-                                  padding: EdgeInsets.all(5),
-                                  itemCount: state.clinic!.clinics!.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisSpacing:
-                                              Sizer.getTextSize(context, 0.03),
-                                          mainAxisSpacing:
-                                              Sizer.getTextSize(context, 0.05),
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 1,
-                                          mainAxisExtent:
-                                              Sizer.getHeight(context) / 2.3),
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    //int countstar = snapshot.data!.doctors![index].evaluate!.toInt();
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        color: Coloring.third3,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(height: 15),
-                                          Expanded(
-                                            flex: 6,
-                                            child: Column(
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: Sizer.getTextSize(
-                                                      context, 0.1),
-                                                  backgroundImage: AssetImage(
-                                                      "${Font.urlImage}clinicavatar.png"),
-                                                ),
-                                                Center(
-                                                    child: Text(
-                                                        "${state.clinic!.clinics![index].clinicName}",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            color: Coloring
-                                                                .primary,
-                                                            fontSize: Sizer
-                                                                .getTextSize(
-                                                                    context,
-                                                                    0.05),
-                                                            fontFamily:
-                                                                Font.fontfamily,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold))),
-                                                Center(
-                                                    child: Text(
-                                                        "عدد الأطباء ${state.clinic!.clinics![index].numDoctors}",
-                                                        style: TextStyle(
-                                                            color: Coloring
-                                                                .primary4,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                Font.fontfamily,
-                                                            fontSize: Sizer
-                                                                .getTextSize(
-                                                                    context,
-                                                                    0.04)))),
-                                                Center(
-                                                    child: Text(
-                                                  """  الموقع : ${state.clinic!.clinics![index].area!.governorate!.name} - ${state.clinic!.clinics![index].area!.name}""",
-                                                  style: TextStyle(
-                                                      color: Coloring.primary4,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily:
-                                                          Font.fontfamily,
-                                                      fontSize:
-                                                          Sizer.getTextSize(
-                                                              context, 0.04)),
-                                                  textAlign: TextAlign.center,
-                                                )),
-                                              ],
-                                            ),
+                            child: GridView.builder(
+                                padding: EdgeInsets.all(5),
+                                itemCount: state.clinic!.clinics!.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing:
+                                            Sizer.getTextSize(context, 0.03),
+                                        mainAxisSpacing:
+                                            Sizer.getTextSize(context, 0.05),
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 1,
+                                        mainAxisExtent:
+                                            Sizer.getHeight(context) / 2.3),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  //int countstar = snapshot.data!.doctors![index].evaluate!.toInt();
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Coloring.third3,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 15),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Column(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: Sizer.getTextSize(
+                                                    context, 0.1),
+                                                backgroundImage: AssetImage(
+                                                    "${Font.urlImage}clinicavatar.png"),
+                                              ),
+                                              Center(
+                                                  child: Text(
+                                                      "${state.clinic!.clinics![index].clinicName}",
+                                                      textAlign: TextAlign
+                                                          .center,
+                                                      style: TextStyle(
+                                                          color:
+                                                              Coloring.primary,
+                                                          fontSize: Sizer
+                                                              .getTextSize(
+                                                                  context,
+                                                                  0.05),
+                                                          fontFamily:
+                                                              Font.fontfamily,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
+                                              Center(
+                                                  child: Text(
+                                                      "عدد الأطباء ${state.clinic!.clinics![index].numDoctors}",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Coloring.primary4,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily:
+                                                              Font.fontfamily,
+                                                          fontSize:
+                                                              Sizer.getTextSize(
+                                                                  context,
+                                                                  0.04)))),
+                                              Center(
+                                                  child: Text(
+                                                """  الموقع : ${state.clinic!.clinics![index].area!.governorate!.name} - ${state.clinic!.clinics![index].area!.name}""",
+                                                style: TextStyle(
+                                                    color: Coloring.primary4,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: Font.fontfamily,
+                                                    fontSize: Sizer.getTextSize(
+                                                        context, 0.04)),
+                                                textAlign: TextAlign.center,
+                                              )),
+                                            ],
                                           ),
-                                          Expanded(
-                                            child: MaterialButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8)),
-                                              onPressed: () async {
-                                                RouterNav.fluroRouter
-                                                    .navigateTo(
-                                                        context,
-                                                        routeSettings:
-                                                            RouteSettings(
-                                                                arguments: {
-                                                              'id': state
-                                                                  .clinic!
-                                                                  .clinics![
-                                                                      index]
-                                                                  .clinicId,
-                                                            }),
-                                                        RouteName
-                                                                .ProfileClinic +
-                                                            "/${state.clinic!.clinics![index].clinicId}");
-                                              },
-                                              color: Coloring.third4,
-                                              child: Text("عرض التفاصيل",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize:
-                                                          Sizer.getTextSize(
-                                                              context, 0.05),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily:
-                                                          Font.fontfamily)),
-                                            ),
+                                        ),
+                                        Expanded(
+                                          child: MaterialButton(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            onPressed: () async {
+                                              RouterNav.fluroRouter.navigateTo(
+                                                  context,
+                                                  routeSettings:
+                                                      RouteSettings(arguments: {
+                                                    'id': state
+                                                        .clinic!
+                                                        .clinics![index]
+                                                        .clinicId,
+                                                  }),
+                                                  RouteName.ProfileClinic +
+                                                      "/${state.clinic!.clinics![index].clinicId}");
+                                            },
+                                            color: Coloring.third4,
+                                            child: Text("عرض التفاصيل",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: Sizer.getTextSize(
+                                                        context, 0.05),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily:
+                                                        Font.fontfamily)),
                                           ),
-                                          SizedBox(height: 25.sp)
-                                        ],
-                                      ),
-                                    );
-                                  });
-                            }));
+                                        ),
+                                        SizedBox(height: 25.sp)
+                                      ],
+                                    ),
+                                  );
+                                }));
                       }
                     })))
       ],

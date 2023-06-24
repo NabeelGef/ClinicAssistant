@@ -18,7 +18,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
       yield* Loading(event.doctorId, event.clinicId, event.token);
     }
     if (event is LoadingEventAlertBookClock) {
-      yield* LoadingClocks(event.workTimeId);
+      yield* LoadingClocks(event.workTimeId, event.token);
     }
     if (event is SelectTime) {
       var selected = event.selected;
@@ -70,15 +70,14 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
     }
   }
 
-  Stream<StateAlertBook> LoadingClocks(String workTimeId) async* {
+  Stream<StateAlertBook> LoadingClocks(String workTimeId, String token) async* {
     yield StateAlertBook(
         successAlertBookClock:
             SuccessAlertBookClock(workTimeClock: null, error: ""),
         successAlertBook: state.successAlertBook);
     try {
-      WorkTimeClock? workTimeClock = await ClockTimeRepository.getWorkTimeClocks(
-          workTimeId,
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
+      WorkTimeClock? workTimeClock =
+          await ClockTimeRepository.getWorkTimeClocks(workTimeId, token);
       if (workTimeClock == null) {
         yield StateAlertBook(
             successAlertBookClock:

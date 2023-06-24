@@ -2,16 +2,21 @@ import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
+import 'package:clinicassistant/Screen/doctorProfile/bloc/bloc.dart';
+import 'package:clinicassistant/Screen/doctorProfile/bloc/event.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
 import 'package:clinicassistant/blocShared/event.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/repository/evaluate_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import '../Screen/clinicsPage/bloc/events.dart';
 import 'Route/routename.dart';
 import 'Route/router.dart';
 
@@ -421,6 +426,9 @@ class Code {
                               context.read<SharedBloc>().add(SignoutLogin());
                               Navigator.pop(context);
                               Navigator.pop(context);
+                              RouterNav.fluroRouter.navigateTo(
+                                  context, RouteName.Home,
+                                  clearStack: true);
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -579,7 +587,10 @@ class Code {
                                     textEditingController.text, null, null));
                               }
                             } else {
-                              //search on Clinic
+                              if (form.currentState!.validate()) {
+                                allClinicsBloc.add(SearchEventClinic(
+                                    name: textEditingController.text));
+                              }
                             }
                           },
                           child: Icon(Icons.search,
@@ -634,7 +645,9 @@ class Code {
     );
   }
 
-  static showRatingBar(BuildContext context) {
+  static showRatingBar(DoctorProfileDataBloc doctorProfileDataBloc,
+      BuildContext context, String token, String doctorId, double init) {
+    double initialRating = init;
     return AlertDialog(
       backgroundColor: Coloring.primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -651,7 +664,7 @@ class Code {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             RatingBar(
-                initialRating: 0,
+                initialRating: initialRating,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
@@ -665,9 +678,24 @@ class Code {
                       Icons.star_outline,
                       color: Colors.white,
                     )),
-                onRatingUpdate: (value) {}),
+                onRatingUpdate: (value) {
+                  initialRating = value;
+                }),
             InkWell(
-              onTap: () {
+              onTap: () async {
+                String? data =
+                    await EvaluateRepo.evaluate(initialRating, token, doctorId);
+                if (data != null && data.isNotEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "$data",
+                      fontSize: 20.sp,
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.SNACKBAR,
+                      backgroundColor: Colors.white,
+                      textColor: Coloring.primary);
+                  doctorProfileDataBloc
+                      .add(GetEvaluate(token: token, doctorId: doctorId));
+                }
                 Navigator.pop(context);
               },
               child: Container(

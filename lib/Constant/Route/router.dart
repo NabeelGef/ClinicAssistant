@@ -46,7 +46,8 @@ class RouterNav {
   });
 
   static Handler doctorprofile = Handler(handlerFunc: (context, parameters) {
-    return DoctorProfile(id: parameters['id']![0]);
+    return DoctorProfile(
+        id: parameters['id']![0], token: parameters['token']![0]);
   });
 
   static Handler login = Handler(handlerFunc: (context, parameters) {
@@ -102,7 +103,7 @@ class RouterNav {
         handler: home, transitionType: TransitionType.inFromRight);
     fluroRouter.define(RouteName.AllDoctors,
         handler: alldoctors, transitionType: TransitionType.nativeModal);
-    fluroRouter.define(RouteName.ProfileDoctor + "/:id",
+    fluroRouter.define(RouteName.ProfileDoctor + "/:id" + "/:token",
         handler: doctorprofile);
     fluroRouter.define(RouteName.AllClinics, handler: allclinics);
     fluroRouter.define(RouteName.ProfileClinic + "/:id",

@@ -8,6 +8,7 @@ class API {
   static String clinicsBack = "clinics";
   static String patientBack = "patient";
   static String patientsBack = "patients";
+  static String evaluateBack = "evaluate";
   static String signupBack = "signup";
   static String loginBack = "login";
   static String verifyBack = "verify";
@@ -16,6 +17,7 @@ class API {
   static String specialist = "doctorspecialties";
   static String specialistBack = "specialties/subspecialties";
   static String clinics = "allclinics";
+  static String filterClinicsByName = "filter-by-names";
   static String alldoctors = "alldoctors";
   static String detailDoctors = "profile";
   static String clinicBack = "clinic";

@@ -23,7 +23,7 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
       yield* ChangeDropDownAddress(event.isClick);
     }
     if (event is LoadingBooking) {
-      yield* Loading(event.doctorId, event.clinicId);
+      yield* Loading(event.doctorId, event.clinicId, event.token);
     }
   }
 
@@ -57,15 +57,14 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
         SuccessDoctorClinicBook(doctorClinicBook, ""));
   }
 
-  Stream<BookState> Loading(String doctorId, String clinicId) async* {
+  Stream<BookState> Loading(
+      String doctorId, String clinicId, String token) async* {
     yield BookState([imagecommunication, imagespecialist, imageaddress],
         SuccessDoctorClinicBook(doctorClinicBook, ""));
 
     try {
       doctorClinicBook = await DoctorClinicBookRepository.getDoctorClinicBook(
-          doctorId,
-          clinicId,
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRpZW50SWQiOiIxIiwidHlwZSI6NCwiaWF0IjoxNjg3MjYwMDg4LCJleHAiOjE2ODczNDY0ODh9.B3ZhO_hvFwi7kn-dMs9mwkqjibV7Vq2xex1cq1uZa2s");
+          doctorId, clinicId, token);
       if (doctorClinicBook == null) {
         yield BookState([imagecommunication, imagespecialist, imageaddress],
             SuccessDoctorClinicBook(null, "Couldn't Find any Data!!"));

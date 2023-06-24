@@ -6,11 +6,23 @@ part of 'clinic.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Clinic _$ClinicFromJson(Map<String, dynamic> json) => Clinic(
+Clinic _$ClinicFromJson(Map<String, dynamic> json) {
+  try {
+    print("FromJson : ${json['clinics']}");
+    return Clinic(
       clinics: (json['clinics'] as List<dynamic>?)
           ?.map((e) => ClinicElement.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+  } catch (e, s) {
+    print("Error In FromJson In Search of Clinics : $e in : \n$s");
+    return Clinic(
+      clinics: (json['clinics'] as List<dynamic>?)
+          ?.map((e) => ClinicElement.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
 
 Map<String, dynamic> _$ClinicToJson(Clinic instance) => <String, dynamic>{
       'clinics': instance.clinics,

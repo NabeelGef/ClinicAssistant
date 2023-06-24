@@ -12,7 +12,7 @@ class WorkTimeRepository {
     };
 
     String path = "${API.BaseUrlBack}" +
-        "{$API.doctorsBack}" +
+        "${API.doctorsBack}" +
         "/${API.worktime}" +
         "/$doctorId" +
         "/$clinicId";

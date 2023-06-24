@@ -14,11 +14,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../blocShared/sharedBloc.dart';
 import '../../blocShared/state.dart';
-import '../../main.dart';
 
 class DoctorProfile extends StatefulWidget {
   final String id;
-  DoctorProfile({Key? key, required this.id}) : super(key: key);
+  final String? token;
+  DoctorProfile({Key? key, required this.id, required this.token})
+      : super(key: key);
 
   @override
   State<DoctorProfile> createState() => _DoctorProfileState();
@@ -28,20 +29,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
   DoctorProfileBloc doctorProfileBloc = DoctorProfileBloc(
       ["moredrop.png", "moredrop.png", "عرض المزيد", "moredrop.png"]);
-  DoctorProfileDataBloc doctorProfileDataBloc =
-      DoctorProfileDataBloc(SuccessProfileStates(null, ""));
+  DoctorProfileDataBloc doctorProfileDataBloc = DoctorProfileDataBloc(
+      SuccessProfileStates(null, "", EvaluateState(evaluate: null, error: "")));
   @override
   void initState() {
     doctorProfileDataBloc.add(LoadingProfile(widget.id));
+    doctorProfileDataBloc
+        .add(GetEvaluate(token: widget.token, doctorId: widget.id));
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    doctorProfileDataBloc.close();
-    doctorProfileBloc.close();
-
-    super.dispose();
   }
 
   @override
@@ -218,7 +213,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 children: [
                                   Image.asset("${Font.urlImage}online.png"),
                                   Text.rich(TextSpan(
-                                      text: " الطبيب متاح الآن في ",
+                                      text: "  الطبيب متاح الآن في عيادة  ",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize:
@@ -227,7 +222,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       ),
                                       children: <InlineSpan>[
                                         TextSpan(
-                                            text: "عيادة السّلام",
+                                            text:
+                                                "${state.profileDoctor!.doctorProfile!.clinicWorkingNow!.clinicName}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold))
                                       ])),
@@ -249,31 +245,41 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                     fontWeight: FontWeight.bold))
                           ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Code.showRatingBar(context);
-                                });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(top: 15.sp),
-                            alignment: Alignment.center,
-                            width: Sizer.getWidth(context) / 2.2,
-                            height: Sizer.getHeight(context) / 15,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(61.sp),
-                                color: Coloring.primary),
-                            child: Text(
-                              "إضافة تقييم ",
-                              style: TextStyle(
-                                  fontFamily: Font.fontfamily,
-                                  fontSize: Sizer.getTextSize(context, 0.05),
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ),
+                        state.evaluateState != null
+                            ? InkWell(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Code.showRatingBar(
+                                            doctorProfileDataBloc,
+                                            context,
+                                            sharedState.getTokenState!.token!,
+                                            widget.id,
+                                            double.parse(state
+                                                .evaluateState!.evaluate!));
+                                      });
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 15.sp),
+                                  alignment: Alignment.center,
+                                  width: Sizer.getWidth(context) / 2.2,
+                                  height: Sizer.getHeight(context) / 15,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(61.sp),
+                                      color: Coloring.primary),
+                                  child: Text(
+                                    "إضافة تقييم ",
+                                    style: TextStyle(
+                                        fontFamily: Font.fontfamily,
+                                        fontSize:
+                                            Sizer.getTextSize(context, 0.05),
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
                         Container(
                             margin: EdgeInsets.only(top: 15.sp),
                             child: Divider(color: Colors.white, thickness: 2)),
@@ -391,7 +397,6 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 builder: (context, state5) {
                                   var insurances = state.profileDoctor!
                                       .doctorProfile!.insurances!;
-                                  print(insurances);
                                   return ExpansionTile(
                                       tilePadding: EdgeInsets.all(10.sp),
                                       onExpansionChanged: (value) {
@@ -478,15 +483,13 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                               borderRadius:
                                                   BorderRadius.circular(8)),
                                           onPressed: () async {
-                                            if (sharedState
-                                                    .getTokenState!.token ==
-                                                null) {
+                                            if (widget.token == null) {
                                               print("You're not logging");
                                             } else {
                                               RouterNav.fluroRouter.navigateTo(
                                                 context,
                                                 RouteName.Booking +
-                                                    "/${state.profileDoctor!.doctorProfile!.doctor!.doctorId}/${state.profileDoctor!.doctorProfile!.clinics![index].clinicId}/${sharedState.getTokenState!.token}",
+                                                    "/${state.profileDoctor!.doctorProfile!.doctor!.doctorId}/${state.profileDoctor!.doctorProfile!.clinics![index].clinicId}/${widget.token}",
                                                 routeSettings:
                                                     RouteSettings(arguments: {
                                                   'doctorId': state
@@ -499,7 +502,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                                       .doctorProfile!
                                                       .clinics![index]
                                                       .clinicId,
-                                                  'token': token,
+                                                  'token': widget.token,
                                                 }),
                                               );
                                               // RouterNav.fluroRouter.navigateTo(context,

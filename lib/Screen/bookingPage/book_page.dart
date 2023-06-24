@@ -35,7 +35,9 @@ class _BookPageState extends State<BookPage> {
       SuccessDoctorClinicBook(null, "")));
   @override
   void initState() {
-    bookPageBloc.add(LoadingBooking(widget.doctorId, widget.clinicId));
+    bookPageBloc
+        .add(LoadingBooking(widget.doctorId, widget.clinicId, widget.token));
+    print("Token in Bokking : ${widget.token}");
     super.initState();
   }
 

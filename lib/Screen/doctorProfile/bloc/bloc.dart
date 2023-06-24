@@ -2,6 +2,7 @@ import 'package:clinicassistant/Screen/doctorProfile/bloc/event.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/state.dart';
 import 'package:clinicassistant/model/profileDoctor.dart';
 import 'package:clinicassistant/repository/doctor_profile_repo.dart';
+import 'package:clinicassistant/repository/evaluate_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DoctorProfileBloc extends Bloc<DoctorProfileEvents, List<String>> {
@@ -85,20 +86,41 @@ class DoctorProfileDataBloc
     if (event is LoadingProfile) {
       yield* getProfileInfo(event.doctorId);
     }
+    if (event is GetEvaluate) {
+      yield* getEvaluate(event.token, event.doctorId);
+    }
   }
 
   Stream<SuccessProfileStates> getProfileInfo(String id) async* {
-    yield SuccessProfileStates(null, "");
+    yield SuccessProfileStates(null, "", null);
     try {
       ProfileDoctor? profileDoctor =
           await DoctorProfileRepository.getDetailDoctor(id);
       if (profileDoctor == null) {
-        yield SuccessProfileStates(null, "Couldn't Find any Data!!");
+        yield SuccessProfileStates(
+            null, "Couldn't Find any Data!!", state.evaluateState);
       } else {
-        yield SuccessProfileStates(profileDoctor, "");
+        yield SuccessProfileStates(profileDoctor, "", state.evaluateState);
       }
     } catch (e) {
-      yield SuccessProfileStates(null, "Not Found any data");
+      yield SuccessProfileStates(null, "Not Found any data", null);
+    }
+  }
+
+  Stream<SuccessProfileStates> getEvaluate(
+      String? token, String doctorId) async* {
+    yield SuccessProfileStates(state.profileDoctor, "", null);
+    try {
+      String? eval = await EvaluateRepo.getEvaluate(token, doctorId);
+      if (eval == null) {
+        yield SuccessProfileStates(
+            state.profileDoctor, "Couldn't Find any Data!!", null);
+      } else {
+        yield SuccessProfileStates(
+            state.profileDoctor, "", EvaluateState(evaluate: eval));
+      }
+    } catch (e) {
+      yield SuccessProfileStates(null, "Not Found any data", null);
     }
   }
 }

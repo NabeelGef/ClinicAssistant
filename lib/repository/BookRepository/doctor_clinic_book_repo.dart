@@ -9,6 +9,7 @@ class DoctorClinicBookRepository {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
+    print("Headers : $headers");
     DoctorClinicBook doctorClinicBook = DoctorClinicBook();
     String path = "${API.BaseUrlBack}" +
         "${API.doctorsBack}" +

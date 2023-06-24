@@ -43,7 +43,8 @@ class _AlertBookClockState extends State<AlertBookClock> {
   Appointment? appointment;
   @override
   void initState() {
-    alertBookBloc.add(LoadingEventAlertBookClock(widget.workTimeId!));
+    alertBookBloc
+        .add(LoadingEventAlertBookClock(widget.workTimeId!, widget.token));
     super.initState();
   }
 

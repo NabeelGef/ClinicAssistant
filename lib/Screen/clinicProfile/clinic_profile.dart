@@ -16,7 +16,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Constant/Route/router.dart';
-import '../../main.dart';
 
 class ClinicProfile extends StatefulWidget {
   final String id;
@@ -319,7 +318,8 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                                 .doctors![index].doctorId,
                                             'clinicId': state.profileClinic!
                                                 .clinic!.clinicId,
-                                            'token': token,
+                                            'token': sharedState
+                                                .getTokenState!.token,
                                           }),
                                         );
                                       }

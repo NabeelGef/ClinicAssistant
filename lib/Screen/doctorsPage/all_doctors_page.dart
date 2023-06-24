@@ -77,7 +77,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                 searchClicked: searchClicked),
           ),
           endDrawer: Code.DrawerNative(context, _scaffoldkey),
-          body: BodyDoctors(),
+          body: BodyDoctors(state),
         );
       } else {
         return Scaffold(
@@ -98,14 +98,14 @@ class _AllDoctorsState extends State<AllDoctors> {
           endDrawer: state.getLoginState!.isLogin == true
               ? Code.DrawerNativeSeconde(context, _scaffoldkey)
               : Code.DrawerNative(context, _scaffoldkey),
-          body: BodyDoctors(),
+          body: BodyDoctors(state),
         );
       }
     });
   }
 
   //Make Body
-  Widget BodyDoctors() {
+  Widget BodyDoctors(SharedState sharedState) {
     return Column(
       children: [
         Expanded(
@@ -589,9 +589,11 @@ class _AllDoctorsState extends State<AllDoctors> {
                                                 RouteSettings(arguments: {
                                               'id': state.doctor!.doctor[index]
                                                   .doctorId,
+                                              'token':
+                                                  "${sharedState.getTokenState!.token}"
                                             }),
                                             RouteName.ProfileDoctor +
-                                                "/${state.doctor!.doctor[index].doctorId}");
+                                                "/${state.doctor!.doctor[index].doctorId}/${sharedState.getTokenState!.token}");
                                       },
                                       color: Coloring.third4,
                                       child: Text("عرض التفاصيل",

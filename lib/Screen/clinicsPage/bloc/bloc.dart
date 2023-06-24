@@ -16,6 +16,9 @@ class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
     if (events is LoadingClinics) {
       yield* getClinics();
     }
+    if (events is SearchEventClinic) {
+      yield* getClinicsByName(events.name);
+    }
   }
   /*Stream<AllClinicStates> _changeSearch() async*{
     isSearch=!isSearch;
@@ -29,12 +32,26 @@ class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
       if (clinic == null) {
         yield ClinicsStates(state.clinic, "Failed To Load Items");
       } else {
-        print("In Else....");
         yield ClinicsStates(clinic, "");
       }
-    } catch (e) {
-      print("In Catch....$e");
-      yield ClinicsStates(state.clinic, "Not Found any data");
+    } catch (e, s) {
+      print("In Catch All Clinic....$e in $s");
+      yield ClinicsStates(null, "Not Found any data");
+    }
+  }
+
+  Stream<ClinicsStates> getClinicsByName(String name) async* {
+    yield ClinicsStates(state.clinic, "");
+    try {
+      Clinic? clinic = await AllClinicsRepository.SearchClininByName(name);
+      if (clinic == null) {
+        yield ClinicsStates(state.clinic, "Failed To Load Items");
+      } else {
+        yield ClinicsStates(clinic, "");
+      }
+    } catch (e, s) {
+      print("In Catch Search Clinic....$e in $s");
+      yield ClinicsStates(null, "Not Found any data");
     }
   }
 }

@@ -14,6 +14,7 @@ class LoginRepository {
       print(response.statusCode);
       if (response.statusCode == 201) {
         accessToken = AccessToken.fromJson(response.data);
+        print("MyToken : ${accessToken}");
       } else if (response.statusCode == 401) {
         //اعادة رسالة لعدم وجود المستخدم
         //accessToken = AccessToken.fromJson(response.statusMessage as Map<String, dynamic>);

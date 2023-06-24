@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 abstract class BookEvent {
   BookEvent();
 }
@@ -20,5 +21,10 @@ class ChangeAddressDropDown extends BookEvent {
 class LoadingBooking extends BookEvent {
   final String doctorId;
   final String clinicId;
-  LoadingBooking(this.doctorId, this.clinicId);
+  final String token;
+  LoadingBooking(
+    this.doctorId,
+    this.clinicId,
+    this.token,
+  );
 }
