@@ -6,9 +6,7 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  try {
-    return User(
+User _$UserFromJson(Map<String, dynamic> json) => User(
       id: json['id'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
@@ -16,17 +14,3 @@ User _$UserFromJson(Map<String, dynamic> json) {
       access_token: json['access_token'] as String?,
       userProfilePicture: json['userProfilePicture'] as String?,
     );
-  } catch (e) {
-    print("=========error:========");
-    throw Exception(e);
-  }
-}
-
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'id': instance.id,
-      'phoneNumber': instance.phoneNumber,
-      'userProfilePicture': instance.userProfilePicture,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'access_token': instance.access_token,
-    };

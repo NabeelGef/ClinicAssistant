@@ -73,3 +73,26 @@ class SuccessRemain {
     );
   }
 }
+
+class TimeState {
+  MonthState monthState;
+  YearState yearState;
+  TimeState(
+    this.monthState,
+    this.yearState,
+  );
+}
+
+class MonthState {
+  int selecteMonth;
+  MonthState({
+    required this.selecteMonth,
+  });
+}
+
+class YearState {
+  int selecteYear;
+  YearState({
+    required this.selecteYear,
+  });
+}

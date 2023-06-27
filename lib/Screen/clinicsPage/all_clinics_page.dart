@@ -82,18 +82,26 @@ class _AllClinicsState extends State<AllClinics> {
       children: [
         SizedBox(height: 25.sp),
         Expanded(
+          child: InkWell(
+            onTap: () {
+              RouterNav.fluroRouter
+                  .navigateTo(context, RouteName.SearchByLocation);
+            },
             child: Container(
-          alignment: Alignment.center,
-          width: Sizer.getWidth(context) / 1.2,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Coloring.primary),
-          child: Text("البحث حسب الموقع",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: Sizer.getTextSize(context, 0.05),
-                  fontFamily: Font.fontfamily,
-                  fontWeight: FontWeight.bold)),
-        )),
+              alignment: Alignment.center,
+              width: Sizer.getWidth(context) / 1.2,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Coloring.primary),
+              child: Text("البحث حسب الموقع",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizer.getTextSize(context, 0.05),
+                      fontFamily: Font.fontfamily,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ),
         SizedBox(
           height: 25.sp,
         ),

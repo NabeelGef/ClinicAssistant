@@ -85,7 +85,9 @@ class ApiSpecialistBloc extends Bloc<AllDoctorsEvents, SpecialistState> {
       dropdownmain = events.specialist;
       clickspecialist = events.index;
       dropdownsub = events.specialist.subSpecialties![0];
-      checkBoxBloc.add(EditCheckAll());
+      if (events.index != -1) {
+        checkBoxBloc.add(EditCheckAll());
+      }
       yield SuccessAllSpecialStates(state.specialists, "");
     }
     if (events is ChooseSubSpecialist) {

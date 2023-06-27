@@ -6,6 +6,8 @@ import 'package:clinicassistant/Screen/clinicsPage/all_clinics_page.dart';
 import 'package:clinicassistant/Screen/doctorProfile/doctor_profile.dart';
 import 'package:clinicassistant/Screen/doctorsPage/all_doctors_page.dart';
 import 'package:clinicassistant/Screen/homePage/home.dart';
+import 'package:clinicassistant/Screen/myBookPage/myBook.dart';
+import 'package:clinicassistant/Screen/searchByLocation/search_by_location.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom0.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom4.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcome1.dart';
@@ -80,12 +82,19 @@ class RouterNav {
       token: parameters['token']!.first,
     );
   });
+  static Handler searchByLocation = Handler(handlerFunc: (context, parameters) {
+    return SearchByLocation();
+  });
 
   static Handler checkSignUp = Handler(handlerFunc: (context, parameters) {
     return CheckSignUp(
       phoneNumberFromSignUp: parameters['phoneNumberFromSignUp']![0],
       patientId: parameters['patientId']![0],
     );
+  });
+
+  static Handler myBook = Handler(handlerFunc: (context, parameters) {
+    return MyBook();
   });
 
   static void setupRouter() {
@@ -128,5 +137,8 @@ class RouterNav {
         handler: home, transitionType: TransitionType.inFromRight);
     fluroRouter.define("/test",
         handler: testPage, transitionType: TransitionType.nativeModal);
+    fluroRouter.define(RouteName.SearchByLocation,
+        handler: searchByLocation, transitionType: TransitionType.inFromRight);
+    fluroRouter.define(RouteName.MyBook, handler: myBook);
   }
 }

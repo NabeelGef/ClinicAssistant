@@ -23,4 +23,28 @@ class WorkTimeRepository {
     }
     return workTime;
   }
+
+  static Future<WorkTime>? getWorkTimeFilter(String doctorId, String clinicId,
+      String token, String month, String year) async {
+    WorkTime workTime = WorkTime();
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
+    String path = "${API.BaseUrlBack}" +
+        "${API.doctorsBack}" +
+        "/${API.worktime}" +
+        "/$clinicId" +
+        "/$doctorId";
+    Response response = await API.dio.fetch(RequestOptions(
+        baseUrl: path,
+        data: {"month": month, "year": year},
+        method: 'POST',
+        headers: headers));
+    if (response.statusCode == 201) {
+      workTime = WorkTime.fromJson(response.data);
+    }
+    return workTime;
+  }
 }

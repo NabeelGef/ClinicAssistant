@@ -40,6 +40,10 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
     if (event is BookNowEvent) {
       yield* LoadingBook(event.appointmentId, event.token);
     }
+    if (event is LoadingEventAlertBookFilter) {
+      yield* LoadingFilters(event.doctorId, event.clinicId, event.doctorId,
+          event.token, event.month, event.year);
+    }
   }
 
   Stream<StateAlertBook> Loading(
@@ -168,6 +172,50 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
           selectState: state.selectState,
           successRemain: state.successRemain,
           successBook: SuccessBook(message: null, error: "Not Found any data"));
+    }
+  }
+
+  Stream<StateAlertBook> LoadingFilters(String doctorId, String clinicId,
+      String doctorId2, String token, String month, String year) async* {
+    yield StateAlertBook(
+        successAlertBookClock: state.successAlertBookClock,
+        successAlertBook: SuccessAlertBook(workTime: null, error: ""));
+    try {
+      WorkTime? workTime = await WorkTimeRepository.getWorkTimeFilter(
+          doctorId, clinicId, token, month, year);
+      if (workTime == null) {
+        yield StateAlertBook(
+            successAlertBookClock: state.successAlertBookClock,
+            successAlertBook:
+                SuccessAlertBook(workTime: null, error: "Not Found"));
+      } else {
+        yield StateAlertBook(
+          successAlertBookClock: state.successAlertBookClock,
+          successAlertBook: SuccessAlertBook(workTime: workTime, error: ""),
+        );
+      }
+    } catch (e, s) {
+      print("Error In WorkTimes is : $e ,in $s");
+      yield StateAlertBook(
+          successAlertBookClock: state.successAlertBookClock,
+          successAlertBook:
+              SuccessAlertBook(workTime: null, error: "Not Found any data"));
+    }
+  }
+}
+
+class TimeBloc extends Bloc<DateEvent, TimeState> {
+  TimeBloc(super.initialState);
+
+  @override
+  Stream<TimeState> mapEventToState(DateEvent event) async* {
+    if (event is SelectedMonthEvent) {
+      yield TimeState(MonthState(selecteMonth: event.month),
+          YearState(selecteYear: state.yearState.selecteYear));
+    }
+    if (event is SelectedYearEvent) {
+      yield TimeState(MonthState(selecteMonth: state.monthState.selecteMonth),
+          YearState(selecteYear: event.year));
     }
   }
 }

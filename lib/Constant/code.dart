@@ -401,6 +401,29 @@ class Code {
             SizedBox(height: Sizer.getHeight(context) / 50),
             InkWell(
               onTap: () {
+                RouterNav.fluroRouter.navigateTo(context, RouteName.MyBook);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.calendar_month_outlined,
+                      color: Colors.white,
+                      size: Sizer.getTextSize(context, 0.08)),
+                  SizedBox(width: 20),
+                  Text("حجوزاتي",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(width: 20),
+                ],
+              ),
+            ),
+            Divider(color: Colors.white, thickness: 2),
+            SizedBox(height: Sizer.getHeight(context) / 50),
+            InkWell(
+              onTap: () {
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -516,6 +539,52 @@ class Code {
         height: Sizer.getHeight(context) / 5,
       ),
     );
+  }
+
+  static Widget AppBarWithText(GlobalKey<ScaffoldState> _scaffoldkey,
+      BuildContext context, String text, bool isTab) {
+    return AppBar(
+        toolbarHeight: isTab == true
+            ? Sizer.getHeight(context) / 5
+            : Sizer.getHeight(context) / 6,
+        backgroundColor: Coloring.primary,
+        bottom: isTab == true
+            ? TabBar(
+                labelStyle: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontSize: Sizer.getWidth(context) / 15),
+                unselectedLabelColor: Colors.white,
+                labelColor: Coloring.yellow,
+                indicatorColor: Colors.white,
+                tabs: [
+                    Tab(
+                      text: 'السّارية',
+                    ),
+                    Tab(
+                      text: 'السّابقة',
+                    )
+                  ])
+            : null,
+        leading: InkWell(
+            onTap: () {},
+            child: Icon(Icons.notifications_none_outlined,
+                size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+        actions: [
+          InkWell(
+              onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
+              child: Container(
+                  margin: EdgeInsets.only(right: 6.sp),
+                  child: Icon(Icons.menu,
+                      size: Sizer.getTextSize(context, 0.08),
+                      color: Colors.white)))
+        ],
+        centerTitle: true,
+        title: Text("$text",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: Font.fontfamily,
+                fontSize: 25.sp,
+                color: Colors.white)));
   }
 
   static Widget AppBarDoctorsAndClinics(

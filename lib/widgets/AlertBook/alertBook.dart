@@ -33,9 +33,13 @@ class AlertBooking extends StatefulWidget {
 }
 
 class _AlertBooking extends State<AlertBooking> {
+  GlobalKey<FormState> form = GlobalKey();
   AlertBookBloc alertBookBloc = AlertBookBloc(StateAlertBook(
       successAlertBookClock: null,
       successAlertBook: SuccessAlertBook(workTime: null, error: "")));
+  TimeBloc timeBloc = TimeBloc(TimeState(
+      MonthState(selecteMonth: DateTime.now().month),
+      YearState(selecteYear: DateTime.now().year)));
   @override
   void initState() {
     alertBookBloc.add(LoadingEventAlertBook(
@@ -72,6 +76,160 @@ class _AlertBooking extends State<AlertBooking> {
                     fontFamily: Font.fontfamily)),
             SizedBox(
               height: 10.sp,
+            ),
+            BlocBuilder<TimeBloc, TimeState>(
+                bloc: timeBloc,
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          Text("السّنة",
+                              style: TextStyle(
+                                  color: Coloring.loginWhite,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Font.fontfamily,
+                                  fontSize: 15.sp)),
+                          Container(
+                            width: Sizer.getWidth(context) / 4,
+                            height: Sizer.getHeight(context) / 20,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(25)),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<int>(
+                                  borderRadius: BorderRadius.circular(10),
+                                  alignment: Alignment.center,
+                                  dropdownColor: Colors.white,
+                                  icon: Icon(Icons.expand_more_rounded,
+                                      color: Coloring.primary,
+                                      size: Sizer.getTextSize(context, 0.09)),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Font.fontfamily,
+                                      fontSize:
+                                          Sizer.getTextSize(context, 0.04)),
+                                  value: state.yearState.selecteYear,
+                                  onChanged: (value) {
+                                    timeBloc
+                                        .add(SelectedYearEvent(year: value!));
+                                    alertBookBloc.add(
+                                        LoadingEventAlertBookFilter(
+                                            widget.doctorId,
+                                            widget.clinicId,
+                                            widget.token,
+                                            state.monthState.selecteMonth
+                                                .toString(),
+                                            value.toString()));
+                                  },
+                                  isDense: true,
+                                  selectedItemBuilder: (BuildContext context) {
+                                    return List.generate(2, (index) {
+                                      return Container(
+                                        width: Sizer.getWidth(context) / 10,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          state.yearState.selecteYear
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  items: List.generate(2, (index) {
+                                    return DropdownMenuItem(
+                                      alignment: Alignment.center,
+                                      value: index + 2023,
+                                      child: Text(
+                                        '${index + 2023}',
+                                      ),
+                                    );
+                                  })),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text("الشّهر",
+                              style: TextStyle(
+                                  color: Coloring.loginWhite,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Font.fontfamily,
+                                  fontSize: 15.sp)),
+                          Container(
+                            width: Sizer.getWidth(context) / 4,
+                            height: Sizer.getHeight(context) / 20,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(25)),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<int>(
+                                  borderRadius: BorderRadius.circular(10),
+                                  alignment: Alignment.center,
+                                  dropdownColor: Colors.white,
+                                  icon: Icon(Icons.expand_more_rounded,
+                                      color: Coloring.primary,
+                                      size: Sizer.getTextSize(context, 0.09)),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Font.fontfamily,
+                                      fontSize:
+                                          Sizer.getTextSize(context, 0.04)),
+                                  value: state.monthState.selecteMonth,
+                                  onChanged: (value) {
+                                    timeBloc
+                                        .add(SelectedMonthEvent(month: value!));
+                                    alertBookBloc.add(
+                                        LoadingEventAlertBookFilter(
+                                            widget.doctorId,
+                                            widget.clinicId,
+                                            widget.token,
+                                            value.toString(),
+                                            state.yearState.selecteYear
+                                                .toString()));
+                                  },
+                                  isDense: true,
+                                  selectedItemBuilder: (BuildContext context) {
+                                    return List.generate(12, (index) {
+                                      return Container(
+                                        width: Sizer.getWidth(context) / 10,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          state.monthState.selecteMonth
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  items: List.generate(12, (index) {
+                                    return DropdownMenuItem(
+                                      alignment: Alignment.center,
+                                      value: index + 1,
+                                      child: Text(
+                                        '${index + 1}',
+                                      ),
+                                    );
+                                  })),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                }),
+            SizedBox(
+              height: 25.sp,
             ),
             BlocBuilder<AlertBookBloc, StateAlertBook>(
                 bloc: alertBookBloc,

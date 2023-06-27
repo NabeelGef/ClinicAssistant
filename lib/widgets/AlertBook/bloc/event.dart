@@ -16,6 +16,34 @@ class LoadingEventAlertBook extends AlertBookEvent {
   });
 }
 
+class LoadingEventAlertBookFilter extends AlertBookEvent {
+  final String doctorId;
+  final String clinicId;
+  final String token;
+  final String month;
+  final String year;
+  LoadingEventAlertBookFilter(
+      this.doctorId, this.clinicId, this.token, this.month, this.year);
+}
+
+class DateEvent {
+  DateEvent();
+}
+
+class SelectedYearEvent extends DateEvent {
+  int year;
+  SelectedYearEvent({
+    required this.year,
+  });
+}
+
+class SelectedMonthEvent extends DateEvent {
+  int month;
+  SelectedMonthEvent({
+    required this.month,
+  });
+}
+
 class LoadingEventAlertBookClock extends AlertBookEvent {
   final String token;
   final String workTimeId;

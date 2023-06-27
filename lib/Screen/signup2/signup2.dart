@@ -55,7 +55,6 @@ class _SignUp2State extends State<SignUp2> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print(widget.receivedFirstName);
     userInformation = UserInformation(
@@ -548,13 +547,12 @@ class _SignUp2State extends State<SignUp2> {
                       if (state is SuccessSignUp2States) {
                         RouterNav.fluroRouter.navigateTo(
                             context,
-                            routeSettings: RouteSettings(
-                                arguments: {
-                                  'phoneNumberFromSignUp' :_phoneNumberInput,
-                                }
-                            ),
-                            RouteName.checkSignUp+"/$_phoneNumberInput"+"/${state.successMessage}"
-                        );
+                            routeSettings: RouteSettings(arguments: {
+                              'phoneNumberFromSignUp': _phoneNumberInput,
+                            }),
+                            RouteName.checkSignUp +
+                                "/$_phoneNumberInput" +
+                                "/${state.successMessage}");
                       }
 
                       if (state is LoadingSignUp2States) {
@@ -589,9 +587,9 @@ class _SignUp2State extends State<SignUp2> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: (){
-                          RouterNav.fluroRouter.navigateTo(context,
-                              RouteName.login);
+                        onTap: () {
+                          RouterNav.fluroRouter
+                              .navigateTo(context, RouteName.login);
                         },
                         child: Text(
                           "تسجيل دخول ",

@@ -2,10 +2,12 @@ import 'package:dio/dio.dart';
 
 class API {
   //That is end points of Api
-  static String BaseUrl = "https://nabee4.free.beeceptor.com/";
+  //static String BaseUrl = "https://nabee4.free.beeceptor.com/";
   static String IP = /*"192.168.43.206"*/ "10.0.2.2";
   static String BaseUrlBack = "http://$IP:3000/";
   static String clinicsBack = "clinics";
+  static String areas = "areas";
+  static String area = "area";
   static String patientBack = "patient";
   static String patientsBack = "patients";
   static String evaluateBack = "evaluate";
@@ -13,10 +15,12 @@ class API {
   static String loginBack = "login";
   static String verifyBack = "verify";
   static String doctorsBack = "doctors";
+  static String longitude_latitude = "longitude-latitude";
   static String alldoctorsBack = "secondFilterDocrots";
   static String specialist = "doctorspecialties";
   static String specialistBack = "specialties/subspecialties";
   static String clinics = "allclinics";
+  static String specialty = "specialty";
   static String filterClinicsByName = "filter-by-names";
   static String alldoctors = "alldoctors";
   static String detailDoctors = "profile";
@@ -24,5 +28,6 @@ class API {
   static String testbook = "testbook";
   static String worktime = "work-time";
   static String appoitment = "appoitment";
+  static String governorates = "governorates";
   static Dio dio = Dio();
 }

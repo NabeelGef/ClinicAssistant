@@ -14,4 +14,6 @@ class RouteName {
   static String ProfileDoctor = "/profiledoctor";
   static String ProfileClinic = "/profileclinic";
   static String Booking = "/profile/book";
+  static String SearchByLocation = "/allclinics/searchByLocation";
+  static String MyBook = "/MyBook";
 }
