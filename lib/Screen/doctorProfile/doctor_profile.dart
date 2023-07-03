@@ -7,10 +7,13 @@ import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/event.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/state.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../blocShared/sharedBloc.dart';
 import '../../blocShared/state.dart';
@@ -31,38 +34,59 @@ class _DoctorProfileState extends State<DoctorProfile> {
       ["moredrop.png", "moredrop.png", "عرض المزيد", "moredrop.png"]);
   DoctorProfileDataBloc doctorProfileDataBloc = DoctorProfileDataBloc(
       SuccessProfileStates(null, "", EvaluateState(evaluate: null, error: "")));
-  @override
-  void initState() {
-    doctorProfileDataBloc.add(LoadingProfile(widget.id));
-    doctorProfileDataBloc
-        .add(GetEvaluate(token: widget.token, doctorId: widget.id));
-    super.initState();
-  }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: null, // Set your desired color here
-    // ));
     return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
-      if (state.getLoginState == null) {
-        return Scaffold(
-            backgroundColor: Coloring.third,
-            key: _scaffoldkey,
-            appBar: MyAppBar(),
-            endDrawer: Code.DrawerNative(context, _scaffoldkey),
-            //backgroundColor: Coloring.primary,
-            body: BodyDetail(context, state));
-      }
-      return Scaffold(
-          backgroundColor: Coloring.third,
-          key: _scaffoldkey,
-          appBar: MyAppBar(),
-          endDrawer: state.getLoginState!.isLogin == true
-              ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-              : Code.DrawerNative(context, _scaffoldkey),
-          //backgroundColor: Coloring.primary,
-          body: BodyDetail(context, state));
+      return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+          builder: (context, connect) {
+        if (connect is ConnectivityInitial) {
+          return Center(
+              child: CircularProgressIndicator(color: Coloring.primary));
+        } else if (connect is NotConnectedState) {
+          isLoading = false;
+          if (state.getLoginState == null) {
+            return Scaffold(
+                backgroundColor: Coloring.third,
+                key: _scaffoldkey,
+                appBar: MyAppBar(),
+                endDrawer: Code.DrawerNative(context, _scaffoldkey),
+                body: Code.ConnectionWidget(context, false));
+          }
+          return Scaffold(
+              backgroundColor: Coloring.third,
+              key: _scaffoldkey,
+              appBar: MyAppBar(),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: Code.ConnectionWidget(context, false));
+        } else {
+          if (!isLoading) {
+            isLoading = true;
+            doctorProfileDataBloc.add(LoadingProfile(widget.id));
+            doctorProfileDataBloc
+                .add(GetEvaluate(token: widget.token, doctorId: widget.id));
+          }
+          if (state.getLoginState == null) {
+            return Scaffold(
+                backgroundColor: Coloring.third,
+                key: _scaffoldkey,
+                appBar: MyAppBar(),
+                endDrawer: Code.DrawerNative(context, _scaffoldkey),
+                body: BodyDetail(context, state));
+          }
+          return Scaffold(
+              backgroundColor: Coloring.third,
+              key: _scaffoldkey,
+              appBar: MyAppBar(),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: BodyDetail(context, state));
+        }
+      });
     });
   }
 
@@ -483,8 +507,16 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                               borderRadius:
                                                   BorderRadius.circular(8)),
                                           onPressed: () async {
-                                            if (widget.token == null) {
-                                              print("You're not logging");
+                                            if (sharedState
+                                                    .getTokenState!.token ==
+                                                null) {
+                                              Fluttertoast.showToast(
+                                                  msg: "يجب عليك تسجيل الدّخول",
+                                                  backgroundColor:
+                                                      Coloring.primary,
+                                                  fontSize: 25.sp,
+                                                  toastLength:
+                                                      Toast.LENGTH_LONG);
                                             } else {
                                               RouterNav.fluroRouter.navigateTo(
                                                 context,

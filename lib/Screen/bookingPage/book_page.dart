@@ -6,6 +6,8 @@ import 'package:clinicassistant/Screen/bookingPage/bloc/state.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
 import 'package:clinicassistant/widgets/AlertBook/alertBook.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,35 +35,60 @@ class _BookPageState extends State<BookPage> {
   BookPageBloc bookPageBloc = BookPageBloc(BookState(
       ["moredrop.png", "moredrop.png", "moredrop.png"],
       SuccessDoctorClinicBook(null, "")));
-  @override
-  void initState() {
-    bookPageBloc
-        .add(LoadingBooking(widget.doctorId, widget.clinicId, widget.token));
-    print("Token in Bokking : ${widget.token}");
-    super.initState();
-  }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
-      if (state.getLoginState == null) {
-        return Scaffold(
-          key: _scaffoldkey,
-          endDrawer: Code.DrawerNative(context, _scaffoldkey),
-          appBar: MyAppBar(),
-          backgroundColor: Coloring.third,
-          body: MyBody(),
-        );
-      }
-      return Scaffold(
-        key: _scaffoldkey,
-        endDrawer: state.getLoginState!.isLogin == true
-            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-            : Code.DrawerNative(context, _scaffoldkey),
-        appBar: MyAppBar(),
-        backgroundColor: Coloring.third,
-        body: MyBody(),
-      );
+      return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+          builder: (context, connect) {
+        if (connect is ConnectivityInitial) {
+          return Center(
+              child: CircularProgressIndicator(color: Coloring.primary));
+        } else if (connect is NotConnectedState) {
+          isLoading = false;
+          if (state.getLoginState == null) {
+            return Scaffold(
+              key: _scaffoldkey,
+              endDrawer: Code.DrawerNative(context, _scaffoldkey),
+              appBar: MyAppBar(),
+              body: Code.ConnectionWidget(context, false),
+            );
+          }
+          return Scaffold(
+            key: _scaffoldkey,
+            endDrawer: state.getLoginState!.isLogin == true
+                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                : Code.DrawerNative(context, _scaffoldkey),
+            appBar: MyAppBar(),
+            body: Code.ConnectionWidget(context,false),
+          );
+        } else {
+          if (!isLoading) {
+            isLoading = true;
+            bookPageBloc.add(
+                LoadingBooking(widget.doctorId, widget.clinicId, widget.token));
+          }
+          if (state.getLoginState == null) {
+            return Scaffold(
+              key: _scaffoldkey,
+              endDrawer: Code.DrawerNative(context, _scaffoldkey),
+              appBar: MyAppBar(),
+              backgroundColor: Coloring.third,
+              body: MyBody(),
+            );
+          }
+          return Scaffold(
+            key: _scaffoldkey,
+            endDrawer: state.getLoginState!.isLogin == true
+                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                : Code.DrawerNative(context, _scaffoldkey),
+            appBar: MyAppBar(),
+            backgroundColor: Coloring.third,
+            body: MyBody(),
+          );
+        }
+      });
     });
   }
 

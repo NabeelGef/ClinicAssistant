@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,13 +45,10 @@ class _AlertBooking extends State<AlertBooking> {
       YearState(selecteYear: DateTime.now().year)));
   @override
   void initState() {
-    alertBookBloc.add(LoadingEventAlertBook(
-        doctorId: widget.doctorId,
-        clinicId: widget.clinicId,
-        token: widget.token));
     super.initState();
   }
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -77,257 +77,316 @@ class _AlertBooking extends State<AlertBooking> {
             SizedBox(
               height: 10.sp,
             ),
-            BlocBuilder<TimeBloc, TimeState>(
-                bloc: timeBloc,
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            BlocBuilder<ConnectivityBloc, ConnectivityState>(
+                builder: (context, connect) {
+              if (connect is ConnectivityInitial) {
+                return Center(
+                    child: CircularProgressIndicator(color: Coloring.primary));
+              } else if (connect is NotConnectedState) {
+                isLoading = false;
+                return Container(
+                    width: Sizer.getWidth(context) / 2.5,
+                    height: Sizer.getHeight(context) / 3,
+                    child: Code.ConnectionWidget(context, true));
+              } else {
+                if (!isLoading) {
+                  isLoading = true;
+                  alertBookBloc.add(LoadingEventAlertBook(
+                      doctorId: widget.doctorId,
+                      clinicId: widget.clinicId,
+                      token: widget.token));
+                }
+
+                return Expanded(
+                  child: Column(
                     children: [
-                      Column(
-                        children: [
-                          Text("السّنة",
-                              style: TextStyle(
-                                  color: Coloring.loginWhite,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Font.fontfamily,
-                                  fontSize: 15.sp)),
-                          Container(
-                            width: Sizer.getWidth(context) / 4,
-                            height: Sizer.getHeight(context) / 20,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<int>(
-                                  borderRadius: BorderRadius.circular(10),
-                                  alignment: Alignment.center,
-                                  dropdownColor: Colors.white,
-                                  icon: Icon(Icons.expand_more_rounded,
-                                      color: Coloring.primary,
-                                      size: Sizer.getTextSize(context, 0.09)),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: Font.fontfamily,
-                                      fontSize:
-                                          Sizer.getTextSize(context, 0.04)),
-                                  value: state.yearState.selecteYear,
-                                  onChanged: (value) {
-                                    timeBloc
-                                        .add(SelectedYearEvent(year: value!));
-                                    alertBookBloc.add(
-                                        LoadingEventAlertBookFilter(
-                                            widget.doctorId,
-                                            widget.clinicId,
-                                            widget.token,
-                                            state.monthState.selecteMonth
-                                                .toString(),
-                                            value.toString()));
-                                  },
-                                  isDense: true,
-                                  selectedItemBuilder: (BuildContext context) {
-                                    return List.generate(2, (index) {
-                                      return Container(
-                                        width: Sizer.getWidth(context) / 10,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          state.yearState.selecteYear
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontSize: 16.0,
+                      BlocBuilder<TimeBloc, TimeState>(
+                          bloc: timeBloc,
+                          builder: (context, state) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text("السّنة",
+                                        style: TextStyle(
+                                            color: Coloring.loginWhite,
                                             fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                  },
-                                  items: List.generate(2, (index) {
-                                    return DropdownMenuItem(
-                                      alignment: Alignment.center,
-                                      value: index + 2023,
-                                      child: Text(
-                                        '${index + 2023}',
+                                            fontFamily: Font.fontfamily,
+                                            fontSize: 15.sp)),
+                                    Container(
+                                      width: Sizer.getWidth(context) / 4,
+                                      height: Sizer.getHeight(context) / 20,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<int>(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            alignment: Alignment.center,
+                                            dropdownColor: Colors.white,
+                                            icon: Icon(
+                                                Icons.expand_more_rounded,
+                                                color: Coloring.primary,
+                                                size: Sizer.getTextSize(
+                                                    context, 0.09)),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: Font.fontfamily,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.04)),
+                                            value: state.yearState.selecteYear,
+                                            onChanged: (value) {
+                                              timeBloc.add(SelectedYearEvent(
+                                                  year: value!));
+                                              alertBookBloc.add(
+                                                  LoadingEventAlertBookFilter(
+                                                      widget.doctorId,
+                                                      widget.clinicId,
+                                                      widget.token,
+                                                      state.monthState
+                                                          .selecteMonth
+                                                          .toString(),
+                                                      value.toString()));
+                                            },
+                                            isDense: true,
+                                            selectedItemBuilder:
+                                                (BuildContext context) {
+                                              return List.generate(2, (index) {
+                                                return Container(
+                                                  width:
+                                                      Sizer.getWidth(context) /
+                                                          10,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    state.yearState.selecteYear
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                            },
+                                            items: List.generate(2, (index) {
+                                              return DropdownMenuItem(
+                                                alignment: Alignment.center,
+                                                value: index + 2023,
+                                                child: Text(
+                                                  '${index + 2023}',
+                                                ),
+                                              );
+                                            })),
                                       ),
-                                    );
-                                  })),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("الشّهر",
-                              style: TextStyle(
-                                  color: Coloring.loginWhite,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Font.fontfamily,
-                                  fontSize: 15.sp)),
-                          Container(
-                            width: Sizer.getWidth(context) / 4,
-                            height: Sizer.getHeight(context) / 20,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<int>(
-                                  borderRadius: BorderRadius.circular(10),
-                                  alignment: Alignment.center,
-                                  dropdownColor: Colors.white,
-                                  icon: Icon(Icons.expand_more_rounded,
-                                      color: Coloring.primary,
-                                      size: Sizer.getTextSize(context, 0.09)),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: Font.fontfamily,
-                                      fontSize:
-                                          Sizer.getTextSize(context, 0.04)),
-                                  value: state.monthState.selecteMonth,
-                                  onChanged: (value) {
-                                    timeBloc
-                                        .add(SelectedMonthEvent(month: value!));
-                                    alertBookBloc.add(
-                                        LoadingEventAlertBookFilter(
-                                            widget.doctorId,
-                                            widget.clinicId,
-                                            widget.token,
-                                            value.toString(),
-                                            state.yearState.selecteYear
-                                                .toString()));
-                                  },
-                                  isDense: true,
-                                  selectedItemBuilder: (BuildContext context) {
-                                    return List.generate(12, (index) {
-                                      return Container(
-                                        width: Sizer.getWidth(context) / 10,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          state.monthState.selecteMonth
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontSize: 16.0,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text("الشّهر",
+                                        style: TextStyle(
+                                            color: Coloring.loginWhite,
                                             fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                  },
-                                  items: List.generate(12, (index) {
-                                    return DropdownMenuItem(
-                                      alignment: Alignment.center,
-                                      value: index + 1,
-                                      child: Text(
-                                        '${index + 1}',
+                                            fontFamily: Font.fontfamily,
+                                            fontSize: 15.sp)),
+                                    Container(
+                                      width: Sizer.getWidth(context) / 4,
+                                      height: Sizer.getHeight(context) / 20,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<int>(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            alignment: Alignment.center,
+                                            dropdownColor: Colors.white,
+                                            icon: Icon(
+                                                Icons.expand_more_rounded,
+                                                color: Coloring.primary,
+                                                size: Sizer.getTextSize(
+                                                    context, 0.09)),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: Font.fontfamily,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.04)),
+                                            value:
+                                                state.monthState.selecteMonth,
+                                            onChanged: (value) {
+                                              timeBloc.add(SelectedMonthEvent(
+                                                  month: value!));
+                                              alertBookBloc.add(
+                                                  LoadingEventAlertBookFilter(
+                                                      widget.doctorId,
+                                                      widget.clinicId,
+                                                      widget.token,
+                                                      value.toString(),
+                                                      state
+                                                          .yearState.selecteYear
+                                                          .toString()));
+                                            },
+                                            isDense: true,
+                                            selectedItemBuilder:
+                                                (BuildContext context) {
+                                              return List.generate(12, (index) {
+                                                return Container(
+                                                  width:
+                                                      Sizer.getWidth(context) /
+                                                          10,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    state
+                                                        .monthState.selecteMonth
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                            },
+                                            items: List.generate(12, (index) {
+                                              return DropdownMenuItem(
+                                                alignment: Alignment.center,
+                                                value: index + 1,
+                                                child: Text(
+                                                  '${index + 1}',
+                                                ),
+                                              );
+                                            })),
                                       ),
-                                    );
-                                  })),
-                            ),
-                          ),
-                        ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }),
+                      SizedBox(
+                        height: 25.sp,
                       ),
-                    ],
-                  );
-                }),
-            SizedBox(
-              height: 25.sp,
-            ),
-            BlocBuilder<AlertBookBloc, StateAlertBook>(
-                bloc: alertBookBloc,
-                builder: (context, state) {
-                  if (state.successAlertBook?.workTime == null) {
-                    if (state.successAlertBook!.error.isNotEmpty) {
-                      return Center(
-                        child: Text("${state.successAlertBook?.error}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: Sizer.getTextSize(context, 0.06),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: Font.fontfamily)),
-                      );
-                    } else {
-                      return Center(
-                          child:
-                              CircularProgressIndicator(color: Colors.white));
-                    }
-                  } else {
-                    return Expanded(
-                      child: GridView.builder(
-                        itemCount: state.successAlertBook?.workTime!
-                            .doctorClinicWorkTime!.workTimes!.length,
-                        itemBuilder: (context, index) {
-                          bool? haveAppointments = state
-                              .successAlertBook
-                              ?.workTime!
-                              .doctorClinicWorkTime!
-                              .workTimes![index]
-                              .haveAppointments!;
-                          DateTime? date = state.successAlertBook?.workTime!
-                              .doctorClinicWorkTime!.workTimes![index].date;
-                          return InkWell(
-                            onTap: () {
-                              if (haveAppointments) {
-                                Navigator.pop(context);
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    var worktime = state
+                      BlocBuilder<AlertBookBloc, StateAlertBook>(
+                          bloc: alertBookBloc,
+                          builder: (context, state) {
+                            if (state.successAlertBook?.workTime == null) {
+                              if (state.successAlertBook!.error.isNotEmpty) {
+                                return Center(
+                                  child: Text(
+                                      "${state.successAlertBook?.error}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              Sizer.getTextSize(context, 0.06),
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: Font.fontfamily)),
+                                );
+                              } else {
+                                return Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white));
+                              }
+                            } else {
+                              return Expanded(
+                                child: GridView.builder(
+                                  itemCount: state.successAlertBook?.workTime!
+                                      .doctorClinicWorkTime!.workTimes!.length,
+                                  itemBuilder: (context, index) {
+                                    bool? haveAppointments = state
                                         .successAlertBook
                                         ?.workTime!
                                         .doctorClinicWorkTime!
-                                        .workTimes![index];
-                                    return AlertBookClock(
-                                      nameDoctor: widget.nameDoctor,
-                                      nameClinic: widget.clinicName,
-                                      day: worktime!.day!,
-                                      date: worktime.date!,
-                                      workTimeId: state
-                                          .successAlertBook
-                                          ?.workTime!
-                                          .doctorClinicWorkTime!
-                                          .workTimes![index]
-                                          .workTimeId,
-                                      token: widget.token,
+                                        .workTimes![index]
+                                        .haveAppointments!;
+                                    DateTime? date = state
+                                        .successAlertBook
+                                        ?.workTime!
+                                        .doctorClinicWorkTime!
+                                        .workTimes![index]
+                                        .date;
+                                    return InkWell(
+                                      onTap: () {
+                                        if (haveAppointments) {
+                                          Navigator.pop(context);
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              var worktime = state
+                                                  .successAlertBook
+                                                  ?.workTime!
+                                                  .doctorClinicWorkTime!
+                                                  .workTimes![index];
+                                              return AlertBookClock(
+                                                nameDoctor: widget.nameDoctor,
+                                                nameClinic: widget.clinicName,
+                                                day: worktime!.day!,
+                                                date: worktime.date!,
+                                                workTimeId: state
+                                                    .successAlertBook
+                                                    ?.workTime!
+                                                    .doctorClinicWorkTime!
+                                                    .workTimes![index]
+                                                    .workTimeId,
+                                                token: widget.token,
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: haveAppointments!
+                                                ? Coloring.third3
+                                                : Coloring.noColor),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.calendar_month,
+                                                color: Coloring.primary),
+                                            Text(
+                                              "${state.successAlertBook?.workTime!.doctorClinicWorkTime!.workTimes![index].day}\n" +
+                                                  "${date?.year}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
+                                              style: TextStyle(
+                                                  color: Coloring.primary,
+                                                  fontSize: Sizer.getTextSize(
+                                                      context, 0.04),
+                                                  fontFamily: Font.fontfamily,
+                                                  fontWeight: FontWeight.bold),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     );
                                   },
-                                );
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: haveAppointments!
-                                      ? Coloring.third3
-                                      : Coloring.noColor),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.calendar_month,
-                                      color: Coloring.primary),
-                                  Text(
-                                    "${state.successAlertBook?.workTime!.doctorClinicWorkTime!.workTimes![index].day}\n" +
-                                        "${date?.year}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
-                                    style: TextStyle(
-                                        color: Coloring.primary,
-                                        fontSize:
-                                            Sizer.getTextSize(context, 0.04),
-                                        fontFamily: Font.fontfamily,
-                                        fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisExtent: Sizer.getWidth(context) / 5,
-                            mainAxisSpacing: Sizer.getWidth(context) / 25,
-                            crossAxisSpacing: Sizer.getWidth(context) / 20,
-                            childAspectRatio: 0.5),
-                      ),
-                    );
-                  }
-                }),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisExtent:
+                                              Sizer.getWidth(context) / 5,
+                                          mainAxisSpacing:
+                                              Sizer.getWidth(context) / 25,
+                                          crossAxisSpacing:
+                                              Sizer.getWidth(context) / 20,
+                                          childAspectRatio: 0.5),
+                                ),
+                              );
+                            }
+                          }),
+                    ],
+                  ),
+                );
+              }
+            }),
           ],
         ),
       ),

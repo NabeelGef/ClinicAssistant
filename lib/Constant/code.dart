@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 
 import '../Screen/clinicsPage/bloc/events.dart';
 import 'Route/routename.dart';
@@ -585,6 +586,23 @@ class Code {
                 fontFamily: Font.fontfamily,
                 fontSize: 25.sp,
                 color: Colors.white)));
+  }
+
+  static Widget ConnectionWidget(BuildContext context , bool isChanged) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset("assets/lottie/notConnection.json"),
+          Text("يوجد مشكلة في اتّصالك",
+              style: TextStyle(
+                  color:  isChanged? Coloring.loginWhite : Coloring.primary,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: Font.fontfamily,
+                  fontSize: Sizer.getTextSize(context, 0.06)))
+        ],
+      ),
+    );
   }
 
   static Widget AppBarDoctorsAndClinics(

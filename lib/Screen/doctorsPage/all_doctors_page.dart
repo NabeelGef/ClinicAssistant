@@ -5,6 +5,8 @@ import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:clinicassistant/widgets/searchBarView.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
@@ -40,15 +42,8 @@ class _AllDoctorsState extends State<AllDoctors> {
   int? subId;
   bool? ordering;
   String? name;
-  @override
-  void initState() {
-    apiSpecialistBloc.add(LoadingSpecialists());
-    allDoctorsBloc.add(LoadingDoctors(null, null, null));
-    checkBoxBloc.SetApiSpecialBloc = apiSpecialistBloc;
-    apiSpecialistBloc.SetCheckBoxBloc = checkBoxBloc;
-    allDoctorsBloc.SetCheckBoxBloc = checkBoxBloc;
-    super.initState();
-  }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,48 +54,112 @@ class _AllDoctorsState extends State<AllDoctors> {
       }
     }
 
-    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
-      if (state.getLoginState == null) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          key: _scaffoldkey,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100.sp),
-            child: SearchBarView(
-                scaffoldkey: _scaffoldkey,
-                form: form,
-                textEditingController: textEditingController,
-                isDoctor: true,
-                hint: "ابحث عن طبيبك المناسب",
-                allDoctorsBloc: allDoctorsBloc,
-                allClinicsBloc: allClinicsBloc,
-                searchClicked: searchClicked),
-          ),
-          endDrawer: Code.DrawerNative(context, _scaffoldkey),
-          body: BodyDoctors(state),
-        );
-      } else {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          key: _scaffoldkey,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100.sp),
-            child: SearchBarView(
-                scaffoldkey: _scaffoldkey,
-                form: form,
-                textEditingController: textEditingController,
-                isDoctor: true,
-                hint: "ابحث عن طبيبك المناسب",
-                allDoctorsBloc: allDoctorsBloc,
-                allClinicsBloc: allClinicsBloc,
-                searchClicked: searchClicked),
-          ),
-          endDrawer: state.getLoginState!.isLogin == true
-              ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-              : Code.DrawerNative(context, _scaffoldkey),
-          body: BodyDoctors(state),
-        );
-      }
+    return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+        builder: (context, connect) {
+      return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+        if (connect is ConnectivityInitial) {
+          return Center(
+              child: CircularProgressIndicator(color: Coloring.primary));
+        } else if (connect is NotConnectedState) {
+          isLoading = false;
+          if (state.getLoginState == null) {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.sp),
+                child: SearchBarView(
+                    scaffoldkey: _scaffoldkey,
+                    form: form,
+                    textEditingController: textEditingController,
+                    isDoctor: true,
+                    hint: "ابحث عن طبيبك المناسب",
+                    allDoctorsBloc: allDoctorsBloc,
+                    allClinicsBloc: allClinicsBloc,
+                    isConnect: false,
+                    searchClicked: searchClicked),
+              ),
+              endDrawer: Code.DrawerNative(context, _scaffoldkey),
+              body: Code.ConnectionWidget(context, false),
+            );
+          } else {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.sp),
+                child: SearchBarView(
+                    scaffoldkey: _scaffoldkey,
+                    form: form,
+                    textEditingController: textEditingController,
+                    isDoctor: true,
+                    hint: "ابحث عن طبيبك المناسب",
+                    allDoctorsBloc: allDoctorsBloc,
+                    allClinicsBloc: allClinicsBloc,
+                    isConnect: false,
+                    searchClicked: searchClicked),
+              ),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: Code.ConnectionWidget(context, false),
+            );
+          }
+        } else {
+          if (!isLoading) {
+            isLoading = true;
+            apiSpecialistBloc.add(LoadingSpecialists());
+            allDoctorsBloc.add(LoadingDoctors(null, null, null));
+            checkBoxBloc.SetApiSpecialBloc = apiSpecialistBloc;
+            apiSpecialistBloc.SetCheckBoxBloc = checkBoxBloc;
+            allDoctorsBloc.SetCheckBoxBloc = checkBoxBloc;
+            print("ELSEEEE1111111111111");
+          }
+          if (state.getLoginState == null) {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.sp),
+                child: SearchBarView(
+                    scaffoldkey: _scaffoldkey,
+                    form: form,
+                    textEditingController: textEditingController,
+                    isDoctor: true,
+                    hint: "ابحث عن طبيبك المناسب",
+                    allDoctorsBloc: allDoctorsBloc,
+                    allClinicsBloc: allClinicsBloc,
+                    isConnect: true,
+                    searchClicked: searchClicked),
+              ),
+              endDrawer: Code.DrawerNative(context, _scaffoldkey),
+              body: BodyDoctors(state),
+            );
+          } else {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.sp),
+                child: SearchBarView(
+                    scaffoldkey: _scaffoldkey,
+                    form: form,
+                    textEditingController: textEditingController,
+                    isDoctor: true,
+                    hint: "ابحث عن طبيبك المناسب",
+                    allDoctorsBloc: allDoctorsBloc,
+                    allClinicsBloc: allClinicsBloc,
+                    isConnect: true,
+                    searchClicked: searchClicked),
+              ),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: BodyDoctors(state),
+            );
+          }
+        }
+      });
     });
   }
 
@@ -137,74 +196,76 @@ class _AllDoctorsState extends State<AllDoctors> {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(25)),
-                                  child: DropdownButton<SubSpecialties?>(
-                                      dropdownColor: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      value:
-                                          apiSpecialistBloc.clickspecialist ==
-                                                  -1
-                                              ? null
-                                              : apiSpecialistBloc.dropdownsub,
-                                      isDense: true,
-                                      hint: Text("الاختصاص الفرعي",
-                                          style: TextStyle(
-                                              color: Coloring.primary,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: Font.fontfamily,
-                                              fontSize: Sizer.getTextSize(
-                                                  context, 0.04))),
-                                      alignment: Alignment.center,
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: Font.fontfamily,
-                                          fontSize:
-                                              Sizer.getTextSize(context, 0.04)),
-                                      icon: Icon(Icons.expand_more_rounded,
-                                          color: Coloring.primary,
-                                          size:
-                                              Sizer.getTextSize(context, 0.09)),
-                                      onChanged: (value) {
-                                        int index = state
-                                            .specialists!
-                                            .specialties![apiSpecialistBloc
-                                                .clickspecialist]
-                                            .subSpecialties!
-                                            .indexOf(value!);
-                                        apiSpecialistBloc.add(
-                                            ChooseSubSpecialist(value, index));
-                                        subId = int.parse(state
-                                            .specialists!
-                                            .specialties![apiSpecialistBloc
-                                                .clickspecialist]
-                                            .subSpecialties![index]
-                                            .subSpecialtyId!);
-                                        name =
-                                            textEditingController.text.isEmpty
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<SubSpecialties?>(
+                                        dropdownColor: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        value:
+                                            apiSpecialistBloc.clickspecialist == -1
                                                 ? null
-                                                : textEditingController.text;
-
-                                        allDoctorsBloc.add(LoadingDoctors(
-                                            name, subId, ordering));
-                                      },
-                                      isExpanded: true,
-                                      items: apiSpecialistBloc
-                                                  .clickspecialist ==
-                                              -1
-                                          ? null
-                                          : state
+                                                : apiSpecialistBloc.dropdownsub,
+                                        isDense: true,
+                                        hint: Text("الاختصاص الفرعي",
+                                            style: TextStyle(
+                                                color: Coloring.primary,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: Font.fontfamily,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.04))),
+                                        alignment: Alignment.center,
+                                        style: TextStyle(
+                                            color: Coloring.primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: Font.fontfamily,
+                                            fontSize: Sizer.getTextSize(
+                                                context, 0.04)),
+                                        icon: Icon(Icons.expand_more_rounded,
+                                            color: Coloring.primary,
+                                            size: Sizer.getTextSize(
+                                                context, 0.09)),
+                                        onChanged: (value) {
+                                          int index = state
                                               .specialists!
                                               .specialties![apiSpecialistBloc
                                                   .clickspecialist]
                                               .subSpecialties!
-                                              .map((sub) {
-                                              return DropdownMenuItem(
-                                                  value: sub,
-                                                  child: Center(
-                                                    child: Text(
-                                                        sub.subSpecialtyName!),
-                                                  ));
-                                            }).toList()),
+                                              .indexOf(value!);
+                                          apiSpecialistBloc.add(
+                                              ChooseSubSpecialist(
+                                                  value, index));
+                                          subId = int.parse(state
+                                              .specialists!
+                                              .specialties![apiSpecialistBloc
+                                                  .clickspecialist]
+                                              .subSpecialties![index]
+                                              .subSpecialtyId!);
+                                          name =
+                                              textEditingController.text.isEmpty
+                                                  ? null
+                                                  : textEditingController.text;
+
+                                          allDoctorsBloc.add(LoadingDoctors(
+                                              name, subId, ordering));
+                                        },
+                                        isExpanded: true,
+                                        items: apiSpecialistBloc
+                                                    .clickspecialist ==
+                                                -1
+                                            ? null
+                                            : state
+                                                .specialists!
+                                                .specialties![apiSpecialistBloc
+                                                    .clickspecialist]
+                                                .subSpecialties!
+                                                .map((sub) {
+                                                return DropdownMenuItem(
+                                                    value: sub,
+                                                    child: Center(
+                                                      child: Text(sub
+                                                          .subSpecialtyName!),
+                                                    ));
+                                              }).toList()),
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -214,64 +275,66 @@ class _AllDoctorsState extends State<AllDoctors> {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(25)),
-                                  child: DropdownButton<Specialist>(
-                                      borderRadius: BorderRadius.circular(10),
-                                      alignment: Alignment.center,
-                                      dropdownColor: Colors.white,
-                                      hint: Text("الاختصاص الرّئيسي",
-                                          style: TextStyle(
-                                              color: Coloring.primary,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: Font.fontfamily,
-                                              fontSize: Sizer.getTextSize(
-                                                  context, 0.039))),
-                                      isDense: true,
-                                      icon: Icon(Icons.expand_more_rounded,
-                                          color: Coloring.primary,
-                                          size:
-                                              Sizer.getTextSize(context, 0.09)),
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: Font.fontfamily,
-                                          fontSize:
-                                              Sizer.getTextSize(context, 0.04)),
-                                      value:
-                                          apiSpecialistBloc.clickspecialist ==
-                                                  -1
-                                              ? null
-                                              : apiSpecialistBloc.dropdownmain,
-                                      isExpanded: true,
-                                      onChanged: (value) {
-                                        int index = state
-                                            .specialists!.specialties!
-                                            .indexOf(value!);
-                                        apiSpecialistBloc.add(
-                                            ChooseSpecialist(index, value));
-                                        subId = int.parse(state
-                                            .specialists!
-                                            .specialties![index]
-                                            .subSpecialties![0]
-                                            .subSpecialtyId!);
-                                        name =
-                                            textEditingController.text.isEmpty
-                                                ? null
-                                                : textEditingController.text;
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<Specialist>(
+                                        borderRadius: BorderRadius.circular(10),
+                                        alignment: Alignment.center,
+                                        dropdownColor: Colors.white,
+                                        hint: Text("الاختصاص الرّئيسي",
+                                            style: TextStyle(
+                                                color: Coloring.primary,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: Font.fontfamily,
+                                                fontSize: Sizer.getTextSize(
+                                                    context, 0.039))),
+                                        isDense: true,
+                                        icon: Icon(Icons.expand_more_rounded,
+                                            color: Coloring.primary,
+                                            size: Sizer.getTextSize(
+                                                context, 0.09)),
+                                        style: TextStyle(
+                                            color: Coloring.primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: Font.fontfamily,
+                                            fontSize: Sizer.getTextSize(
+                                                context, 0.04)),
+                                        value: apiSpecialistBloc
+                                                    .clickspecialist ==
+                                                -1
+                                            ? null
+                                            : apiSpecialistBloc.dropdownmain,
+                                        isExpanded: true,
+                                        onChanged: (value) {
+                                          int index = state
+                                              .specialists!.specialties!
+                                              .indexOf(value!);
+                                          apiSpecialistBloc.add(
+                                              ChooseSpecialist(index, value));
+                                          subId = int.parse(state
+                                              .specialists!
+                                              .specialties![index]
+                                              .subSpecialties![0]
+                                              .subSpecialtyId!);
+                                          name =
+                                              textEditingController.text.isEmpty
+                                                  ? null
+                                                  : textEditingController.text;
 
-                                        allDoctorsBloc.add(LoadingDoctors(
-                                            name, subId, ordering));
-                                      },
-                                      items: state.specialists == null
-                                          ? null
-                                          : state.specialists!.specialties!
-                                              .map((sub) {
-                                              return DropdownMenuItem<
-                                                      Specialist>(
-                                                  value: sub,
-                                                  child: Center(
-                                                      child: Text(
-                                                          sub.specialtyName!)));
-                                            }).toList()),
+                                          allDoctorsBloc.add(LoadingDoctors(
+                                              name, subId, ordering));
+                                        },
+                                        items: state.specialists == null
+                                            ? null
+                                            : state.specialists!.specialties!
+                                                .map((sub) {
+                                                return DropdownMenuItem<
+                                                        Specialist>(
+                                                    value: sub,
+                                                    child: Center(
+                                                        child: Text(sub
+                                                            .specialtyName!)));
+                                              }).toList()),
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 5)
@@ -590,7 +653,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                               'id': state.doctor!.doctor[index]
                                                   .doctorId,
                                               'token':
-                                                  "${sharedState.getTokenState!.token}"
+                                                  "${sharedState.getTokenState?.token}"
                                             }),
                                             RouteName.ProfileDoctor +
                                                 "/${state.doctor!.doctor[index].doctorId}/${sharedState.getTokenState!.token}");

@@ -2,6 +2,8 @@ import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom0.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';
@@ -19,14 +21,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   SharedBloc sharedBloc = SharedBloc(sharedPreferences: sharedPreferences);
+  Connectivity connectivity = Connectivity();
+  ConnectivityResult result = await connectivity.checkConnectivity();
   RouterNav.setupRouter();
-  runApp(DevicePreview(
-    enabled: true,
-    builder: (context) => BlocProvider<SharedBloc>.value(
-      value: sharedBloc,
-      child: MyApp(),
-    ),
-  ));
+  runApp(
+    DevicePreview(
+        enabled: true,
+        builder: (context) => MultiBlocProvider(providers: [
+              BlocProvider<SharedBloc>(create: (context) => sharedBloc),
+              BlocProvider<ConnectivityBloc>(
+                create: (context) => ConnectivityBloc(result)..startListening(),
+              )
+            ], child: MyApp())),
+  );
 }
 
 class MyApp extends StatefulWidget {

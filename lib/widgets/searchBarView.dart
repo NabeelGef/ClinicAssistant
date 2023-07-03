@@ -19,6 +19,7 @@ class SearchBarView extends StatelessWidget {
   String hint;
   AllDoctorsBloc allDoctorsBloc;
   AllClinicsBloc allClinicsBloc;
+  bool isConnect;
   void Function() searchClicked;
   SearchBarView(
       {Key? key,
@@ -29,6 +30,7 @@ class SearchBarView extends StatelessWidget {
       required this.hint,
       required this.allDoctorsBloc,
       required this.allClinicsBloc,
+      required this.isConnect,
       required this.searchClicked})
       : super(key: key);
 
@@ -87,7 +89,7 @@ class SearchBarView extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontFamily: Font.fontfamily),
                       suffixIcon: InkWell(
-                          onTap: searchClicked,
+                          onTap: isConnect ? searchClicked : null,
                           child: Icon(Icons.search,
                               size: 25.sp, color: Colors.grey)),
                       fillColor: Colors.white,

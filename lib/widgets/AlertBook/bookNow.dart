@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/bloc.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/event.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/state.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,10 +40,9 @@ class BookNow extends StatefulWidget {
 class _BookNowState extends State<BookNow> {
   AlertBookBloc alertBookBloc = AlertBookBloc(
       StateAlertBook(successRemain: SuccessRemain(message: null, error: "")));
-
+  bool isLoading = false;
   @override
   void initState() {
-    alertBookBloc.add(LoadingEventRemaining(widget.appointmentId));
     super.initState();
   }
 
@@ -118,35 +120,54 @@ class _BookNowState extends State<BookNow> {
             SizedBox(
               height: 25.sp,
             ),
-            BlocBuilder<AlertBookBloc, StateAlertBook>(
-                bloc: alertBookBloc,
-                builder: (context, state) {
-                  if (state.successRemain!.message == null) {
-                    if (state.successRemain!.error.isNotEmpty) {
-                      return SizedBox();
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  } else {
-                    return Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Coloring.third3),
-                        child: Text(
-                          "المتبقي : ${state.successRemain!.message}",
-                          style: TextStyle(
-                              color: Coloring.primary,
-                              fontSize: Sizer.getTextSize(context, 0.04),
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  }
-                }),
+            BlocBuilder<ConnectivityBloc, ConnectivityState>(
+                builder: (context, connect) {
+              if (connect is ConnectivityInitial) {
+                return Center(
+                    child: CircularProgressIndicator(color: Coloring.primary));
+              } else if (connect is NotConnectedState) {
+                isLoading = false;
+                return Container(
+                    width: Sizer.getWidth(context) / 2.5,
+                    height: Sizer.getHeight(context) / 3,
+                    child: Code.ConnectionWidget(context, true));
+              } else {
+                if (!isLoading) {
+                  isLoading = true;
+                  alertBookBloc
+                      .add(LoadingEventRemaining(widget.appointmentId));
+                }
+                return BlocBuilder<AlertBookBloc, StateAlertBook>(
+                    bloc: alertBookBloc,
+                    builder: (context, state) {
+                      if (state.successRemain!.message == null) {
+                        if (state.successRemain!.error.isNotEmpty) {
+                          return SizedBox();
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      } else {
+                        return Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Coloring.third3),
+                            child: Text(
+                              "المتبقي : ${state.successRemain!.message}",
+                              style: TextStyle(
+                                  color: Coloring.primary,
+                                  fontSize: Sizer.getTextSize(context, 0.04),
+                                  fontFamily: Font.fontfamily,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      }
+                    });
+              }
+            }),
             SizedBox(
               height: 35.sp,
             ),
@@ -195,7 +216,7 @@ class _BookNowState extends State<BookNow> {
                                     .addPostFrameCallback((_) {
                                   Navigator.pop(context);
                                   print("Sucesssssss");
-                                   Fluttertoast.showToast(
+                                  Fluttertoast.showToast(
                                     msg: "تمّت عملية الحجز بنجاح",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.TOP,

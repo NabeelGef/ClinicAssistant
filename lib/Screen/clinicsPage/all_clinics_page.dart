@@ -11,11 +11,15 @@ import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/states.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
+import 'package:clinicassistant/widgets/searchBarView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../widgets/Connectivity/bloc.dart';
 
 // ignore: must_be_immutable
 class AllClinics extends StatefulWidget {
@@ -31,49 +35,116 @@ class _AllClinicsState extends State<AllClinics> {
   TextEditingController textEditingController = TextEditingController();
   final AllClinicsBloc allClinicsBloc = AllClinicsBloc(ClinicsStates(null, ""));
   final AllDoctorsBloc allDoctorsBloc = AllDoctorsBloc(DoctorsState(null, ""));
-  @override
-  void initState() {
-    allClinicsBloc.add(LoadingClinics());
-    super.initState();
-  }
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
-      if (state.getLoginState == null) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Coloring.third2,
-          key: _scaffoldkey,
-          appBar: MyAppBar(),
-          endDrawer: Code.DrawerNative(context, _scaffoldkey),
-          body: BodyClinics(),
-        );
+    void searchClicked() {
+      if (form.currentState!.validate()) {
+        allClinicsBloc.add(SearchEventClinic(name: textEditingController.text));
       }
-      return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Coloring.third2,
-        key: _scaffoldkey,
-        appBar: MyAppBar(),
-        endDrawer: state.getLoginState!.isLogin == true
-            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-            : Code.DrawerNative(context, _scaffoldkey),
-        body: BodyClinics(),
-      );
-    });
-  }
+    }
 
-  //Make AppBar
-  MyAppBar() {
-    return Code.AppBarDoctorsAndClinics(
-        _scaffoldkey,
-        form,
-        context,
-        textEditingController,
-        false,
-        "ابحث عن عيادتك المناسبة",
-        allDoctorsBloc,
-        allClinicsBloc);
+    return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+        builder: (context, connect) {
+      return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
+        if (connect is ConnectivityInitial) {
+          return Center(
+              child: CircularProgressIndicator(color: Coloring.primary));
+        } else if (connect is NotConnectedState) {
+          isLoading = false;
+          if (state.getLoginState == null) {
+            return Scaffold(
+                resizeToAvoidBottomInset: false,
+                key: _scaffoldkey,
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(75.sp),
+                  child: SearchBarView(
+                      scaffoldkey: _scaffoldkey,
+                      form: form,
+                      textEditingController: textEditingController,
+                      isDoctor: false,
+                      hint: "ابحث عن عيادتك المناسبة",
+                      allDoctorsBloc: allDoctorsBloc,
+                      allClinicsBloc: allClinicsBloc,
+                      isConnect: false,
+                      searchClicked: searchClicked),
+                ),
+                endDrawer: Code.DrawerNative(context, _scaffoldkey),
+                body: Code.ConnectionWidget(context, false));
+          } else {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.sp),
+                child: SearchBarView(
+                    scaffoldkey: _scaffoldkey,
+                    form: form,
+                    textEditingController: textEditingController,
+                    isDoctor: true,
+                    hint: "ابحث عن عيادتك المناسبة",
+                    allDoctorsBloc: allDoctorsBloc,
+                    allClinicsBloc: allClinicsBloc,
+                    isConnect: false,
+                    searchClicked: searchClicked),
+              ),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: Code.ConnectionWidget(context, false),
+            );
+          }
+        } else {
+          if (!isLoading) {
+            isLoading = true;
+            allClinicsBloc.add(LoadingClinics());
+          }
+          if (state.getLoginState == null) {
+            return Scaffold(
+                resizeToAvoidBottomInset: false,
+                key: _scaffoldkey,
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(75.sp),
+                  child: SearchBarView(
+                      scaffoldkey: _scaffoldkey,
+                      form: form,
+                      textEditingController: textEditingController,
+                      isDoctor: false,
+                      hint: "ابحث عن عيادتك المناسبة",
+                      allDoctorsBloc: allDoctorsBloc,
+                      allClinicsBloc: allClinicsBloc,
+                      isConnect: true,
+                      searchClicked: searchClicked),
+                ),
+                endDrawer: Code.DrawerNative(context, _scaffoldkey),
+                body: Code.ConnectionWidget(context, false));
+          } else {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Coloring.third2,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(100.sp),
+                child: SearchBarView(
+                    scaffoldkey: _scaffoldkey,
+                    form: form,
+                    textEditingController: textEditingController,
+                    isDoctor: true,
+                    hint: "ابحث عن عيادتك المناسبة",
+                    allDoctorsBloc: allDoctorsBloc,
+                    allClinicsBloc: allClinicsBloc,
+                    isConnect: true,
+                    searchClicked: searchClicked),
+              ),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: BodyClinics(),
+            );
+          }
+        }
+      });
+    });
   }
 
   //Make Body

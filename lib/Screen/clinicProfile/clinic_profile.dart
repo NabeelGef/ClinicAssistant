@@ -8,11 +8,14 @@ import 'package:clinicassistant/Screen/clinicProfile/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicProfile/bloc/state.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Constant/Route/router.dart';
@@ -37,27 +40,55 @@ class _ClinicProfileState extends State<ClinicProfile> {
     super.initState();
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
-      if (state.getLoginState != null) {
-        return Scaffold(
-          key: _scaffoldkey,
-          endDrawer: Code.DrawerNative(context, _scaffoldkey),
-          appBar: MyAppBar(),
-          backgroundColor: Coloring.third,
-          body: MyBody(state),
-        );
-      }
-      return Scaffold(
-        key: _scaffoldkey,
-        endDrawer: state.getLoginState!.isLogin == true
-            ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-            : Code.DrawerNative(context, _scaffoldkey),
-        appBar: MyAppBar(),
-        backgroundColor: Coloring.third,
-        body: MyBody(state),
-      );
+      return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+          builder: (context, connect) {
+        if (connect is ConnectivityInitial) {
+          return Center(
+              child: CircularProgressIndicator(color: Coloring.primary));
+        } else if (connect is NotConnectedState) {
+          isLoading = false;
+          if (state.getLoginState != null) {
+            return Scaffold(
+              key: _scaffoldkey,
+              endDrawer: Code.DrawerNative(context, _scaffoldkey),
+              appBar: MyAppBar(),
+              body: Code.ConnectionWidget(context, false),
+            );
+          }
+          return Scaffold(
+            key: _scaffoldkey,
+            endDrawer: state.getLoginState!.isLogin == true
+                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                : Code.DrawerNative(context, _scaffoldkey),
+            appBar: MyAppBar(),
+            body: Code.ConnectionWidget(context, false),
+          );
+        } else {
+          if (state.getLoginState != null) {
+            return Scaffold(
+              key: _scaffoldkey,
+              endDrawer: Code.DrawerNative(context, _scaffoldkey),
+              appBar: MyAppBar(),
+              backgroundColor: Coloring.third,
+              body: MyBody(state),
+            );
+          }
+          return Scaffold(
+            key: _scaffoldkey,
+            endDrawer: state.getLoginState!.isLogin == true
+                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                : Code.DrawerNative(context, _scaffoldkey),
+            appBar: MyAppBar(),
+            backgroundColor: Coloring.third,
+            body: MyBody(state),
+          );
+        }
+      });
     });
   }
 
@@ -306,7 +337,11 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                     onPressed: () async {
                                       if (sharedState.getTokenState!.token ==
                                           null) {
-                                        print("You're not logging");
+                                        Fluttertoast.showToast(
+                                            msg: "يجب عليك تسجيل الدّخول",
+                                            backgroundColor: Coloring.primary,
+                                            fontSize: 25.sp,
+                                            toastLength: Toast.LENGTH_LONG);
                                       } else {
                                         RouterNav.fluroRouter.navigateTo(
                                           context,
