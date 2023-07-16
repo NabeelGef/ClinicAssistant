@@ -14,7 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 
 import '../Screen/clinicsPage/bloc/events.dart';
@@ -773,13 +772,13 @@ class Code {
                 String? data =
                     await EvaluateRepo.evaluate(initialRating, token, doctorId);
                 if (data != null && data.isNotEmpty) {
-                  Fluttertoast.showToast(
+                  /*Fluttertoast.showToast(
                       msg: "$data",
                       fontSize: 20.sp,
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.SNACKBAR,
                       backgroundColor: Colors.white,
-                      textColor: Coloring.primary);
+                      textColor: Coloring.primary);*/
                   doctorProfileDataBloc
                       .add(GetEvaluate(token: token, doctorId: doctorId));
                 }

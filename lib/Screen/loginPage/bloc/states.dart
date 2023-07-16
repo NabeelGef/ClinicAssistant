@@ -17,5 +17,7 @@ class SuccessLoginStates extends LoginStates {
 }
 
 class ErrorLoginStates extends LoginStates {
-  late final String errorMessage;
+   final String errorMessage;
+
+   ErrorLoginStates(this.errorMessage) ;
 }

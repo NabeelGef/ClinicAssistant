@@ -9,6 +9,14 @@ class AccessToken {
     return AccessToken(
       accessToken: json["accessToken"] == null ? null : AccessTokenClass.fromJson(json["accessToken"]),
     );
+
+
+  }
+
+  factory AccessToken.fromJsonTow(String json){
+    return AccessToken(
+      accessToken: AccessTokenClass.fromJsonTow(json),
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +40,12 @@ class AccessTokenClass {
   factory AccessTokenClass.fromJson(Map<String, dynamic> json){
     return AccessTokenClass(
       accessToken: json["accessToken"],
+    );
+  }
+
+  factory AccessTokenClass.fromJsonTow(String json){
+    return AccessTokenClass(
+      accessToken: json,
     );
   }
 

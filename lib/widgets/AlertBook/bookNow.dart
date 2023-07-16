@@ -8,7 +8,6 @@ import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../Constant/color.dart';
@@ -216,7 +215,7 @@ class _BookNowState extends State<BookNow> {
                                     .addPostFrameCallback((_) {
                                   Navigator.pop(context);
                                   print("Sucesssssss");
-                                  Fluttertoast.showToast(
+                                 /* Fluttertoast.showToast(
                                     msg: "تمّت عملية الحجز بنجاح",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.TOP,
@@ -224,7 +223,7 @@ class _BookNowState extends State<BookNow> {
                                     backgroundColor: Coloring.yellow,
                                     textColor: Colors.black,
                                     fontSize: 25.sp,
-                                  );
+                                  );*/
                                 });
                                 return SizedBox();
                               }

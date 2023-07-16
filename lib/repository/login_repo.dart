@@ -1,33 +1,53 @@
 import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/model/login_token.dart';
+import 'package:dio/dio.dart';
 
 class LoginRepository {
   //التعامل مع قاعدة البيانات
 
   Future<AccessToken> loginRepo(String email, String password) async {
-    AccessToken accessToken = AccessToken();
+    var accessToken;
+    var response ;
     try {
-      var response = await API.dio.post(
+       response = await API.dio.post(
           '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.loginBack}',
           data: {'phoneNumber': email, 'password': password});
 
-      print(response.statusCode);
+      print("response code :"+response.statusCode);
       if (response.statusCode == 201) {
+
         accessToken = AccessToken.fromJson(response.data);
         print("MyToken : ${accessToken}");
-      } else if (response.statusCode == 401) {
-        //اعادة رسالة لعدم وجود المستخدم
-        //accessToken = AccessToken.fromJson(response.statusMessage as Map<String, dynamic>);
-      } else if (response.statusCode == 400) {
-        //this is the message for sending a wrong form of the number
-        //phoneNumber must match /^09\\d{8}$/ regular expression
 
-        if (response.statusMessage ==
-            "phoneNumber must match /^09\\d{8}\$/ regular expression") {}
       }
       return accessToken;
-    } catch (exception) {
-      throw Exception("Failed to create user: $exception ");
+
+    } on DioError catch (exception) {
+      if (exception.response != null) {
+        print("response code ${exception.response!.statusCode}");
+        print("data the data data ${exception.response!.data}");
+        print("message the meassage message ${exception.message}");
+
+        if (exception.response!.statusCode == 401) {
+          //اعادة رسالة لعدم وجود المستخدم
+          print("am in the 401 error yohohohohoho.");
+          accessToken = AccessToken.fromJsonTow("${exception.response!.statusCode}");
+          return accessToken;
+        }
+
+        else if (exception.response!.statusCode == 400) {
+          //this is the message for sending a wrong form of number
+          //[phoneNumber must match /^09\d{8}\$/ regular expression]
+          print("am here in the 400 error zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+          accessToken = AccessToken.fromJsonTow("${exception.response!.statusCode}") ;
+          return accessToken ;
+        }
+      } else {
+        print(exception.message);
+      }
+
+
+    throw Exception("Failed to create user: $exception ");
     }
   }
 }

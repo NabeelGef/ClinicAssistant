@@ -21,15 +21,30 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
 
       //بعد الانتهاء من الادخال يجب اعادة بيانات للشاشو وهي نجاح العملية
 
-      AccessToken accessToken =
+      var accessToken =
           await _loginRepository.loginRepo(events.email, events.password);
-      print(accessToken.accessToken?.accessToken);
+
+      print("This is the return from the access token :${accessToken.accessToken?.accessToken}");
+
+      if(accessToken.accessToken?.accessToken == "401")
+        {
+          print("hfdjfkdjfkdfjdkfjdkfjdkf") ;
+          yield ErrorLoginStates("401");
+          return;
+        }
+
+      else if(accessToken.accessToken?.accessToken == "400")
+        {
+          print("herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr") ;
+          yield ErrorLoginStates("400");
+          return;
+        }
       // await Code.saveData('token', accessToken.accessToken!.accessToken!);
       // await Code.saveDataLogin('isLogin', true);
+      print("yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       yield SuccessLoginStates("Login is successfully done",
           accessToken.accessToken!.accessToken, true);
     }
-    // هنا اكتب الاحداث التي من المفترض أن تحدث مثلا ارسال بيانات التسجيل
   }
 
 // Storing data in SharedPreferences

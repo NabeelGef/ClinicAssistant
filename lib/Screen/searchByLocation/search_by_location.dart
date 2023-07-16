@@ -16,7 +16,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'bloc/bloc.dart';
 
@@ -317,17 +316,17 @@ class _SearchByLocationState extends State<SearchByLocation> {
                         child: InkWell(
                           onTap: () {
                             if (searchByLocationBloc.dropdownareas == null) {
-                              Fluttertoast.showToast(
+                             /* Fluttertoast.showToast(
                                   msg: "يجب إدخال منطقة محددة",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
-                                  backgroundColor: Coloring.primary);
+                                  backgroundColor: Coloring.primary);*/
                             } else if (apiSpecialistBloc.dropdownmain == null) {
-                              Fluttertoast.showToast(
+                              /*Fluttertoast.showToast(
                                   msg: "يجب إدخال اختصاص محدّد",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
-                                  backgroundColor: Coloring.primary);
+                                  backgroundColor: Coloring.primary);*/
                             } else {
                               searchByLocationBloc.add(SearchByLocationEvent(
                                   areaId: searchByLocationBloc
@@ -362,11 +361,11 @@ class _SearchByLocationState extends State<SearchByLocation> {
                         child: InkWell(
                           onTap: () {
                             if (apiSpecialistBloc.dropdownmain == null) {
-                              Fluttertoast.showToast(
+                             /* Fluttertoast.showToast(
                                   msg: "يجب إدخال اختصاص محدّد",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
-                                  backgroundColor: Coloring.primary);
+                                  backgroundColor: Coloring.primary);*/
                             } else {
                               searchByLocationBloc.add(SearchByMYLocationEvent(
                                   Latitude: 33.48970433857038, // Default Lat
