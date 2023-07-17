@@ -11,6 +11,12 @@ class SignUpPost {
     );
   }
 
+  factory SignUpPost.fromJsonTow(String json){
+    return SignUpPost(
+      patientId: json,
+    );
+  }
+
   Map<String, dynamic> toJson() => {
     "patientId": patientId,
   };

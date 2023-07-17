@@ -559,6 +559,35 @@ class _SignUp2State extends State<SignUp2> {
                         print("Loading...");
                         //Code.showLoadingDialog(context);
                       }
+
+                      if(state is ErrorSignUp2States) {
+                        print("am in the  error sign up state") ;
+
+                        if(state.errorMessage == "Error Number Form")
+                          {
+                            showDialog(
+                              context:context,
+                              builder: (_) => AlertDialog(
+                                title: Text('خطأ في إدخال الرقم'),
+                                content: Text('تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+
+                        else if(state.errorMessage == "Error number exist")
+                          {
+                            showDialog(
+                              context:context,
+                              builder: (_) => AlertDialog(
+                                title: Text('خطأ في الرقم'),
+                                content: Text('الرقم المدخل مستخدم من قبل شخص آخر'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+
+                      }
                     }, builder: (BuildContext context, SignUp2States state) {
                       return ElevatedButton(
                         onPressed: () async {

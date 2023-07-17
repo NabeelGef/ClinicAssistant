@@ -9,6 +9,10 @@ class SuccessSignUp2States extends SignUp2States {
   SuccessSignUp2States(this.successMessage);
 }
 
-class ErrorSignUp2States extends SignUp2States {}
+class ErrorSignUp2States extends SignUp2States {
+  final String errorMessage;
+
+  ErrorSignUp2States( this.errorMessage ) ;
+}
 
 class LoadingSignUp2States extends SignUp2States {}

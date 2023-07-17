@@ -20,7 +20,7 @@ class SignUp2Bloc extends Bloc<SignUp2Events, SignUp2States> {
       //هنا عندما تعود البيانات نقوم بحفظها بالشيرد بريفيرينس
 
       //بعد الانتهاء من الادخال يجب اعادة بيانات للشاشو وهي نجاح العملية
-      SignUpPost? signUpPost = await _signUp2Repository.signUpRepo(
+      var signUpPost = await _signUp2Repository.signUpRepo(
           events.firstName!,
           events.lastName!,
           events.userName!,
@@ -31,6 +31,19 @@ class SignUp2Bloc extends Bloc<SignUp2Events, SignUp2States> {
           events.year!,
           events.gender!);
       // print(accessToken.accessToken?.accessToken);
+
+      if(signUpPost?.patientId == "يجب أن يكون الرقم من 10 خانات ويبدأ ب 09")
+        {
+          yield ErrorSignUp2States("Error Number Form");
+          return;
+        }
+
+      else if(signUpPost?.patientId == "this phone number already exist")
+        {
+          yield ErrorSignUp2States("Error number exist") ;
+          return;
+        }
+
       yield SuccessSignUp2States(signUpPost!.patientId!);
     }
     // هنا اكتب الاحداث التي من المفترض أن تحدث مثلا ارسال بيانات التسجيل
