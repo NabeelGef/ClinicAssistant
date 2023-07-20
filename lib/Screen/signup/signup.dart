@@ -372,20 +372,20 @@ class _SignupState extends State<Signup> {
     final password = _passwordController.text;
     final checkPassword = _checkPasswordController.text;
 
-    _trimFirstName = _firstNameInput.trim();
-    _trimLastName = _lastNameInput.trim();
-    _trimUserName = _userNameInput.trim();
-    _trimPassword = _passwordInput.trim();
-    _trimCheckPassword = _checkPasswordInput.trim();
+
 
     if (_formKey.currentState!.validate()) {
       print("yes 1 ");
       _formKey.currentState!.save();
       print("yes 2 ");
-      print(_trimUserName + "lllllllllllllllllllllllllllllllll");
 
+      _trimFirstName = _firstNameInput.trim();
+      _trimLastName = _lastNameInput.trim();
+      _trimUserName = _userNameInput.trim();
+      _trimPassword = _passwordInput.trim();
+      _trimCheckPassword = _checkPasswordInput.trim();
       //go to the next sign up screen with sending the input data
-      if(_trimFirstName.isEmpty || _trimLastName.isEmpty || _trimUserName.isEmpty || _trimPassword.isEmpty || _trimCheckPassword.isEmpty)
+      if((_firstNameController.text.trim()).isEmpty || (_lastNameController.text.trim()).isEmpty || (_passwordController.text.trim()).isEmpty || (_checkPasswordController.text.trim()).isEmpty)
       {
         showDialog(
           context: contextSignUp,

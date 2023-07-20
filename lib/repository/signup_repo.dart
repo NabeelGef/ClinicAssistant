@@ -1,3 +1,4 @@
+
 import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/model/signup_post.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +17,7 @@ class SignUp2Repository {
       int year,
       String gender) async {
     var patientId;
+    String temp ;
     var response ;
     try {
       print(
@@ -37,11 +39,11 @@ class SignUp2Repository {
         print(response.data);
         //this is the patient id
         patientId = SignUpPost.fromJson(response.data);
-        print("Patient ID Is : ${patientId.patientId}");
+        print("Patient ID Is : ${patientId}");
       }
 
       return patientId;
-    } on DioException catch (exception, s) {
+    } on DioError catch (exception, s) {
 
      if (exception.response!.statusCode == 400) {
 
@@ -54,17 +56,24 @@ class SignUp2Repository {
     //الثانية أن يكون الرقم المدخل موجود بالتالي رسالة الخطا هي
     //"message": "this phone number already exist"
 
-    if (response.statusMessage == "يجب أن يكون الرقم من 10 خانات ويبدأ ب 09")
+       print("the data is ${exception.response!.data}");
+       patientId = SignUpPost.fromJsonTow(exception.response!.data) ;
+
+       print("patient id is$patientId") ;
+
+      if(patientId.toString() == "this phone number already exist")
+     {
+       print("am here in the exist number in the data base") ;
+       return patientId ;
+       //هون كمان ببعث رسالة الخطأ إنو الرقم موجود
+
+     }
+
+    else if (patientId == "[يجب أن يكون الرقم من 10 خانات ويبدأ ب 09]")
     {
      print("am here in the wrong form of number error") ;
      //هون ببعث رسالة الخطأ وهناك بستقبلها وبقول إنو في خطأ بشكل الرقم
-    }
-
-    else if(response.statusMessage == "this phone number already exist")
-    {
-      print("am here in the exist number in the data base") ;
-      //هون كمان ببعث رسالة الخطأ إنو الرقم موجود
-
+      return patientId ;
     }
 
     }

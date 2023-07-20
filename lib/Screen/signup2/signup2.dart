@@ -307,7 +307,7 @@ class _SignUp2State extends State<SignUp2> {
                           value: selectedMonthItem,
                           onChanged: (value) {
                             setState(() {
-                              selectedMonthItem = value as String;
+                              selectedMonthItem = value;
                             });
                           },
                           buttonStyleData: ButtonStyleData(
@@ -650,14 +650,15 @@ class _SignUp2State extends State<SignUp2> {
   }
 
   void signUp2To(BuildContext contextSignUp) {
-    final phoneNumber = _phoneNumberController.text;
-    //_trimPhoneNumber = _phoneNumberInput.trim() ;
+
+    _trimPhoneNumber = _phoneNumberInput.trim() ;
+
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       //go to the next sign up screen with sending the input data
-      /*if(_trimPhoneNumber.isNotEmpty)
+      if(_trimPhoneNumber.isEmpty)
       { // هنا وضع شرط أنه لا يوجد فراغات في الحقل وعند الدخول لهنا فإنه يوجد فراغات
         showDialog(
           context: contextSignUp,
@@ -674,14 +675,14 @@ class _SignUp2State extends State<SignUp2> {
               ),
 
         );
-       */ /* Future.delayed(Duration(seconds: 5), () {
+        /* Future.delayed(Duration(seconds: 5), () {
           Navigator.of(contextSignUp).pop();
 
-        });*/ /*
-      }*/
+        });*/
+
 
       // this is for the right input
-      //else
+      }else
       {
         //here should i put the confirm for the user that is the information can not be
         //changes in the future ,, so are you sure?
@@ -698,6 +699,7 @@ class _SignUp2State extends State<SignUp2> {
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
+
             actions: [
               Center(
                 child: ElevatedButton(
@@ -713,6 +715,8 @@ class _SignUp2State extends State<SignUp2> {
                         month: selectedMonthItem,
                         day: selectedDayItem,
                         gender: selectedGenderItem));
+                    Navigator.pop(contextSignUp);
+
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Coloring.primary,
@@ -736,7 +740,6 @@ class _SignUp2State extends State<SignUp2> {
     }
   }
 
-  void _signUp2(BuildContext contextSignUp) {}
 }
 
 

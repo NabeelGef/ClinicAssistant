@@ -13,7 +13,6 @@ class LoginRepository {
           '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.loginBack}',
           data: {'phoneNumber': email, 'password': password});
 
-      print("response code :"+response.statusCode);
       if (response.statusCode == 201) {
 
         accessToken = AccessToken.fromJson(response.data);
