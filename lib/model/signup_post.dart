@@ -11,13 +11,19 @@ class SignUpPost {
     );
   }
 
+  factory SignUpPost.fromJsonTow(Map<String, dynamic> json){
+    return SignUpPost(
+      patientId: json["message"],
+    );
+  }
+
   Map<String, dynamic> toJson() => {
     "patientId": patientId,
   };
 
   @override
   String toString(){
-    return "$patientId, ";
+    return "$patientId";
   }
 
 }

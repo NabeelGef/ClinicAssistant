@@ -372,16 +372,20 @@ class _SignupState extends State<Signup> {
     final password = _passwordController.text;
     final checkPassword = _checkPasswordController.text;
 
-    _trimFirstName = _firstNameInput.trim();
-    _trimLastName = _lastNameInput.trim();
-    _trimUserName = _userNameInput.trim();
-    _trimPassword = _passwordInput.trim();
-    _trimCheckPassword = _checkPasswordInput.trim();
+
 
     if (_formKey.currentState!.validate()) {
+      print("yes 1 ");
       _formKey.currentState!.save();
+      print("yes 2 ");
+
+      _trimFirstName = _firstNameInput.trim();
+      _trimLastName = _lastNameInput.trim();
+      _trimUserName = _userNameInput.trim();
+      _trimPassword = _passwordInput.trim();
+      _trimCheckPassword = _checkPasswordInput.trim();
       //go to the next sign up screen with sending the input data
-      /*if(_trimFirstName.isNotEmpty || _trimLastName.isNotEmpty || _trimUserName.isNotEmpty || _trimPassword.isNotEmpty || _trimCheckPassword.isNotEmpty)
+      if((_firstNameController.text.trim()).isEmpty || (_lastNameController.text.trim()).isEmpty || (_passwordController.text.trim()).isEmpty || (_checkPasswordController.text.trim()).isEmpty)
       {
         showDialog(
           context: contextSignUp,
@@ -395,80 +399,87 @@ class _SignupState extends State<Signup> {
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
+
               ),
         );
-       */ /* Future.delayed(Duration(seconds: 5), () {
+        /* Future.delayed(Duration(seconds: 5), () {
           Navigator.of(contextSignUp).pop();
         });*/ /*
       }*/
-      //else
-      {
-        if (_passwordInput != _checkPasswordInput) {
-          showDialog(
-            context: contextSignUp,
-            builder: (_) => AlertDialog(
-              title: Text('خطأ أثناء الإدخال',
-                  style: TextStyle(
-                      fontFamily: Font.fontfamily,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp)),
-              content: Text('يجب أن تكون كلمة السر والتأكيد نفسها',
-                  style: TextStyle(
-                      fontFamily: Font.fontfamily,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp)),
-            ),
-          );
-          /* Future.delayed(Duration(seconds: 5), () {
+
+      }
+      else
+        {
+          print("am in ppppppppppppppppppppppppppppppppp") ;
+          if (_passwordInput != _checkPasswordInput) {
+            showDialog(
+              context: contextSignUp,
+              builder: (_) =>
+                  AlertDialog(
+                    title: Text('خطأ أثناء الإدخال',
+                        style: TextStyle(
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp)),
+                    content: Text('يجب أن تكون كلمة السر والتأكيد نفسها',
+                        style: TextStyle(
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp)),
+                  ),
+            );
+            /* Future.delayed(Duration(seconds: 5), () {
             Navigator.of(contextSignUp).pop();
 
           });*/
-        } else {
-          //here should i put the confirm for the user that is the information can not be
-          //changes in the future ,, so are you sure?
-          showDialog(
-            context: contextSignUp,
-            builder: (_) => AlertDialog(
-              title: Text('هل أنت متأكد',
-                  style: TextStyle(
-                      fontFamily: Font.fontfamily,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp)),
-              content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
-                  style: TextStyle(
-                      fontFamily: Font.fontfamily,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp)),
-              actions: [
-                Center(
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          alignment: Alignment.center,
-                          backgroundColor: Coloring.primary),
-                      onPressed: () {
-                        //go to the other page
-                        RouterNav.fluroRouter.navigateTo(
-                            contextSignUp,
-                            routeSettings: RouteSettings(arguments: {
-                              'receivedFirstName': firstName,
-                              'receivedLastName': lastName,
-                              'receivedUserName': userName,
-                              'receivedPassword': password
-                            }),
-                            RouteName.signup2 +
-                                "/$firstName/$lastName/$userName/$password");
-                      },
-                      child: Text("تأكيد ",
-                          style: TextStyle(
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.sp))),
-                ),
-              ],
-            ),
-          );
+          }
+          else {
+            //here should i put the confirm for the user that is the information can not be
+            //changes in the future ,, so are you sure?
+            showDialog(
+              context: contextSignUp,
+              builder: (_) =>
+                  AlertDialog(
+                    title: Text('هل أنت متأكد',
+                        style: TextStyle(
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp)),
+                    content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
+                        style: TextStyle(
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp)),
+                    actions: [
+                      Center(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                alignment: Alignment.center,
+                                backgroundColor: Coloring.primary),
+                            onPressed: () {
+                              //go to the other page
+                              RouterNav.fluroRouter.navigateTo(
+                                  contextSignUp,
+                                  routeSettings: RouteSettings(arguments: {
+                                    'receivedFirstName': firstName,
+                                    'receivedLastName': lastName,
+                                    'receivedUserName': userName,
+                                    'receivedPassword': password
+                                  }),
+                                  RouteName.signup2 +
+                                      "/$firstName/$lastName/$userName/$password");
+                            },
+                            child: Text("تأكيد ",
+                                style: TextStyle(
+                                    fontFamily: Font.fontfamily,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.sp))),
+                      ),
+                    ],
+                  ),
+            );
+          }
         }
-      }
     } else {
       print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
     }

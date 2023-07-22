@@ -37,10 +37,6 @@ class _DoctorProfileState extends State<DoctorProfile> {
   DoctorProfileDataBloc doctorProfileDataBloc = DoctorProfileDataBloc(
       SuccessProfileStates(null, "", EvaluateState(evaluate: null, error: "")));
   bool isLoading = false;
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {

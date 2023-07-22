@@ -35,6 +35,7 @@ class _LoginState extends State<Login> {
   TextEditingController _emailController = TextEditingController();
   //bool _isEmailEmpty = true;
 
+  bool _obscureText = true;
   FocusNode _passwordFocusNode = FocusNode();
   TextEditingController _passwordController = TextEditingController();
 
@@ -210,11 +211,23 @@ class _LoginState extends State<Login> {
                           onSaved: (value) {
                             _passwordInput = value!;
                           },
-                          obscureText: true,
+                          obscureText: _obscureText,
+
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             fillColor: Colors.white,
+
+                            suffixIcon: IconButton(
+                              icon: _obscureText ? Icon(Icons.visibility_off ) : Icon(Icons.visibility),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+
+                              color: Coloring.primary,
+                            ),
                             filled: true,
                             hintText: "كلمة المرور ",
                             errorStyle: TextStyle(fontSize: 15.sp),
@@ -249,6 +262,7 @@ class _LoginState extends State<Login> {
                             fontFamily: Font.fontfamily,
                             color: Coloring.loginWhite,
                           ),
+
                         ),
                       ),
                       BlocConsumer<LoginBloc, LoginStates>(listener:
@@ -270,6 +284,32 @@ class _LoginState extends State<Login> {
                           print("Loading...");
                           //Code.showLoadingDialog(context);
                         }
+                        if(state is ErrorLoginStates)
+                          {
+                            if(state.errorMessage == "401")
+                              {
+                                showDialog(
+                                  context: contextLogin,
+                                  builder: (_) => AlertDialog(
+                                    title: Text('خطأ في البيانات'),
+                                    content: Text('تأكد من رقمك وكلمة السر قبل الإدخال من فضلك'),
+                                    backgroundColor: Colors.yellow,
+                                  ),
+                                );
+                              }
+
+                            else if (state.errorMessage == "400")
+                              {
+                                showDialog(
+                                  context: contextLogin,
+                                  builder: (_) => AlertDialog(
+                                    title: Text('خطأ في الرقم'),
+                                    content: Text('تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
+                                    backgroundColor: Colors.yellow,
+                                  ),
+                                );
+                              }
+                          }
                       }, builder: (BuildContext context, LoginStates state) {
                         return Container(
                           height: Sizer.getHeight(context) / 15,
@@ -335,22 +375,26 @@ class _LoginState extends State<Login> {
     //get the email from here
     final email = _emailController.text;
     final password = _passwordController.text;
-    _trimNumber = _numberInput.trim();
-    _trimPassword = _passwordInput.trim();
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (_trimPassword.isNotEmpty || _trimNumber.isNotEmpty) {
+      _trimNumber = _numberInput.trim();
+      _trimPassword = _passwordInput.trim();
+
+      print("the empty one $_trimPassword" + "the empty one $_trimNumber") ;
+
+      //هذا الشرط يعمل فقط في حالة كان الإدخال فقط فراغات
+      if (_trimPassword.isEmpty || _trimNumber.isEmpty) {
         showDialog(
           context: contextLogin,
           builder: (_) => AlertDialog(
             title: Text('خطأ أثناء الإدخال'),
             content: Text('لا تقم بإدخال فراغات فقط في احد الخاناتين من فضلك'),
+
           ),
         );
         Future.delayed(Duration(seconds: 5), () {
-          Navigator.of(contextLogin).pop();
         });
       } else {
         // Send data to server or do something with input value

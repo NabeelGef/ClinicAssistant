@@ -11,7 +11,6 @@ import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/states.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
-import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:clinicassistant/widgets/searchBarView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +20,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../widgets/Connectivity/bloc.dart';
+import '../../widgets/Connectivity/state.dart';
 
 // ignore: must_be_immutable
 class AllClinics extends StatefulWidget {
