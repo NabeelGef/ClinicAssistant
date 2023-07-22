@@ -52,28 +52,29 @@ class _ClinicProfileState extends State<ClinicProfile> {
               child: CircularProgressIndicator(color: Coloring.primary));
         } else if (connect is NotConnectedState) {
           isLoading = false;
-          if (state.getLoginState != null) {
+          if (state.getLoginState == null) {
             return Scaffold(
               key: _scaffoldkey,
               endDrawer: Code.DrawerNative(context, _scaffoldkey),
-              appBar: MyAppBar(),
+              appBar: MyAppBar(null),
               body: Code.ConnectionWidget(context, false),
             );
           }
           return Scaffold(
             key: _scaffoldkey,
             endDrawer: state.getLoginState!.isLogin == true
-                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                ? Code.DrawerNativeSeconde(
+                    context, _scaffoldkey, state.getTokenState!.token!)
                 : Code.DrawerNative(context, _scaffoldkey),
-            appBar: MyAppBar(),
+            appBar: MyAppBar(state.getTokenState!.token),
             body: Code.ConnectionWidget(context, false),
           );
         } else {
-          if (state.getLoginState != null) {
+          if (state.getLoginState == null) {
             return Scaffold(
               key: _scaffoldkey,
               endDrawer: Code.DrawerNative(context, _scaffoldkey),
-              appBar: MyAppBar(),
+              appBar: MyAppBar(state.getTokenState!.token!),
               backgroundColor: Coloring.third,
               body: MyBody(state),
             );
@@ -81,9 +82,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
           return Scaffold(
             key: _scaffoldkey,
             endDrawer: state.getLoginState!.isLogin == true
-                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                ? Code.DrawerNativeSeconde(
+                    context, _scaffoldkey, state.getTokenState!.token!)
                 : Code.DrawerNative(context, _scaffoldkey),
-            appBar: MyAppBar(),
+            appBar: MyAppBar(state.getTokenState!.token),
             backgroundColor: Coloring.third,
             body: MyBody(state),
           );
@@ -99,8 +101,8 @@ class _ClinicProfileState extends State<ClinicProfile> {
   void _moveMapToNewPosition() {
     _mapController!.animateCamera(CameraUpdate.newCameraPosition(_position!));
   }*/
-  MyAppBar() {
-    return Code.AppBarProfile(_scaffoldkey, context);
+  MyAppBar(String? token) {
+    return Code.AppBarProfile(_scaffoldkey, context, token);
   }
 
   MyBody(SharedState sharedState) {

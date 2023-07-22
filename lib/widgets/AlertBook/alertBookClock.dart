@@ -22,7 +22,7 @@ class AlertBookClock extends StatefulWidget {
   String nameDoctor;
   String nameClinic;
   String day;
-  DateTime date;
+  String date;
   String token;
   AlertBookClock(
       {Key? key,
@@ -45,10 +45,6 @@ class _AlertBookClockState extends State<AlertBookClock> {
           SuccessAlertBookClock(workTimeClock: null, error: "")));
   Appointment? appointment;
   bool isLoading = false;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

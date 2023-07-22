@@ -21,7 +21,7 @@ class BookNow extends StatefulWidget {
   String nameClinic;
   String appointmentId;
   String day;
-  DateTime date;
+  String date;
   String token;
   BookNow(
       {Key? key,
@@ -105,7 +105,8 @@ class _BookNowState extends State<BookNow> {
                   children: [
                     Icon(Icons.calendar_month, color: Coloring.primary),
                     Text(
-                      "${widget.date.year}-${widget.date.month.toString().padLeft(2, '0')}-${widget.date.day.toString().padLeft(2, '0')} - ${widget.day}",
+                      //${widget.date.year}-${widget.date.month.toString().padLeft(2, '0')}-${widget.date.day.toString().padLeft(2, '0')}
+                      "${widget.date} - ${widget.day}",
                       style: TextStyle(
                           color: Coloring.primary,
                           fontSize: Sizer.getTextSize(contextRoot, 0.04),

@@ -1,4 +1,5 @@
 import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Screen/NotificationPage/notification.dart';
 import 'package:clinicassistant/Screen/bookingPage/book_page.dart';
 import 'package:clinicassistant/Screen/check_signup/check_signup.dart';
 import 'package:clinicassistant/Screen/clinicProfile/clinic_profile.dart';
@@ -45,6 +46,9 @@ class RouterNav {
   });
   static Handler allclinics = Handler(handlerFunc: (context, parameters) {
     return AllClinics();
+  });
+  static Handler notification = Handler(handlerFunc: (context, parameters) {
+    return NotificationPage(token: parameters['token']![0]);
   });
 
   static Handler doctorprofile = Handler(handlerFunc: (context, parameters) {
@@ -94,7 +98,7 @@ class RouterNav {
   });
 
   static Handler myBook = Handler(handlerFunc: (context, parameters) {
-    return MyBook();
+    return MyBook(token: parameters['token']!.first);
   });
 
   static void setupRouter() {
@@ -139,6 +143,8 @@ class RouterNav {
         handler: testPage, transitionType: TransitionType.nativeModal);
     fluroRouter.define(RouteName.SearchByLocation,
         handler: searchByLocation, transitionType: TransitionType.inFromRight);
-    fluroRouter.define(RouteName.MyBook, handler: myBook);
+    fluroRouter.define(RouteName.MyBook + "/:token", handler: myBook);
+    fluroRouter.define(RouteName.Notification + "/:token",
+        handler: notification, transitionType: TransitionType.inFromLeft);
   }
 }

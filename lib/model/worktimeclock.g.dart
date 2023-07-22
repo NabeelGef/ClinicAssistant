@@ -23,6 +23,9 @@ Appointment _$AppointmentFromJson(Map<String, dynamic> json) => Appointment(
       startingTime: json['startingTime'] as String?,
       finishingTime: json['finishingTime'] as String?,
       isBooked: json['isBooked'] as bool?,
+      workTime: json['workTime'] == null
+          ? null
+          : WorkTimeElement.fromJson(json['workTime'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AppointmentToJson(Appointment instance) =>
@@ -31,4 +34,5 @@ Map<String, dynamic> _$AppointmentToJson(Appointment instance) =>
       'startingTime': instance.startingTime,
       'finishingTime': instance.finishingTime,
       'isBooked': instance.isBooked,
+      'workTime': instance.workTime,
     };

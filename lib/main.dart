@@ -1,6 +1,10 @@
 import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom0.dart';
+import 'package:clinicassistant/blocNotification/bloc.dart';
+import 'package:clinicassistant/blocNotification/event.dart';
+import 'package:clinicassistant/blocNotification/state.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -12,12 +16,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'Constant/color.dart';
+
+NotificationSocketBloc notificationSocketBloc = NotificationSocketBloc(
+    NotificationSocketState(
+        getNumberOfUnReadState: GetNumberOfUnReadState(num: 0)));
 
 void main() async {
   // isLogin = await Code.getDataLogin('isLogin');
   // token = await Code.getData('token');
+  IO.Socket socket = IO.io(
+      API.BaseUrlBack,
+      IO.OptionBuilder()
+          .setTransports(['websocket']).setQuery({"patientId": "1"}).build());
+  socket.onError((data) => print("Error in Connecting is : $data"));
+  socket.onConnect((data) {
+    print('connect...');
+    // socket.emit('msg', 'test');
+  });
+  socket.on('numberOfUnRead', (data) {
+    print("Data ====> $data");
+    notificationSocketBloc
+        .add(AddNumberOfUnReadNotificationEvent(num: data['numberOfUnRead']));
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   SharedBloc sharedBloc = SharedBloc(sharedPreferences: sharedPreferences);

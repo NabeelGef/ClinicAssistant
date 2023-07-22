@@ -8,6 +8,7 @@ import 'package:clinicassistant/blocShared/state.dart';
 import 'package:clinicassistant/widgets/AlertBook/alertBook.dart';
 import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
 import 'package:clinicassistant/widgets/Connectivity/state.dart';
+import 'package:clinicassistant/widgets/dialog_not_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,6 +37,11 @@ class _BookPageState extends State<BookPage> {
       ["moredrop.png", "moredrop.png", "moredrop.png"],
       SuccessDoctorClinicBook(null, "")));
   bool isLoading = false;
+  @override
+  void initState() {
+    print("ClicnicID : ${widget.clinicId} , DoctorID : ${widget.doctorId}");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +57,18 @@ class _BookPageState extends State<BookPage> {
             return Scaffold(
               key: _scaffoldkey,
               endDrawer: Code.DrawerNative(context, _scaffoldkey),
-              appBar: MyAppBar(),
+              appBar: MyAppBar(null),
               body: Code.ConnectionWidget(context, false),
             );
           }
           return Scaffold(
             key: _scaffoldkey,
             endDrawer: state.getLoginState!.isLogin == true
-                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                ? Code.DrawerNativeSeconde(
+                    context, _scaffoldkey, state.getTokenState!.token!)
                 : Code.DrawerNative(context, _scaffoldkey),
-            appBar: MyAppBar(),
-            body: Code.ConnectionWidget(context,false),
+            appBar: MyAppBar(state.getTokenState!.token),
+            body: Code.ConnectionWidget(context, false),
           );
         } else {
           if (!isLoading) {
@@ -73,7 +80,7 @@ class _BookPageState extends State<BookPage> {
             return Scaffold(
               key: _scaffoldkey,
               endDrawer: Code.DrawerNative(context, _scaffoldkey),
-              appBar: MyAppBar(),
+              appBar: MyAppBar(null),
               backgroundColor: Coloring.third,
               body: MyBody(),
             );
@@ -81,9 +88,10 @@ class _BookPageState extends State<BookPage> {
           return Scaffold(
             key: _scaffoldkey,
             endDrawer: state.getLoginState!.isLogin == true
-                ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                ? Code.DrawerNativeSeconde(
+                    context, _scaffoldkey, state.getTokenState!.token!)
                 : Code.DrawerNative(context, _scaffoldkey),
-            appBar: MyAppBar(),
+            appBar: MyAppBar(state.getTokenState!.token),
             backgroundColor: Coloring.third,
             body: MyBody(),
           );
@@ -92,8 +100,8 @@ class _BookPageState extends State<BookPage> {
     });
   }
 
-  MyAppBar() {
-    return Code.AppBarProfile(_scaffoldkey, context);
+  MyAppBar(String? token) {
+    return Code.AppBarProfile(_scaffoldkey, context, token);
   }
 
   MyBody() {
@@ -103,6 +111,9 @@ class _BookPageState extends State<BookPage> {
           builder: (context, state) {
             if (state.successDoctorClinicBook.doctorClinicBook == null) {
               if (state.successDoctorClinicBook.error.isNotEmpty) {
+                if (state.successDoctorClinicBook.error == "Not Found") {
+                  return AlertDialogIsNotLogin();
+                }
                 return Center(child: Text(state.successDoctorClinicBook.error));
               } else {
                 return Center(
@@ -167,6 +178,7 @@ class _BookPageState extends State<BookPage> {
                             ),
                             Text(
                               "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctor!.firstname} ${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctor!.lastname}",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: Sizer.getTextSize(context, 0.04),

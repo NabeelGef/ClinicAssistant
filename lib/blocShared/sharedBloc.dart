@@ -44,6 +44,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
 
   Stream<SharedState> signout() async* {
     await sharedPreferences.setBool('isLogin', false);
+    // await sharedPreferences.setString('token', "");
     bool? newisLogin = sharedPreferences.getBool('isLogin');
     yield SharedState(
         getTokenState: GetTokenState(token: null),

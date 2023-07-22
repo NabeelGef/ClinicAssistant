@@ -24,8 +24,9 @@ class ChangingMoreText extends DoctorProfileEvents {
 }
 
 class LoadingProfile extends DoctorProfileEvents {
+  final String? token;
   final String doctorId;
-  LoadingProfile(this.doctorId);
+  LoadingProfile(this.doctorId, this.token);
 }
 
 class GetEvaluate extends DoctorProfileEvents {

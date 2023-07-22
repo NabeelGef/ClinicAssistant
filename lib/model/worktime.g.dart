@@ -25,18 +25,18 @@ DoctorClinicWorkTime _$DoctorClinicWorkTimeFromJson(
           .toList(),
       startingDate: json['startingDate'] == null
           ? null
-          : DateTime.parse(json['startingDate'] as String),
+          : (json['startingDate'] as String),
       finishingDate: json['finishingDate'] == null
           ? null
-          : DateTime.parse(json['finishingDate'] as String),
+          : (json['finishingDate'] as String),
     );
 
 Map<String, dynamic> _$DoctorClinicWorkTimeToJson(
         DoctorClinicWorkTime instance) =>
     <String, dynamic>{
       'workTimes': instance.workTimes,
-      'startingDate': instance.startingDate?.toIso8601String(),
-      'finishingDate': instance.finishingDate?.toIso8601String(),
+      'startingDate': instance.startingDate,
+      'finishingDate': instance.finishingDate,
     };
 
 WorkTimeElement _$WorkTimeElementFromJson(Map<String, dynamic> json) =>
@@ -45,8 +45,7 @@ WorkTimeElement _$WorkTimeElementFromJson(Map<String, dynamic> json) =>
       startingTime: json['startingTime'] as String?,
       finishingTime: json['finishingTime'] as String?,
       day: json['day'] as String?,
-      date:
-          json['date'] == null ? null : DateTime.parse(json['date'] as String),
+      date: json['date'] == null ? null : json['date'] as String,
       haveAppointments: json['haveAppointments'] as bool?,
     );
 
@@ -56,6 +55,6 @@ Map<String, dynamic> _$WorkTimeElementToJson(WorkTimeElement instance) =>
       'startingTime': instance.startingTime,
       'finishingTime': instance.finishingTime,
       'day': instance.day,
-      'date': instance.date?.toIso8601String(),
+      'date': instance.date,
       'haveAppointments': instance.haveAppointments,
     };

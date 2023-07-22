@@ -1,3 +1,4 @@
+import 'package:clinicassistant/model/worktime.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'worktimeclock.g.dart';
@@ -18,17 +19,18 @@ class WorkTimeClock {
 
 @JsonSerializable()
 class Appointment {
-  Appointment({
-    this.id,
-    this.startingTime,
-    this.finishingTime,
-    this.isBooked,
-  });
+  Appointment(
+      {this.id,
+      this.startingTime,
+      this.finishingTime,
+      this.isBooked,
+      this.workTime});
 
   final String? id;
   final String? startingTime;
   final String? finishingTime;
   final bool? isBooked;
+  final WorkTimeElement? workTime;
 
   factory Appointment.fromJson(Map<String, dynamic> json) =>
       _$AppointmentFromJson(json);

@@ -1,14 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/blocNotification/state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../Screen/clinicsPage/bloc/bloc.dart';
 import '../Screen/doctorsPage/bloc/bloc.dart';
 import '../Constant/color.dart';
 import '../Constant/font.dart';
+import '../blocNotification/bloc.dart';
+import '../main.dart';
+import 'package:badges/badges.dart' as badges;
 
 // ignore: must_be_immutable
 class SearchBarView extends StatelessWidget {
@@ -21,6 +28,7 @@ class SearchBarView extends StatelessWidget {
   AllClinicsBloc allClinicsBloc;
   bool isConnect;
   void Function() searchClicked;
+  String? token;
   SearchBarView(
       {Key? key,
       required this.scaffoldkey,
@@ -31,7 +39,8 @@ class SearchBarView extends StatelessWidget {
       required this.allDoctorsBloc,
       required this.allClinicsBloc,
       required this.isConnect,
-      required this.searchClicked})
+      required this.searchClicked,
+      this.token})
       : super(key: key);
 
   @override
@@ -40,9 +49,33 @@ class SearchBarView extends StatelessWidget {
       toolbarHeight: Sizer.getHeight(context) / 6,
       backgroundColor: Coloring.primary,
       leading: InkWell(
-          onTap: () {},
-          child: Icon(Icons.notifications_none_outlined,
-              size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+          onTap: () {
+            RouterNav.fluroRouter.navigateTo(
+                context, RouteName.Notification + "/${token}",
+                routeSettings: RouteSettings());
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 30.sp, left: 10.sp),
+            child: badges.Badge(
+              badgeAnimation: badges.BadgeAnimation.scale(),
+              position: badges.BadgePosition.topEnd(),
+              badgeStyle: badges.BadgeStyle(
+                badgeColor: Colors.white,
+              ),
+              badgeContent:
+                  BlocBuilder<NotificationSocketBloc, NotificationSocketState>(
+                      bloc: notificationSocketBloc,
+                      builder: (context, state) {
+                        return Text(
+                          "${state.getNumberOfUnReadState.num}",
+                          style: TextStyle(
+                              color: Coloring.primary, fontSize: 20.sp),
+                        );
+                      }),
+              child: Icon(Icons.notifications_none_outlined,
+                  size: Sizer.getTextSize(context, 0.1), color: Colors.white),
+            ),
+          )),
       actions: [
         isDoctor
             ? Container(

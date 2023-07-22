@@ -8,7 +8,6 @@ import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
 class Home extends StatelessWidget {
@@ -29,7 +28,7 @@ class Home extends StatelessWidget {
             Scaffold(
                 backgroundColor: Colors.transparent,
                 key: _scaffoldKey,
-                //appBar: MyAppBar(context),
+                appBar: MyAppBar(_scaffoldKey, context, null),
                 endDrawer: Code.DrawerNative(context, _scaffoldKey),
                 body: Body(context)),
           ],
@@ -44,9 +43,14 @@ class Home extends StatelessWidget {
             Scaffold(
                 backgroundColor: Colors.transparent,
                 key: _scaffoldKey,
-                //appBar: MyAppBar(context),
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(Sizer.getHeight(context) / 8),
+                  child: MyAppBar(
+                      _scaffoldKey, context, state.getTokenState!.token),
+                ),
                 endDrawer: state.getLoginState!.isLogin == true
-                    ? Code.DrawerNativeSeconde(context, _scaffoldKey)
+                    ? Code.DrawerNativeSeconde(
+                        context, _scaffoldKey, state.getTokenState!.token!)
                     : Code.DrawerNative(context, _scaffoldKey),
                 body: Body(context)),
           ],
@@ -57,113 +61,83 @@ class Home extends StatelessWidget {
 
   //Make Body
   Body(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(50),
-              bottomLeft: Radius.circular(50),
-            ),
-            color: Coloring.primary,
-          ),
-          width: Sizer.getWidth(context),
-          height: Sizer.getHeight(context) / 15,
+        SizedBox(
+          height: Sizer.getHeight(context) / 20,
         ),
-        Column(
+        //MyAppBar(context , ),
+        Expanded(child: Image.asset(Font.urlImage + 'logo.png')),
+        Expanded(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              height: Sizer.getHeight(context) / 20,
+            InkWell(
+              onTap: () {
+                RouterNav.fluroRouter.navigateTo(context, RouteName.AllClinics);
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: Sizer.getWidth(context) / 5,
+                    height: Sizer.getHeight(context) / 10,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Coloring.primary),
+                    child: Image.asset(
+                      Font.urlImage + 'clinicIcon.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  Text(
+                    "العيادات",
+                    style: TextStyle(
+                        color: Coloring.secondary,
+                        fontFamily: Font.fontfamily,
+                        fontSize: Sizer.getTextSize(context, 0.07)),
+                  )
+                ],
+              ),
             ),
-            MyAppBar(context),
-            Expanded(child: Image.asset(Font.urlImage + 'logo.png')),
-            Expanded(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    RouterNav.fluroRouter
-                        .navigateTo(context, RouteName.AllClinics);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: Sizer.getWidth(context) / 5,
-                        height: Sizer.getHeight(context) / 10,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Coloring.primary),
-                        child: Image.asset(
-                          Font.urlImage + 'clinicIcon.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Text(
-                        "العيادات",
-                        style: TextStyle(
-                            color: Coloring.secondary,
-                            fontFamily: Font.fontfamily,
-                            fontSize: Sizer.getTextSize(context, 0.07)),
-                      )
-                    ],
+            InkWell(
+              onTap: () {
+                RouterNav.fluroRouter.navigateTo(context, RouteName.AllDoctors);
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: Sizer.getWidth(context) / 5,
+                    height: Sizer.getHeight(context) / 10,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Coloring.primary),
+                    child: Image.asset(Font.urlImage + 'doctorIcon.png',
+                        fit: BoxFit.fill),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    RouterNav.fluroRouter
-                        .navigateTo(context, RouteName.AllDoctors);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: Sizer.getWidth(context) / 5,
-                        height: Sizer.getHeight(context) / 10,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Coloring.primary),
-                        child: Image.asset(Font.urlImage + 'doctorIcon.png',
-                            fit: BoxFit.fill),
-                      ),
-                      Text(
-                        "الأطبّاء",
-                        style: TextStyle(
-                            color: Coloring.secondary,
-                            fontFamily: Font.fontfamily,
-                            fontSize: Sizer.getTextSize(context, 0.07)),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ))
+                  Text(
+                    "الأطبّاء",
+                    style: TextStyle(
+                        color: Coloring.secondary,
+                        fontFamily: Font.fontfamily,
+                        fontSize: Sizer.getTextSize(context, 0.07)),
+                  )
+                ],
+              ),
+            )
           ],
-        )
+        ))
       ],
     );
   }
 
   //Make AppBar
-  MyAppBar(BuildContext context) {
-    return AppBar(
-      toolbarHeight: Sizer.getHeight(context) / 10,
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      leading: InkWell(
-          onTap: () {},
-          child: Icon(Icons.notifications_none_outlined,
-              size: Sizer.getTextSize(context, 0.1), color: Coloring.primary)),
-      actions: [
-        InkWell(
-            onTap: () => _scaffoldKey.currentState!.openEndDrawer(),
-            child: Container(
-                margin: EdgeInsets.only(right: 6.sp),
-                child: Icon(Icons.menu,
-                    size: Sizer.getTextSize(context, 0.1),
-                    color: Coloring.primary)))
-      ],
-    );
+  MyAppBar(
+    GlobalKey<ScaffoldState> _scaffoldkey,
+    BuildContext context,
+    String? token,
+  ) {
+    return Code.AppBarHome(_scaffoldkey, context, token);
   }
 }

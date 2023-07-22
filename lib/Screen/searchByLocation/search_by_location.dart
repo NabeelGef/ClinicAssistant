@@ -11,6 +11,8 @@ import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/blocShared/state.dart';
 import 'package:clinicassistant/model/clinic.dart';
 import 'package:clinicassistant/model/specialist.dart';
+import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
+import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -39,45 +41,80 @@ class _SearchByLocationState extends State<SearchByLocation> {
           null,
           null));
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
-
-  @override
-  void initState() {
-    searchByLocationBloc.add(AddMyLocationEvent());
-    searchByLocationBloc.add(GetGovernorateEvent());
-    apiSpecialistBloc.add(LoadingSpecialists());
-    super.initState();
-  }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
-      if (state.getLoginState == null) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Coloring.third2,
-          key: _scaffoldkey,
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(100.sp),
-              child: Code.AppBarWithText(
-                  _scaffoldkey, context, 'البحث حسب الموقع', false)),
-          endDrawer: Code.DrawerNative(context, _scaffoldkey),
-          body: BodyLocation(searchByLocationBloc),
-        );
-      } else {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Coloring.third2,
-          key: _scaffoldkey,
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(100.sp),
-              child: Code.AppBarWithText(
-                  _scaffoldkey, context, 'البحث حسب الموقع', false)),
-          endDrawer: state.getLoginState!.isLogin == true
-              ? Code.DrawerNativeSeconde(context, _scaffoldkey)
-              : Code.DrawerNative(context, _scaffoldkey),
-          body: BodyLocation(searchByLocationBloc),
-        );
-      }
+      return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+        builder: (context, connect) {
+          if (connect is ConnectivityInitial) {
+            return Center(
+                child: CircularProgressIndicator(color: Coloring.primary));
+          } else if (connect is NotConnectedState) {
+            isLoading = false;
+            if (state.getLoginState == null) {
+              return Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  backgroundColor: Coloring.third2,
+                  key: _scaffoldkey,
+                  appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(100.sp),
+                      child: Code.AppBarWithMyBook(_scaffoldkey, context,
+                          'البحث حسب الموقع', false, null)),
+                  endDrawer: Code.DrawerNative(context, _scaffoldkey),
+                  body: Code.ConnectionWidget(context, false));
+            }
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Coloring.third2,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(100.sp),
+                  child: Code.AppBarWithMyBook(_scaffoldkey, context,
+                      'البحث حسب الموقع', false, state.getTokenState!.token)),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(
+                      context, _scaffoldkey, state.getTokenState!.token!)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: Code.ConnectionWidget(context, false),
+            );
+          } else {
+            if (!isLoading) {
+              isLoading = true;
+              searchByLocationBloc.add(AddMyLocationEvent());
+              searchByLocationBloc.add(GetGovernorateEvent());
+              apiSpecialistBloc.add(LoadingSpecialists());
+            }
+            if (state.getLoginState == null) {
+              return Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  backgroundColor: Coloring.third2,
+                  key: _scaffoldkey,
+                  appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(100.sp),
+                      child: Code.AppBarWithMyBook(_scaffoldkey, context,
+                          'البحث حسب الموقع', false, null)),
+                  endDrawer: Code.DrawerNative(context, _scaffoldkey),
+                  body: BodyLocation(searchByLocationBloc));
+            }
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Coloring.third2,
+              key: _scaffoldkey,
+              appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(100.sp),
+                  child: Code.AppBarWithMyBook(_scaffoldkey, context,
+                      'البحث حسب الموقع', false, state.getTokenState!.token)),
+              endDrawer: state.getLoginState!.isLogin == true
+                  ? Code.DrawerNativeSeconde(
+                      context, _scaffoldkey, state.getTokenState!.token!)
+                  : Code.DrawerNative(context, _scaffoldkey),
+              body: BodyLocation(searchByLocationBloc),
+            );
+          }
+        },
+      );
     });
   }
 

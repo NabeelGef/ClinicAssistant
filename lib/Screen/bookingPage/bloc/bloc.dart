@@ -73,12 +73,16 @@ class BookPageBloc extends Bloc<BookEvent, BookState> {
             SuccessDoctorClinicBook(doctorClinicBook, ""));
       }
     } catch (e, s) {
-      if (e is DioError) {
-        print("DioError : ${e.error}");
-      }
       print("Catch Error In DoctorClinicBook : $e in Line $s");
-      yield BookState([imagecommunication, imagespecialist, imageaddress],
-          SuccessDoctorClinicBook(null, "Not Found any data"));
+      if (e is DioException) {
+        if (e.response!.statusCode != 200) {
+          yield BookState([imagecommunication, imagespecialist, imageaddress],
+              SuccessDoctorClinicBook(null, "Not Found"));
+        } else {
+          yield BookState([imagecommunication, imagespecialist, imageaddress],
+              SuccessDoctorClinicBook(null, "Not Found any data"));
+        }
+      }
     }
   }
 }

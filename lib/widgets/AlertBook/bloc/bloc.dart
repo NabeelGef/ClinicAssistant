@@ -4,6 +4,7 @@ import 'package:clinicassistant/repository/BookRepository/book_now_repo.dart';
 import 'package:clinicassistant/repository/BookRepository/clock_time_repo.dart';
 import 'package:clinicassistant/repository/BookRepository/remain_repo.dart';
 import 'package:clinicassistant/repository/BookRepository/work_time_repo.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'event.dart';
@@ -67,10 +68,19 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
       }
     } catch (e, s) {
       print("Error In WorkTimes is : $e ,in $s");
-      yield StateAlertBook(
-          successAlertBookClock: state.successAlertBookClock,
-          successAlertBook:
-              SuccessAlertBook(workTime: null, error: "Not Found any data"));
+      if (e is DioException) {
+        if (e.response?.statusCode == 400 || e.response?.statusCode == 404) {
+          yield StateAlertBook(
+              successAlertBookClock: state.successAlertBookClock,
+              successAlertBook:
+                  SuccessAlertBook(workTime: null, error: "Not Found"));
+        } else {
+          yield StateAlertBook(
+              successAlertBookClock: state.successAlertBookClock,
+              successAlertBook: SuccessAlertBook(
+                  workTime: null, error: "Not Found any data"));
+        }
+      }
     }
   }
 
@@ -100,6 +110,19 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
       }
     } catch (e, s) {
       print("Error In WorkTimesClock is : $e ,in $s");
+      if (e is DioException) {
+        if (e.response?.statusCode == 400 || e.response?.statusCode == 404) {
+          yield StateAlertBook(
+              successAlertBookClock: SuccessAlertBookClock(
+                  workTimeClock: null, error: "Not Found"),
+              successAlertBook: state.successAlertBook);
+        } else {
+          yield StateAlertBook(
+              successAlertBookClock: SuccessAlertBookClock(
+                  workTimeClock: null, error: "Not Found any data"),
+              successAlertBook: state.successAlertBook);
+        }
+      }
       yield StateAlertBook(
           successAlertBookClock: SuccessAlertBookClock(
               workTimeClock: null, error: "Not Found any data"),
@@ -195,11 +218,20 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
         );
       }
     } catch (e, s) {
-      print("Error In WorkTimes is : $e ,in $s");
-      yield StateAlertBook(
-          successAlertBookClock: state.successAlertBookClock,
-          successAlertBook:
-              SuccessAlertBook(workTime: null, error: "Not Found any data"));
+      print("Error In WorkTimes Filters is : $e ,in $s");
+      if (e is DioException) {
+        if (e.response?.statusCode == 400 || e.response?.statusCode == 404) {
+          yield StateAlertBook(
+              successAlertBookClock: state.successAlertBookClock,
+              successAlertBook:
+                  SuccessAlertBook(workTime: null, error: "Not Found"));
+        } else {
+          yield StateAlertBook(
+              successAlertBookClock: state.successAlertBookClock,
+              successAlertBook: SuccessAlertBook(
+                  workTime: null, error: "Not Found any data"));
+        }
+      }
     }
   }
 }

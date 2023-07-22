@@ -25,8 +25,8 @@ class DoctorClinicWorkTime {
   });
 
   final List<WorkTimeElement>? workTimes;
-  final DateTime? startingDate;
-  final DateTime? finishingDate;
+  final String? startingDate;
+  final String? finishingDate;
 
   factory DoctorClinicWorkTime.fromJson(Map<String, dynamic> json) =>
       _$DoctorClinicWorkTimeFromJson(json);
@@ -49,7 +49,7 @@ class WorkTimeElement {
   final String? startingTime;
   final String? finishingTime;
   final String? day;
-  final DateTime? date;
+  final String? date;
   final bool? haveAppointments;
 
   factory WorkTimeElement.fromJson(Map<String, dynamic> json) =>

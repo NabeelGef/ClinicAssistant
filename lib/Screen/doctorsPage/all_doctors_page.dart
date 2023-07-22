@@ -20,6 +20,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 // ignore: must_be_immutable
@@ -100,7 +101,8 @@ class _AllDoctorsState extends State<AllDoctors> {
                     searchClicked: searchClicked),
               ),
               endDrawer: state.getLoginState!.isLogin == true
-                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  ? Code.DrawerNativeSeconde(
+                      context, _scaffoldkey, state.getTokenState!.token!)
                   : Code.DrawerNative(context, _scaffoldkey),
               body: Code.ConnectionWidget(context, false),
             );
@@ -113,7 +115,6 @@ class _AllDoctorsState extends State<AllDoctors> {
             checkBoxBloc.SetApiSpecialBloc = apiSpecialistBloc;
             apiSpecialistBloc.SetCheckBoxBloc = checkBoxBloc;
             allDoctorsBloc.SetCheckBoxBloc = checkBoxBloc;
-            print("ELSEEEE1111111111111");
           }
           if (state.getLoginState == null) {
             return Scaffold(
@@ -142,18 +143,21 @@ class _AllDoctorsState extends State<AllDoctors> {
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(100.sp),
                 child: SearchBarView(
-                    scaffoldkey: _scaffoldkey,
-                    form: form,
-                    textEditingController: textEditingController,
-                    isDoctor: true,
-                    hint: "ابحث عن طبيبك المناسب",
-                    allDoctorsBloc: allDoctorsBloc,
-                    allClinicsBloc: allClinicsBloc,
-                    isConnect: true,
-                    searchClicked: searchClicked),
+                  scaffoldkey: _scaffoldkey,
+                  form: form,
+                  textEditingController: textEditingController,
+                  isDoctor: true,
+                  hint: "ابحث عن طبيبك المناسب",
+                  allDoctorsBloc: allDoctorsBloc,
+                  allClinicsBloc: allClinicsBloc,
+                  isConnect: true,
+                  searchClicked: searchClicked,
+                  token: state.getTokenState?.token,
+                ),
               ),
               endDrawer: state.getLoginState!.isLogin == true
-                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  ? Code.DrawerNativeSeconde(
+                      context, _scaffoldkey, state.getTokenState!.token!)
                   : Code.DrawerNative(context, _scaffoldkey),
               body: BodyDoctors(state),
             );
@@ -484,6 +488,11 @@ class _AllDoctorsState extends State<AllDoctors> {
                 builder: (context, state) {
                   if (state.doctor == null) {
                     if (state.error.isNotEmpty) {
+                      if (state.error == "Not Found") {
+                        return Center(
+                            child:
+                                Lottie.asset("${Font.urlLottie}notFound.json"));
+                      }
                       return Center(child: Text("${state.error}"));
                     } else {
                       return Shimmer.fromColors(
@@ -531,7 +540,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                   crossAxisCount: 2,
                                   childAspectRatio: 1,
                                   mainAxisExtent:
-                                      Sizer.getTextSize(context, 0.7)),
+                                      Sizer.getTextSize(context, 0.8)),
                           scrollDirection: Axis.vertical,
                           physics: ScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -571,6 +580,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                         Center(
                                             child: Text(
                                                 "${state.doctor!.doctor[index].firstname} ${state.doctor!.doctor[index].lastname}",
+                                                textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     color: Coloring.primary,
                                                     fontSize: Sizer.getTextSize(
@@ -646,6 +656,8 @@ class _AllDoctorsState extends State<AllDoctors> {
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       onPressed: () async {
+                                        print(
+                                            "Token Form All Doctors To Doctor Profile : ${sharedState.getTokenState?.token}");
                                         RouterNav.fluroRouter.navigateTo(
                                             context,
                                             routeSettings:

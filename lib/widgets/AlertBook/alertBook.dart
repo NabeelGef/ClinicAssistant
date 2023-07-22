@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clinicassistant/widgets/AlertBook/alertBookClock.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/event.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/state.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../Constant/color.dart';
 import '../../Constant/font.dart';
@@ -279,6 +280,15 @@ class _AlertBooking extends State<AlertBooking> {
                           builder: (context, state) {
                             if (state.successAlertBook?.workTime == null) {
                               if (state.successAlertBook!.error.isNotEmpty) {
+                                if (state.successAlertBook?.error ==
+                                    "Not Found") {
+                                  return Center(
+                                      child: Lottie.asset(
+                                          "${Font.urlLottie}notFoundAppointment.json",
+                                          width: Sizer.getWidth(context) / 2,
+                                          height:
+                                              Sizer.getHeight(context) / 5));
+                                }
                                 return Center(
                                   child: Text(
                                       "${state.successAlertBook?.error}",
@@ -306,7 +316,7 @@ class _AlertBooking extends State<AlertBooking> {
                                         .doctorClinicWorkTime!
                                         .workTimes![index]
                                         .haveAppointments!;
-                                    DateTime? date = state
+                                    String? date = state
                                         .successAlertBook
                                         ?.workTime!
                                         .doctorClinicWorkTime!
@@ -353,8 +363,9 @@ class _AlertBooking extends State<AlertBooking> {
                                             Icon(Icons.calendar_month,
                                                 color: Coloring.primary),
                                             Text(
+                                              //${date?.year}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}
                                               "${state.successAlertBook?.workTime!.doctorClinicWorkTime!.workTimes![index].day}\n" +
-                                                  "${date?.year}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
+                                                  "${date}",
                                               style: TextStyle(
                                                   color: Coloring.primary,
                                                   fontSize: Sizer.getTextSize(

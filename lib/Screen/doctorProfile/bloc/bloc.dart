@@ -84,18 +84,18 @@ class DoctorProfileDataBloc
   Stream<SuccessProfileStates> mapEventToState(
       DoctorProfileEvents event) async* {
     if (event is LoadingProfile) {
-      yield* getProfileInfo(event.doctorId);
+      yield* getProfileInfo(event.token, event.doctorId);
     }
     if (event is GetEvaluate) {
       yield* getEvaluate(event.token, event.doctorId);
     }
   }
 
-  Stream<SuccessProfileStates> getProfileInfo(String id) async* {
+  Stream<SuccessProfileStates> getProfileInfo(String? token, String id) async* {
     yield SuccessProfileStates(null, "", null);
     try {
       ProfileDoctor? profileDoctor =
-          await DoctorProfileRepository.getDetailDoctor(id);
+          await DoctorProfileRepository.getDetailDoctor(token, id);
       if (profileDoctor == null) {
         yield SuccessProfileStates(
             null, "Couldn't Find any Data!!", state.evaluateState);

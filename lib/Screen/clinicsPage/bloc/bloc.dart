@@ -2,6 +2,7 @@ import 'package:clinicassistant/Screen/clinicsPage/bloc/events.dart';
 import 'package:clinicassistant/Screen/clinicsPage/bloc/states.dart';
 import 'package:clinicassistant/model/clinic.dart';
 import 'package:clinicassistant/repository/allClinics_repo.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
@@ -51,7 +52,13 @@ class AllClinicsBloc extends Bloc<AllClinicsEvents, ClinicsStates> {
       }
     } catch (e, s) {
       print("In Catch Search Clinic....$e in $s");
-      yield ClinicsStates(null, "Not Found any data");
+      if (e is DioException) {
+        if (e.response?.statusCode == 404) {
+          yield ClinicsStates(null, "Not Found");
+        } else {
+          yield ClinicsStates(null, "Not Found any data");
+        }
+      }
     }
   }
 }

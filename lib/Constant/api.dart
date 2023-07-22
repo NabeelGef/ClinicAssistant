@@ -29,5 +29,12 @@ class API {
   static String worktime = "work-time";
   static String appoitment = "appoitment";
   static String governorates = "governorates";
+  static String my_current_appointment = "my-current-appointment";
+  static String my_previous_appointment = "my-previes-appointment";
+  static String hour_to_appointment = '24hour-to-appointment';
+  static String cancel_appointment = 'cancel-appointment';
+  static String patient_reminders = 'patient-reminders';
+  static String patient_delays = 'patient-delays';
+
   static Dio dio = Dio();
 }

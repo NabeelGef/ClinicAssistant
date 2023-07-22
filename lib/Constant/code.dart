@@ -6,8 +6,11 @@ import 'package:clinicassistant/Screen/doctorProfile/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/event.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
+import 'package:clinicassistant/blocNotification/bloc.dart';
+import 'package:clinicassistant/blocNotification/state.dart';
 import 'package:clinicassistant/blocShared/event.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/main.dart';
 import 'package:clinicassistant/repository/evaluate_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +19,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-
 import '../Screen/clinicsPage/bloc/events.dart';
+import 'package:badges/badges.dart' as badges;
 import 'Route/routename.dart';
 import 'Route/router.dart';
 
@@ -95,6 +98,7 @@ class Code {
             SizedBox(height: Sizer.getHeight(context) / 50),
             InkWell(
               onTap: () {
+                RouterNav.fluroRouter.navigateTo(context, RouteName.Home);
                 //Go To Home
               },
               child: Row(
@@ -120,7 +124,7 @@ class Code {
             SizedBox(height: Sizer.getHeight(context) / 50),
             InkWell(
               onTap: () {
-                // Go To Loginpage
+                RouterNav.fluroRouter.navigateTo(context, RouteName.login);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -131,18 +135,12 @@ class Code {
                   SizedBox(
                     width: 20,
                   ),
-                  InkWell(
-                    onTap: () {
-                      RouterNav.fluroRouter
-                          .navigateTo(context, RouteName.login);
-                    },
-                    child: Text("تسجيل الدّخول",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: Font.fontfamily,
-                            fontSize: Sizer.getTextSize(context, 0.05),
-                            fontWeight: FontWeight.bold)),
-                  ),
+                  Text("تسجيل الدّخول",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
                   SizedBox(width: 20),
                 ],
               ),
@@ -228,7 +226,7 @@ class Code {
 
   //Make Second drawer native for login one
   static Widget DrawerNativeSeconde(
-      BuildContext context, GlobalKey<ScaffoldState> key) {
+      BuildContext context, GlobalKey<ScaffoldState> key, String token) {
     return Align(
       alignment: Alignment.topRight,
       child: Container(
@@ -402,7 +400,9 @@ class Code {
             SizedBox(height: Sizer.getHeight(context) / 50),
             InkWell(
               onTap: () {
-                RouterNav.fluroRouter.navigateTo(context, RouteName.MyBook);
+                RouterNav.fluroRouter.navigateTo(
+                    context, RouteName.MyBook + "/${token}",
+                    routeSettings: RouteSettings(arguments: {'token': token}));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -442,6 +442,7 @@ class Code {
                         content: Container(
                           width: Sizer.getWidth(context) / 2,
                           height: Sizer.getHeight(context) / 5,
+                          child: Lottie.asset("${Font.urlLottie}logout.json"),
                         ),
                         actionsAlignment: MainAxisAlignment.spaceEvenly,
                         actions: [
@@ -515,15 +516,101 @@ class Code {
   //Make a const FloatingPoint in Doctor and clinic page
 
   //Make a conts AppBar in Doctor and clinic page
-  static Widget AppBarProfile(
-      GlobalKey<ScaffoldState> _scaffoldkey, BuildContext context) {
+  static Widget AppBarHome(GlobalKey<ScaffoldState> _scaffoldkey,
+      BuildContext context, String? token) {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25),
+            ),
+            color: Coloring.primary,
+          ),
+          width: Sizer.getWidth(context),
+          height: Sizer.getHeight(context) / 15,
+        ),
+        AppBar(
+          toolbarHeight: Sizer.getHeight(context) / 3,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: InkWell(
+              onTap: () {
+                RouterNav.fluroRouter.navigateTo(
+                    context, RouteName.Notification + "/${token}",
+                    routeSettings: RouteSettings());
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 25.sp, left: 10.sp),
+                child: badges.Badge(
+                  badgeAnimation: badges.BadgeAnimation.scale(),
+                  position: badges.BadgePosition.topEnd(),
+                  badgeStyle: badges.BadgeStyle(
+                    badgeColor: Coloring.primary,
+                  ),
+                  badgeContent: BlocBuilder<NotificationSocketBloc,
+                          NotificationSocketState>(
+                      bloc: notificationSocketBloc,
+                      builder: (context, state) {
+                        return Text(
+                          "${state.getNumberOfUnReadState.num}",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                        );
+                      }),
+                  child: Icon(Icons.notifications_none_outlined,
+                      size: Sizer.getTextSize(context, 0.1),
+                      color: Coloring.primary),
+                ),
+              )),
+          actions: [
+            InkWell(
+                onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
+                child: Container(
+                    margin: EdgeInsets.only(right: 6.sp),
+                    child: Icon(Icons.menu,
+                        size: Sizer.getTextSize(context, 0.1),
+                        color: Coloring.primary)))
+          ],
+        ),
+      ],
+    );
+  }
+
+  static Widget AppBarProfile(GlobalKey<ScaffoldState> _scaffoldkey,
+      BuildContext context, String? token) {
     return AppBar(
       toolbarHeight: Sizer.getHeight(context) / 6,
       backgroundColor: Coloring.primary,
       leading: InkWell(
-          onTap: () {},
-          child: Icon(Icons.notifications_none_outlined,
-              size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+          onTap: () {
+            RouterNav.fluroRouter.navigateTo(
+                context, RouteName.Notification + "/${token}",
+                routeSettings: RouteSettings());
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 40.sp, left: 10.sp),
+            child: badges.Badge(
+              badgeAnimation: badges.BadgeAnimation.scale(),
+              position: badges.BadgePosition.topEnd(),
+              badgeStyle: badges.BadgeStyle(
+                badgeColor: Colors.white,
+              ),
+              badgeContent:
+                  BlocBuilder<NotificationSocketBloc, NotificationSocketState>(
+                      bloc: notificationSocketBloc,
+                      builder: (context, state) {
+                        return Text(
+                          "${state.getNumberOfUnReadState.num}",
+                          style: TextStyle(
+                              color: Coloring.primary, fontSize: 20.sp),
+                        );
+                      }),
+              child: Icon(Icons.notifications_none_outlined,
+                  size: Sizer.getTextSize(context, 0.1), color: Colors.white),
+            ),
+          )),
       actions: [
         InkWell(
             onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
@@ -542,8 +629,55 @@ class Code {
     );
   }
 
-  static Widget AppBarWithText(GlobalKey<ScaffoldState> _scaffoldkey,
+  static Widget AppBarWithMyNotification(GlobalKey<ScaffoldState> _scaffoldkey,
       BuildContext context, String text, bool isTab) {
+    return AppBar(
+        toolbarHeight: isTab == true
+            ? Sizer.getHeight(context) / 5
+            : Sizer.getHeight(context) / 6,
+        backgroundColor: Coloring.primary,
+        bottom: isTab == true
+            ? TabBar(
+                labelStyle: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontSize: Sizer.getWidth(context) / 15),
+                unselectedLabelColor: Colors.white,
+                labelColor: Coloring.yellow,
+                indicatorColor: Colors.white,
+                tabs: [
+                    Tab(
+                      text: 'التذكيرات',
+                    ),
+                    Tab(
+                      text: 'التأخيرات و الإلغاءات ',
+                    )
+                  ])
+            : null,
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back, size: 18.sp, color: Colors.white)),
+        actions: [
+          InkWell(
+              onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
+              child: Container(
+                  margin: EdgeInsets.only(right: 6.sp),
+                  child: Icon(Icons.menu,
+                      size: Sizer.getTextSize(context, 0.08),
+                      color: Colors.white)))
+        ],
+        centerTitle: true,
+        title: Text("$text",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: Font.fontfamily,
+                fontSize: 25.sp,
+                color: Colors.white)));
+  }
+
+  static Widget AppBarWithMyBook(GlobalKey<ScaffoldState> _scaffoldkey,
+      BuildContext context, String text, bool isTab, String? token) {
     return AppBar(
         toolbarHeight: isTab == true
             ? Sizer.getHeight(context) / 5
@@ -567,9 +701,33 @@ class Code {
                   ])
             : null,
         leading: InkWell(
-            onTap: () {},
-            child: Icon(Icons.notifications_none_outlined,
-                size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+            onTap: () {
+              RouterNav.fluroRouter.navigateTo(
+                  context, RouteName.MyBook + "/${token}",
+                  routeSettings: RouteSettings(arguments: {'token': token}));
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: 20.sp, left: 10.sp),
+              child: badges.Badge(
+                badgeAnimation: badges.BadgeAnimation.scale(),
+                position: badges.BadgePosition.topEnd(),
+                badgeStyle: badges.BadgeStyle(
+                  badgeColor: Colors.white,
+                ),
+                badgeContent: BlocBuilder<NotificationSocketBloc,
+                        NotificationSocketState>(
+                    bloc: notificationSocketBloc,
+                    builder: (context, state) {
+                      return Text(
+                        "${state.getNumberOfUnReadState.num}",
+                        style:
+                            TextStyle(color: Coloring.primary, fontSize: 20.sp),
+                      );
+                    }),
+                child: Icon(Icons.notifications_none_outlined,
+                    size: Sizer.getTextSize(context, 0.1), color: Colors.white),
+              ),
+            )),
         actions: [
           InkWell(
               onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
@@ -588,15 +746,15 @@ class Code {
                 color: Colors.white)));
   }
 
-  static Widget ConnectionWidget(BuildContext context , bool isChanged) {
+  static Widget ConnectionWidget(BuildContext context, bool isChanged) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset("assets/lottie/notConnection.json"),
+          Lottie.asset("${Font.urlLottie}notConnection.json"),
           Text("يوجد مشكلة في اتّصالك",
               style: TextStyle(
-                  color:  isChanged? Coloring.loginWhite : Coloring.primary,
+                  color: isChanged ? Coloring.loginWhite : Coloring.primary,
                   fontWeight: FontWeight.bold,
                   fontFamily: Font.fontfamily,
                   fontSize: Sizer.getTextSize(context, 0.06)))
@@ -613,14 +771,40 @@ class Code {
       bool isDoctor,
       String hint,
       AllDoctorsBloc allDoctorsBloc,
-      AllClinicsBloc allClinicsBloc) {
+      AllClinicsBloc allClinicsBloc,
+      String? token) {
     return AppBar(
       toolbarHeight: Sizer.getHeight(context) / 6,
       backgroundColor: Coloring.primary,
       leading: InkWell(
-          onTap: () {},
-          child: Icon(Icons.notifications_none_outlined,
-              size: Sizer.getTextSize(context, 0.08), color: Colors.white)),
+          onTap: () {
+            RouterNav.fluroRouter.navigateTo(
+                context, RouteName.MyBook + "/${token}",
+                routeSettings: RouteSettings(arguments: {'token': token}));
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 25.sp, left: 10.sp),
+            child: badges.Badge(
+              badgeAnimation: badges.BadgeAnimation.scale(),
+              position: badges.BadgePosition.topEnd(),
+              badgeStyle: badges.BadgeStyle(
+                badgeColor: Coloring.primary,
+              ),
+              badgeContent:
+                  BlocBuilder<NotificationSocketBloc, NotificationSocketState>(
+                      bloc: notificationSocketBloc,
+                      builder: (context, state) {
+                        return Text(
+                          "${state.getNumberOfUnReadState.num}",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                        );
+                      }),
+              child: Icon(Icons.notifications_none_outlined,
+                  size: Sizer.getTextSize(context, 0.1),
+                  color: Coloring.primary),
+            ),
+          )),
       actions: [
         isDoctor
             ? Container(
@@ -676,7 +860,7 @@ class Code {
                             } else {
                               if (form.currentState!.validate()) {
                                 allClinicsBloc.add(SearchEventClinic(
-                                    name: textEditingController.text));
+                                    textEditingController.text));
                               }
                             }
                           },

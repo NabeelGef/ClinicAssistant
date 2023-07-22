@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../widgets/Connectivity/bloc.dart';
@@ -40,7 +41,7 @@ class _AllClinicsState extends State<AllClinics> {
   Widget build(BuildContext context) {
     void searchClicked() {
       if (form.currentState!.validate()) {
-        allClinicsBloc.add(SearchEventClinic(name: textEditingController.text));
+        allClinicsBloc.add(SearchEventClinic(textEditingController.text));
       }
     }
 
@@ -89,7 +90,8 @@ class _AllClinicsState extends State<AllClinics> {
                     searchClicked: searchClicked),
               ),
               endDrawer: state.getLoginState!.isLogin == true
-                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  ? Code.DrawerNativeSeconde(
+                      context, _scaffoldkey, state.getTokenState!.token!)
                   : Code.DrawerNative(context, _scaffoldkey),
               body: Code.ConnectionWidget(context, false),
             );
@@ -137,7 +139,8 @@ class _AllClinicsState extends State<AllClinics> {
                     searchClicked: searchClicked),
               ),
               endDrawer: state.getLoginState!.isLogin == true
-                  ? Code.DrawerNativeSeconde(context, _scaffoldkey)
+                  ? Code.DrawerNativeSeconde(
+                      context, _scaffoldkey, state.getTokenState!.token!)
                   : Code.DrawerNative(context, _scaffoldkey),
               body: BodyClinics(),
             );
@@ -197,6 +200,11 @@ class _AllClinicsState extends State<AllClinics> {
                           state.clinic?.clinics == null*/
                           ) {
                         if (state.error.isNotEmpty) {
+                          if (state.error == "Not Found") {
+                            return Center(
+                                child: Lottie.asset(
+                                    "${Font.urlLottie}notFound.json"));
+                          }
                           return Center(child: Text("${state.error}"));
                         } else {
                           return Shimmer.fromColors(

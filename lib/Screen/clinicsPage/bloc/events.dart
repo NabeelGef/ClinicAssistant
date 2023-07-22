@@ -5,9 +5,8 @@ abstract class AllClinicsEvents {
 
 class SearchEventClinic extends AllClinicsEvents {
   String name;
-  SearchEventClinic({
-    required this.name,
-  });
+  SearchEventClinic(this.name);
+
 }
 
 class LoadingClinics extends AllClinicsEvents {}
