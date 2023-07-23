@@ -17,6 +17,7 @@ import 'package:clinicassistant/Screen/welcomePage/welcome3.dart';
 import 'package:fluro/fluro.dart';
 
 import '../../Screen/loginPage/login_page.dart';
+import '../../Screen/personal_profile/personal_profile.dart';
 import '../../Screen/signup/signup.dart';
 import '../../Screen/signup2/signup2.dart';
 import '../../test.dart';
@@ -99,6 +100,11 @@ class RouterNav {
 
   static Handler myBook = Handler(handlerFunc: (context, parameters) {
     return MyBook(token: parameters['token']!.first);
+  });
+
+  static Handler personalProfile = Handler(handlerFunc: (context , parameters)
+  {
+    return PersonalProfile();
   });
 
   static void setupRouter() {
