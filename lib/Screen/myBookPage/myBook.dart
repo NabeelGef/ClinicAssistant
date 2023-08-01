@@ -85,7 +85,7 @@ class _MyBookState extends State<MyBook> {
               length: 2,
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
-                backgroundColor: Coloring.third2,
+                backgroundColor: Coloring.loginWhite,
                 key: _scaffoldkey,
                 appBar: PreferredSize(
                     preferredSize: Size.fromHeight(120.sp),
@@ -100,7 +100,7 @@ class _MyBookState extends State<MyBook> {
             length: 2,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Coloring.third2,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: PreferredSize(
                   preferredSize: Size.fromHeight(120.sp),
@@ -132,7 +132,17 @@ class _MyBookState extends State<MyBook> {
             if (state.currentMyBookState.error.isNotEmpty) {
               if (state.currentMyBookState.error == "Not Found") {
                 return Center(
-                    child: Lottie.asset("${Font.urlLottie}notFound.json"));
+                    child: Column(
+                      children: [
+                        Lottie.asset(
+                            "${Font.urlLottie}notFoundAppointment.json"),
+                        Text("لاتوجد بيانات بعد ",style: TextStyle(
+                            color: Coloring.primary,
+                            fontSize: 20.sp,
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold))
+                      ],
+                    ));
               }
               return Center(child: Text("${state.currentMyBookState.error}"));
             } else {
@@ -149,221 +159,210 @@ class _MyBookState extends State<MyBook> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.all(5.sp),
-                    decoration: BoxDecoration(
-                        color: Coloring.third3,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: state
-                                          .currentMyBookState
-                                          .currentAppointment!
-                                          .appointments![index]
-                                          .workTime!
-                                          .doctor!
-                                          .profilePicture ==
-                                      null
-                                  ? Image.asset(
-                                      "${Font.urlImage}doctoravatar.png")
-                                  : Image.network(state
-                                      .currentMyBookState
-                                      .currentAppointment!
-                                      .appointments![index]
-                                      .workTime!
-                                      .doctor!
-                                      .profilePicture!),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                children: [
-                                  Text(
-                                      "الطبيب ${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.firstname} ${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.lastname}",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontSize: 20.sp,
-                                          fontFamily: Font.fontfamily,
-                                          fontWeight: FontWeight.bold)),
-                                  Text(
-                                      "اختصاص : ${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.specialty!.specialtyName}",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontSize:
-                                              Sizer.getWidth(context) / 25,
-                                          fontFamily: Font.fontfamily,
-                                          fontWeight: FontWeight.bold))
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                RouterNav.fluroRouter.navigateTo(
-                                  context,
-                                  RouteName.Booking +
-                                      "/${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.doctorId}/${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicId}/${widget.token}",
-                                  routeSettings: RouteSettings(arguments: {
-                                    'doctorId': state
+                    margin: EdgeInsets.all(15.sp),
+                    child: Card(
+                      elevation: 15,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: state
+                                            .currentMyBookState
+                                            .currentAppointment!
+                                            .appointments![index]
+                                            .workTime!
+                                            .doctor!
+                                            .profilePicture ==
+                                        null
+                                    ? Image.asset(
+                                        "${Font.urlImage}doctoravatar.png")
+                                    : Image.network(state
                                         .currentMyBookState
                                         .currentAppointment!
                                         .appointments![index]
                                         .workTime!
                                         .doctor!
-                                        .doctorId,
-                                    'clinicId': state
-                                        .currentMyBookState
-                                        .currentAppointment!
-                                        .appointments![index]
-                                        .workTime!
-                                        .clinic!
-                                        .clinicId,
-                                    'token': widget.token,
-                                  }),
-                                );
-                              },
-                              child: Icon(Icons.info_outline_rounded,
-                                  color: Coloring.primary2, size: 25.sp),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15.sp,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 10.sp,
-                            ),
-                            Expanded(
-                                child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: Coloring.third5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.calendar_month,
-                                    color: Coloring.primary,
-                                    size: 25.sp,
-                                  ),
-                                  Text(
-                                      "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.date}",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontSize:
-                                              Sizer.getWidth(context) / 25,
-                                          fontFamily: Font.fontfamily,
-                                          fontWeight: FontWeight.bold))
-                                ],
+                                        .profilePicture!),
                               ),
-                            )),
-                            SizedBox(
-                              width: 10.sp,
-                            ),
-                            Expanded(
-                                child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: Coloring.third5),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.timer_outlined,
-                                    color: Coloring.primary,
-                                    size: 25.sp,
-                                  ),
-                                  Text(
-                                      "${state.currentMyBookState.currentAppointment!.appointments![index].startingTime} ${state.currentMyBookState.currentAppointment!.appointments![index].finishingTime}",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontSize:
-                                              Sizer.getWidth(context) / 25,
-                                          fontFamily: Font.fontfamily,
-                                          fontWeight: FontWeight.bold))
-                                ],
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.firstname} ${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.lastname}",
+                                        style: TextStyle(
+                                            color: Coloring.primary,
+                                            fontSize: 20.sp,
+                                            fontFamily: Font.fontfamily,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        "اختصاص : ${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.specialty!.specialtyName}",
+                                        style: TextStyle(
+                                            color: Coloring.third,
+                                            fontSize:
+                                                Sizer.getWidth(context) / 25,
+                                            fontFamily: Font.fontfamily,
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                ),
                               ),
-                            )),
-                            SizedBox(
-                              width: 10.sp,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.sp,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 10.sp,
-                            ),
-                            Expanded(
-                                child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: Coloring.third5),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Image.asset(
-                                    "${Font.urlImage}clinicavatar.png",
-                                    width: 25.sp,
-                                    height: 25.sp,
-                                  ),
-                                  Text(
-                                      "عيادة${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicName}",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontSize:
-                                              Sizer.getWidth(context) / 25,
-                                          fontFamily: Font.fontfamily,
-                                          fontWeight: FontWeight.bold))
-                                ],
-                              ),
-                            )),
-                            SizedBox(
-                              width: 10.sp,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.sp,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return CanclePage(
-                                      token: widget.token!,
-                                      id: state
-                                          .currentMyBookState
-                                          .currentAppointment!
-                                          .appointments![index]
-                                          .id!);
-                                });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: Sizer.getWidth(context) / 3,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Coloring.primary),
-                            child: Text("إلغاء",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: Sizer.getWidth(context) / 25,
-                                    fontFamily: Font.fontfamily,
-                                    fontWeight: FontWeight.bold)),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    RouterNav.fluroRouter.navigateTo(
+                                      context,
+                                      RouteName.Booking +
+                                          "/${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.doctorId}/${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicId}/${widget.token}",
+                                      routeSettings: RouteSettings(arguments: {
+                                        'doctorId': state
+                                            .currentMyBookState
+                                            .currentAppointment!
+                                            .appointments![index]
+                                            .workTime!
+                                            .doctor!
+                                            .doctorId,
+                                        'clinicId': state
+                                            .currentMyBookState
+                                            .currentAppointment!
+                                            .appointments![index]
+                                            .workTime!
+                                            .clinic!
+                                            .clinicId,
+                                        'token': widget.token,
+                                      }),
+                                    );
+                                  },
+                                  child: Icon(Icons.info_outline_rounded,
+                                      color: Coloring.primary2, size: 25.sp),
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 10.sp,
-                        )
-                      ],
+                          Divider(color: Coloring.primary,),
+                          SizedBox(
+                            height: 15.sp,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month,
+                                        color: Coloring.primary,
+                                        size: 25.sp,
+                                      ),
+                                      Text(
+                                          "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.date}",
+                                          style: TextStyle(
+                                              color: Coloring.primary,
+                                              fontSize:
+                                                  Sizer.getWidth(context) / 25,
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold))
+                                    ],
+                                  )),
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                              Expanded(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.timer_outlined,
+                                        color: Coloring.primary,
+                                        size: 25.sp,
+                                      ),
+                                      Text(
+                                          "${state.currentMyBookState.currentAppointment!.appointments![index].startingTime} ${state.currentMyBookState.currentAppointment!.appointments![index].finishingTime}",
+                                          style: TextStyle(
+                                              color: Coloring.primary,
+                                              fontSize:
+                                                  Sizer.getWidth(context) / 25,
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold))
+                                    ],
+                                  )),
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.sp,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                              Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        "${Font.urlImage}clinicavatar.png",
+                                        width: 35.sp,
+                                        height: 35.sp,
+                                      ),
+                                      Text(
+                                          "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicName}",
+                                          style: TextStyle(
+                                              color: Coloring.primary,
+                                              fontSize:
+                                                  Sizer.getWidth(context) / 25,
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold))
+                                    ],
+                                  )),
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.sp,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return CanclePage(
+                                        token: widget.token!,
+                                        id: state
+                                            .currentMyBookState
+                                            .currentAppointment!
+                                            .appointments![index]
+                                            .id!);
+                                  });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: Sizer.getWidth(context) / 3,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: Coloring.primary),
+                              child: Text("إلغاء",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Sizer.getWidth(context) / 25,
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.sp,
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -382,6 +381,20 @@ class _MyBookState extends State<MyBook> {
         builder: (context, state) {
           if (state.previousMyBookState.currentAppointment == null) {
             if (state.previousMyBookState.error.isNotEmpty) {
+              if (state.currentMyBookState.error == "Not Found") {
+                return Center(
+                    child: Column(
+                      children: [
+                        Lottie.asset(
+                            "${Font.urlLottie}notFoundAppointment.json"),
+                        Text("لاتوجد بيانات بعد ",style: TextStyle(
+                            color: Coloring.primary,
+                            fontSize: 20.sp,
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold))
+                      ],
+                    ));
+              }
               return Center(child: Text("${state.previousMyBookState.error}"));
             } else {
               return Center(
@@ -395,194 +408,190 @@ class _MyBookState extends State<MyBook> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                        margin: EdgeInsets.all(5.sp),
-                        decoration: BoxDecoration(
-                            color: Coloring.third3,
-                            borderRadius: BorderRadius.circular(25)),
-                        child: Column(children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: state
-                                            .previousMyBookState
-                                            .currentAppointment!
-                                            .appointments![index]
-                                            .workTime!
-                                            .doctor!
-                                            .profilePicture ==
-                                        null
-                                    ? Image.asset(
-                                        "${Font.urlImage}doctoravatar.png")
-                                    : Image.network(state
-                                        .previousMyBookState
-                                        .currentAppointment!
-                                        .appointments![index]
-                                        .workTime!
-                                        .doctor!
-                                        .profilePicture!),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                        "الطبيب ${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.firstname} ${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.lastname}",
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize: 20.sp,
-                                            fontFamily: Font.fontfamily,
-                                            fontWeight: FontWeight.bold)),
-                                    Text(
-                                        "اختصاص : ${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.specialty!.specialtyName}",
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize:
-                                                Sizer.getWidth(context) / 25,
-                                            fontFamily: Font.fontfamily,
-                                            fontWeight: FontWeight.bold)),
-                                    Text(
-                                        "عيادة ${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicName}",
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize:
-                                                Sizer.getWidth(context) / 25,
-                                            fontFamily: Font.fontfamily,
-                                            fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  RouterNav.fluroRouter.navigateTo(
-                                    context,
-                                    RouteName.Booking +
-                                        "/${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.doctorId}/${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicId}/${widget.token}",
-                                    routeSettings: RouteSettings(arguments: {
-                                      'doctorId': state
+                        padding: EdgeInsets.all(15.r),
+                        child: Card(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)
+                          ),
+                          child: Column(
+                              children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: state
+                                              .previousMyBookState
+                                              .currentAppointment!
+                                              .appointments![index]
+                                              .workTime!
+                                              .doctor!
+                                              .profilePicture ==
+                                          null
+                                      ? Image.asset(
+                                          "${Font.urlImage}doctoravatar.png")
+                                      : Image.network(state
                                           .previousMyBookState
                                           .currentAppointment!
                                           .appointments![index]
                                           .workTime!
                                           .doctor!
-                                          .doctorId,
-                                      'clinicId': state
-                                          .previousMyBookState
-                                          .currentAppointment!
-                                          .appointments![index]
-                                          .workTime!
-                                          .clinic!
-                                          .clinicId,
-                                      'token': widget.token,
-                                    }),
-                                  );
-                                },
-                                child: Icon(Icons.info_outline_rounded,
-                                    color: Coloring.primary2, size: 25.sp),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.sp,
-                          ),
-                          Text("الموعد السّابق",
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: Coloring.primary,
-                                  fontSize: Sizer.getWidth(context) / 25,
-                                  fontFamily: Font.fontfamily,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: 15.sp,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 10.sp,
-                              ),
-                              Expanded(
-                                  child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: Coloring.third5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_month,
-                                      color: Coloring.primary,
-                                      size: 25.sp,
-                                    ),
-                                    Text(
-                                        "${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.date}",
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize:
-                                                Sizer.getWidth(context) / 25,
-                                            fontFamily: Font.fontfamily,
-                                            fontWeight: FontWeight.bold))
-                                  ],
+                                          .profilePicture!),
                                 ),
-                              )),
-                              SizedBox(
-                                width: 10.sp,
-                              ),
-                              Expanded(
-                                  child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: Coloring.third5),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.timer_outlined,
-                                      color: Coloring.primary,
-                                      size: 25.sp,
-                                    ),
-                                    Text(
-                                        "${state.previousMyBookState.currentAppointment!.appointments![index].startingTime} - ${state.previousMyBookState.currentAppointment!.appointments![index].finishingTime} ",
-                                        style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize:
-                                                Sizer.getWidth(context) / 25,
-                                            fontFamily: Font.fontfamily,
-                                            fontWeight: FontWeight.bold))
-                                  ],
+                                Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                          "${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.firstname} ${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.lastname}",
+                                          style: TextStyle(
+                                              color: Coloring.primary,
+                                              fontSize: 20.sp,
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold)),
+                                      Text(
+                                          "اختصاص : ${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.specialty!.specialtyName}",
+                                          style: TextStyle(
+                                              color: Coloring.third,
+                                              fontSize:
+                                                  Sizer.getWidth(context) / 25,
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold)),
+                                      Text(
+                                          "${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicName}",
+                                          style: TextStyle(
+                                              color: Coloring.primary,
+                                              fontSize:
+                                                  Sizer.getWidth(context) / 25,
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
-                              )),
-                              SizedBox(
-                                width: 10.sp,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.sp,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: Sizer.getWidth(context) / 3,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Coloring.primary),
-                            child: Text(
-                                state
-                                            .previousMyBookState
-                                            .currentAppointment!
-                                            .appointments![index]
-                                            .missedAppointment ==
-                                        false
-                                    ? "تمت المعاينة "
-                                    : "لم تتم المعاينة ",
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      RouterNav.fluroRouter.navigateTo(
+                                        context,
+                                        RouteName.Booking +
+                                            "/${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.doctorId}/${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicId}/${widget.token}",
+                                        routeSettings: RouteSettings(arguments: {
+                                          'doctorId': state
+                                              .previousMyBookState
+                                              .currentAppointment!
+                                              .appointments![index]
+                                              .workTime!
+                                              .doctor!
+                                              .doctorId,
+                                          'clinicId': state
+                                              .previousMyBookState
+                                              .currentAppointment!
+                                              .appointments![index]
+                                              .workTime!
+                                              .clinic!
+                                              .clinicId,
+                                          'token': widget.token,
+                                        }),
+                                      );
+                                    },
+                                    child: Icon(Icons.info_outline_rounded,
+                                        color: Coloring.primary2, size: 25.sp),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Divider(color: Coloring.primary),
+                            SizedBox(
+                              height: 10.sp,
+                            ),
+                            Text("الموعد السّابق",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    decoration: TextDecoration.underline,
+                                    color: Coloring.third,
                                     fontSize: Sizer.getWidth(context) / 25,
                                     fontFamily: Font.fontfamily,
                                     fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(
-                            height: 10.sp,
-                          )
-                        ]));
+                            SizedBox(
+                              height: 15.sp,
+                            ),
+                            Row(
+                              children: [
+
+                                Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_month,
+                                          color: Coloring.primary,
+                                          size: 25.sp,
+                                        ),
+                                        Text(
+                                            "${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.date}",
+                                            style: TextStyle(
+                                                color: Coloring.primary,
+                                                fontSize:
+                                                    Sizer.getWidth(context) / 25,
+                                                fontFamily: Font.fontfamily,
+                                                fontWeight: FontWeight.bold))
+                                      ],
+                                    )),
+                                Expanded(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.timer_outlined,
+                                          color: Coloring.primary,
+                                          size: 25.sp,
+                                        ),
+                                        Text(
+                                            "${state.previousMyBookState.currentAppointment!.appointments![index].startingTime} - ${state.previousMyBookState.currentAppointment!.appointments![index].finishingTime} ",
+                                            style: TextStyle(
+                                                color: Coloring.primary,
+                                                fontSize:
+                                                    Sizer.getWidth(context) / 25,
+                                                fontFamily: Font.fontfamily,
+                                                fontWeight: FontWeight.bold))
+                                      ],
+                                    )),
+
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20.sp,
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              width: Sizer.getWidth(context) / 3,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color:state
+                                      .previousMyBookState
+                                      .currentAppointment!
+                                      .appointments![index]
+                                      .missedAppointment ==
+                                      false ? Coloring.yellow : Colors.red),
+                              child: Text(
+                                  state
+                                              .previousMyBookState
+                                              .currentAppointment!
+                                              .appointments![index]
+                                              .missedAppointment ==
+                                          false
+                                      ? "تمت المعاينة "
+                                      : "لم تتم المعاينة ",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Sizer.getWidth(context) / 25,
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            SizedBox(
+                              height: 10.sp,
+                            )
+                          ]),
+                        ));
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox();

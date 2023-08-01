@@ -314,6 +314,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
                                           Sizer.getTextSize(context, 0.04)),
                                   value: apiSpecialistBloc.dropdownmain,
                                   isExpanded: true,
+                                  itemHeight: 60.r,
                                   onChanged: (value) {
                                     int index = -1;
                                     apiSpecialistBloc
@@ -327,7 +328,9 @@ class _SearchByLocationState extends State<SearchByLocation> {
                                               value: sub,
                                               child: Center(
                                                   child: Text(
-                                                      sub.specialtyName!)));
+                                                sub.specialtyName!,
+                                                textAlign: TextAlign.center,
+                                              )));
                                         }).toList()),
                             ),
                           ),
@@ -353,7 +356,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
                         child: InkWell(
                           onTap: () {
                             if (searchByLocationBloc.dropdownareas == null) {
-                             /* Fluttertoast.showToast(
+                              /* Fluttertoast.showToast(
                                   msg: "يجب إدخال منطقة محددة",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
@@ -398,7 +401,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
                         child: InkWell(
                           onTap: () {
                             if (apiSpecialistBloc.dropdownmain == null) {
-                             /* Fluttertoast.showToast(
+                              /* Fluttertoast.showToast(
                                   msg: "يجب إدخال اختصاص محدّد",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,

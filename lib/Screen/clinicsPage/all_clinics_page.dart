@@ -123,7 +123,7 @@ class _AllClinicsState extends State<AllClinics> {
           } else {
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Coloring.third2,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(100.sp),
@@ -166,7 +166,7 @@ class _AllClinicsState extends State<AllClinics> {
               width: Sizer.getWidth(context) / 1.2,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Coloring.primary),
+                  color: Coloring.third),
               child: Text("البحث حسب الموقع",
                   style: TextStyle(
                       color: Colors.white,
@@ -182,7 +182,7 @@ class _AllClinicsState extends State<AllClinics> {
         Expanded(
             flex: 8,
             child: Container(
-                color: Coloring.third2,
+                color: Coloring.loginWhite,
                 width: Sizer.getWidth(context),
                 child: BlocBuilder<AllClinicsBloc, ClinicsStates>(
                     bloc: allClinicsBloc,
@@ -250,14 +250,14 @@ class _AllClinicsState extends State<AllClinics> {
                                         crossAxisCount: 2,
                                         childAspectRatio: 1,
                                         mainAxisExtent:
-                                            Sizer.getHeight(context) / 2.3),
+                                            Sizer.getHeight(context) / 2.2),
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   //int countstar = snapshot.data!.doctors![index].evaluate!.toInt();
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: Coloring.third3,
+                                  return Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: Column(
@@ -268,6 +268,7 @@ class _AllClinicsState extends State<AllClinics> {
                                           child: Column(
                                             children: [
                                               CircleAvatar(
+                                                backgroundColor: Coloring.third,
                                                 radius: Sizer.getTextSize(
                                                     context, 0.1),
                                                 backgroundImage: AssetImage(
@@ -291,7 +292,9 @@ class _AllClinicsState extends State<AllClinics> {
                                                               .bold))),
                                               Center(
                                                   child: Text(
-                                                      "عدد الأطباء ${state.clinic!.clinics![index].numDoctors}",
+                                                      " ${state.clinic!.clinics![index].specialty!.specialtyName}",
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                           color:
                                                               Coloring.primary4,

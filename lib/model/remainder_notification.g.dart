@@ -22,7 +22,7 @@ Map<String, dynamic> _$RemainderNotificationToJson(
 
 PatientReminder _$PatientReminderFromJson(Map<String, dynamic> json) =>
     PatientReminder(
-      createdAt: json['createdAt'] == null ? null : json['createdAt'] as String,
+      createdAt: json['createdAt'] as String?,
       doctor: json['doctor'] == null
           ? null
           : Doctors.fromJson(json['doctor'] as Map<String, dynamic>),

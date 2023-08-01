@@ -6,6 +6,7 @@ import 'package:clinicassistant/blocNotification/bloc.dart';
 import 'package:clinicassistant/blocNotification/event.dart';
 import 'package:clinicassistant/blocNotification/state.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
+import 'package:clinicassistant/services/notification_services.dart';
 import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -19,34 +20,66 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'Constant/color.dart';
 
+/*@pragma('vm:entry-point')
+void backgroundFetchHeadlessTask(HeadlessTask task) async {
+  String taskId = task.taskId;
+  bool isTimeout = task.timeout;
+  if (isTimeout) {
+    // This task has exceeded its allowed running-time.
+    // You must stop what you're doing and immediately .finish(taskId)
+    print("[BackgroundFetch] Headless task timed-out: $taskId");
+    BackgroundFetch.finish(taskId);
+    return;
+  }
+  print('[BackgroundFetch] Headless event received.');
+  // Do your work here...
+  BackgroundFetch.finish(taskId);
+}
+*/
+
 NotificationSocketBloc notificationSocketBloc = NotificationSocketBloc(
     NotificationSocketState(
         getNumberOfUnReadState: GetNumberOfUnReadState(num: 0)));
+NotificationService notificationService = NotificationService();
+void listenToNotificationStream() =>
+    notificationService.behaviorSubject.listen((payload) {});
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // isLogin = await Code.getDataLogin('isLogin');
   // token = await Code.getData('token');
+
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  SharedBloc sharedBloc = SharedBloc(sharedPreferences: sharedPreferences);
+  Connectivity connectivity = Connectivity();
+  ConnectivityResult result = await connectivity.checkConnectivity();
+  RouterNav.setupRouter();
   IO.Socket socket = IO.io(
       API.BaseUrlBack,
       IO.OptionBuilder()
-          .setTransports(['websocket']).setQuery({"patientId": "1"}).build());
+          .setTransports(['websocket'])
+          .setReconnectionDelay(5)
+          .setQuery({"token": "${sharedPreferences.getString('token')}"})
+          .build());
   socket.onError((data) => print("Error in Connecting is : $data"));
   socket.onConnect((data) {
     print('connect...');
     // socket.emit('msg', 'test');
+  });
+  socket.on("notification", (data) {
+    print("Notification Coming : $data");
+    notificationService.showLocalNotification(
+        id: 0, title: "مساعد العيادات", body: data['message'], payload: "???");
   });
   socket.on('numberOfUnRead', (data) {
     print("Data ====> $data");
     notificationSocketBloc
         .add(AddNumberOfUnReadNotificationEvent(num: data['numberOfUnRead']));
   });
+  listenToNotificationStream();
+  notificationService.initializePlatformNotifications();
 
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  SharedBloc sharedBloc = SharedBloc(sharedPreferences: sharedPreferences);
-  Connectivity connectivity = Connectivity();
-  ConnectivityResult result = await connectivity.checkConnectivity();
-  RouterNav.setupRouter();
   runApp(
     DevicePreview(
         enabled: true,
@@ -57,6 +90,7 @@ void main() async {
               )
             ], child: MyApp())),
   );
+  //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatefulWidget {
@@ -67,6 +101,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

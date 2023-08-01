@@ -6,10 +6,10 @@ part 'doctor.g.dart';
 @JsonSerializable()
 class Doctor {
   Doctor({
-    required this.doctor,
+    this.doctor,
   });
 
-  final List<Doctors> doctor;
+  final List<Doctors>? doctor;
 
   factory Doctor.fromJson(Map<String, dynamic> json) => _$DoctorFromJson(json);
 

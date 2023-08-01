@@ -7,8 +7,8 @@ part of 'doctor.dart';
 // **************************************************************************
 
 Doctor _$DoctorFromJson(Map<String, dynamic> json) => Doctor(
-      doctor: (json['doctor'] as List<dynamic>)
-          .map((e) => Doctors.fromJson(e as Map<String, dynamic>))
+      doctor: (json['doctor'] as List<dynamic>?)
+          ?.map((e) => Doctors.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

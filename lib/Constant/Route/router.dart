@@ -6,6 +6,8 @@ import 'package:clinicassistant/Screen/clinicProfile/clinic_profile.dart';
 import 'package:clinicassistant/Screen/clinicsPage/all_clinics_page.dart';
 import 'package:clinicassistant/Screen/doctorProfile/doctor_profile.dart';
 import 'package:clinicassistant/Screen/doctorsPage/all_doctors_page.dart';
+import 'package:clinicassistant/Screen/filterpage/filtering.dart';
+import 'package:clinicassistant/Screen/forgetPassword/forget_password.dart';
 import 'package:clinicassistant/Screen/homePage/home.dart';
 import 'package:clinicassistant/Screen/myBookPage/myBook.dart';
 import 'package:clinicassistant/Screen/searchByLocation/search_by_location.dart';
@@ -102,11 +104,15 @@ class RouterNav {
     return MyBook(token: parameters['token']!.first);
   });
 
-  static Handler personalProfile = Handler(handlerFunc: (context , parameters)
-  {
-    return PersonalProfile();
+  static Handler personalProfile = Handler(handlerFunc: (context, parameters) {
+    return PersonalProfile(token: parameters['token']!.first);
   });
-
+  static Handler filterDoctors = Handler(handlerFunc: (context, parameters) {
+    return FilterPage();
+  });
+  static Handler forgetPassword = Handler(handlerFunc: (context, parameters) {
+    return ForgetPassword();
+  });
   static void setupRouter() {
     fluroRouter.define(RouteName.welcome0,
         handler: welcome0, transitionType: TransitionType.fadeIn);
@@ -152,5 +158,10 @@ class RouterNav {
     fluroRouter.define(RouteName.MyBook + "/:token", handler: myBook);
     fluroRouter.define(RouteName.Notification + "/:token",
         handler: notification, transitionType: TransitionType.inFromLeft);
+    fluroRouter.define(RouteName.personalProfile + "/:token",
+        handler: personalProfile, transitionType: TransitionType.fadeIn);
+    fluroRouter.define(RouteName.filtering,
+        handler: filterDoctors, transitionType: TransitionType.fadeIn);
+    fluroRouter.define(RouteName.forgetPassword, handler: forgetPassword);
   }
 }

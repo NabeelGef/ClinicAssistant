@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:clinicassistant/Constant/sizer.dart';
 import 'package:clinicassistant/Screen/signup2/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/signup2/bloc/event.dart';
-import 'package:clinicassistant/model/signup_post.dart';
 import 'package:clinicassistant/Screen/signup2/bloc/states.dart';
 
 import 'package:clinicassistant/model/user_information.dart';
@@ -40,7 +39,6 @@ class _SignUp2State extends State<SignUp2> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   UserInformation? userInformation;
-  File? _image;
   List<int> years = [];
   List<String> days = [];
   List<String> gender = ["ذكر", "انثى"];
@@ -51,7 +49,6 @@ class _SignUp2State extends State<SignUp2> {
   String? selectedGenderItem;
   String _phoneNumberInput = "";
   String _trimPhoneNumber = "";
-  TextEditingController _phoneNumberController = TextEditingController();
 
   @override
   void initState() {
@@ -138,9 +135,10 @@ class _SignUp2State extends State<SignUp2> {
                     alignment: Alignment.center,
                     child: TextFormField(
                       textAlign: TextAlign.center,
+                      textDirection: TextDirection.rtl,
                       validator: (value) {
                         if (value == null || value.isEmpty)
-                          return "أدخل رقم الهاتف من فضلك!!";
+                          return "أدخل رقم الهاتف من فضلك !!";
                         return null;
                       },
                       onSaved: (value) {
@@ -560,33 +558,30 @@ class _SignUp2State extends State<SignUp2> {
                         //Code.showLoadingDialog(context);
                       }
 
-                      if(state is ErrorSignUp2States) {
-                        print("am in the  error sign up state") ;
+                      else if (state is ErrorSignUp2States) {
+                        print("am in the  error sign up state");
 
-                        if(state.errorMessage == "Error Number Form")
-                          {
-                            showDialog(
-                              context:context,
-                              builder: (_) => AlertDialog(
-                                title: Text('خطأ في إدخال الرقم'),
-                                content: Text('تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                          }
-
-                        else if(state.errorMessage == "Error number exist")
-                          {
-                            showDialog(
-                              context:context,
-                              builder: (_) => AlertDialog(
-                                title: Text('خطأ في الرقم'),
-                                content: Text('الرقم المدخل مستخدم من قبل شخص آخر'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                          }
-
+                        if (state.errorMessage == "Error Number Form") {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text('خطأ في إدخال الرقم'),
+                              content: Text(
+                                  'تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        } else if (state.errorMessage == "Error number exist") {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text('خطأ في الرقم'),
+                              content:
+                                  Text('الرقم المدخل مستخدم من قبل شخص آخر'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        }
                       }
                     }, builder: (BuildContext context, SignUp2States state) {
                       return ElevatedButton(
@@ -650,73 +645,32 @@ class _SignUp2State extends State<SignUp2> {
   }
 
   void signUp2To(BuildContext contextSignUp) {
-
-    _trimPhoneNumber = _phoneNumberInput.trim() ;
-
+    _trimPhoneNumber = _phoneNumberInput.trim();
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      //go to the next sign up screen with sending the input data
-      if(_trimPhoneNumber.isEmpty)
-      { // هنا وضع شرط أنه لا يوجد فراغات في الحقل وعند الدخول لهنا فإنه يوجد فراغات
-        showDialog(
-          context: contextSignUp,
-          builder: (_) =>
-              AlertDialog(
-                title: Text('خطأ أثناء الإدخال',style: TextStyle(
-                    fontFamily: Font.fontfamily,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.sp)),
-                content: Text('لا تقم بإدخال فراغات فقط مكان الرقم من فضلك',style: TextStyle(
-                    fontFamily: Font.fontfamily,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.sp)),
-              ),
-
-        );
-        /* Future.delayed(Duration(seconds: 5), () {
-          Navigator.of(contextSignUp).pop();
-
-        });*/
-
-
-      // this is for the right input
-      }else
-      {
-        //here should i put the confirm for the user that is the information can not be
-        //changes in the future ,, so are you sure?
+      if(selectedDayItem==null||selectedMonthItem==null||selectedMonthItem==null||selectedGenderItem==null){
         showDialog(
           context: contextSignUp,
           builder: (_) => AlertDialog(
-            title: Text('هل أنت متأكد',
+            title: Text('خطأ',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
-            content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
-                style: TextStyle(
-                    fontFamily: Font.fontfamily,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.sp)),
+            content: Text('يجب إدخال كافة الحقول من فضلك',
+                textAlign: TextAlign.center,
 
+                style: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp)),
             actions: [
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    //تابع ارسال البيانات للداتا بيز
-                    SignUp2Bloc.get(contextSignUp).add(SignUp2DataSend(
-                        firstName: widget.receivedFirstName,
-                        lastName: widget.receivedLastName,
-                        userName: widget.receivedUserName,
-                        phoneNumber: _phoneNumberInput,
-                        password: widget.receivedPassword,
-                        year: selectedYearItem,
-                        month: selectedMonthItem,
-                        day: selectedDayItem,
-                        gender: selectedGenderItem));
                     Navigator.pop(contextSignUp);
-
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Coloring.primary,
@@ -724,7 +678,7 @@ class _SignUp2State extends State<SignUp2> {
                       borderRadius: BorderRadius.circular(230),
                     ),
                   ),
-                  child: Text("إنشاء الحساب",
+                  child: Text("موافق",
                       style: TextStyle(
                           fontFamily: Font.fontfamily,
                           fontWeight: FontWeight.bold,
@@ -735,12 +689,93 @@ class _SignUp2State extends State<SignUp2> {
           ),
         );
       }
-    } else {
-      print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+
+      //go to the next sign up screen with sending the input data
+      /*if (_trimPhoneNumber.isEmpty) {
+        // هنا وضع شرط أنه لا يوجد فراغات في الحقل وعند الدخول لهنا فإنه يوجد فراغات
+        showDialog(
+          context: contextSignUp,
+          builder: (_) => AlertDialog(
+            title: Text('خطأ أثناء الإدخال',
+                style: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp)),
+            content: Text('لا تقم بإدخال فراغات فقط مكان الرقم من فضلك',
+                style: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp)),
+          ),
+        );
+        *//* Future.delayed(Duration(seconds: 5), () {
+          Navigator.of(contextSignUp).pop();
+
+        });*//*
+
+        // this is for the right input
+      }*/ /*else*/
+        //here should i put the confirm for the user that is the information can not be
+        //changes in the future ,, so are you sure?
+       else {
+      showDialog(
+        context: contextSignUp,
+        builder: (_) =>
+            AlertDialog(
+              title: Text('هل أنت متأكد',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: Font.fontfamily,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp)),
+              content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
+                  textAlign: TextAlign.center,
+
+                  style: TextStyle(
+                      fontFamily: Font.fontfamily,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp)),
+              actions: [
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      //تابع ارسال البيانات للداتا بيز
+                      SignUp2Bloc.get(contextSignUp).add(SignUp2DataSend(
+                          firstName: widget.receivedFirstName,
+                          lastName: widget.receivedLastName,
+                          userName: widget.receivedUserName,
+                          phoneNumber: _phoneNumberInput,
+                          password: widget.receivedPassword,
+                          year: selectedYearItem,
+                          month: selectedMonthItem,
+                          day: selectedDayItem,
+                          gender: selectedGenderItem));
+                      Navigator.pop(contextSignUp);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Coloring.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(230),
+                      ),
+                    ),
+                    child: Text("إنشاء الحساب",
+                        style: TextStyle(
+                            fontFamily: Font.fontfamily,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp)),
+                  ),
+                ),
+              ],
+            ),
+
+      );
+    }
+
+
+      }
     }
   }
 
-}
 
 
 /*

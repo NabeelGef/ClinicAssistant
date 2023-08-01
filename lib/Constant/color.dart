@@ -15,5 +15,5 @@ class Coloring {
   static Color noColor = Color(0x55FFFFFF);
   static Color loginMainContainer = Color(0xc41f92b5);
 
-  static Color loginWhite = Color(0xFFFFFFFF);
+  static Color loginWhite = Color(0xfff8f9fa);
 }

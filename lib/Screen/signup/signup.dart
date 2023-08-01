@@ -375,9 +375,7 @@ class _SignupState extends State<Signup> {
 
 
     if (_formKey.currentState!.validate()) {
-      print("yes 1 ");
       _formKey.currentState!.save();
-      print("yes 2 ");
 
       _trimFirstName = _firstNameInput.trim();
       _trimLastName = _lastNameInput.trim();
@@ -410,7 +408,6 @@ class _SignupState extends State<Signup> {
       }
       else
         {
-          print("am in ppppppppppppppppppppppppppppppppp") ;
           if (_passwordInput != _checkPasswordInput) {
             showDialog(
               context: contextSignUp,
@@ -440,15 +437,24 @@ class _SignupState extends State<Signup> {
               context: contextSignUp,
               builder: (_) =>
                   AlertDialog(
+                    backgroundColor: Coloring.third,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r)
+                    ),
                     title: Text('هل أنت متأكد',
+                        textAlign: TextAlign.center,
+
                         style: TextStyle(
                             fontFamily: Font.fontfamily,
                             fontWeight: FontWeight.bold,
+                            color: Coloring.loginWhite,
                             fontSize: 15.sp)),
                     content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: Font.fontfamily,
                             fontWeight: FontWeight.bold,
+                            color: Coloring.loginWhite,
                             fontSize: 15.sp)),
                     actions: [
                       Center(

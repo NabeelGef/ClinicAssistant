@@ -78,11 +78,17 @@ class SearchBarView extends StatelessWidget {
           )),
       actions: [
         isDoctor
-            ? Container(
-                margin: EdgeInsets.only(right: 6.sp),
-                child: Icon(Icons.filter_alt,
-                    size: Sizer.getTextSize(context, 0.08),
-                    color: Colors.white))
+            ? InkWell(
+                onTap: () {
+                  RouterNav.fluroRouter
+                      .navigateTo(context, RouteName.filtering);
+                },
+                child: Container(
+                    margin: EdgeInsets.only(right: 6.sp),
+                    child: Icon(Icons.filter_alt,
+                        size: Sizer.getTextSize(context, 0.08),
+                        color: Colors.white)),
+              )
             : Container(),
         InkWell(
             onTap: () => scaffoldkey.currentState!.openEndDrawer(),

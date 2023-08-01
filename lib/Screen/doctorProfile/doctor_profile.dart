@@ -12,7 +12,6 @@ import 'package:clinicassistant/Screen/doctorProfile/bloc/state.dart';
 import 'package:clinicassistant/widgets/Connectivity/bloc.dart';
 import 'package:clinicassistant/widgets/Connectivity/state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -50,14 +49,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
           isLoading = false;
           if (state.getLoginState == null) {
             return Scaffold(
-                backgroundColor: Coloring.third,
+                backgroundColor: Coloring.loginWhite,
                 key: _scaffoldkey,
                 appBar: MyAppBar(null),
                 endDrawer: Code.DrawerNative(context, _scaffoldkey),
                 body: Code.ConnectionWidget(context, false));
           }
           return Scaffold(
-              backgroundColor: Coloring.third,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: MyAppBar(state.getTokenState!.token),
               endDrawer: state.getLoginState!.isLogin == true
@@ -74,14 +73,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
           }
           if (state.getLoginState == null) {
             return Scaffold(
-                backgroundColor: Coloring.third,
+                backgroundColor: Coloring.loginWhite,
                 key: _scaffoldkey,
                 appBar: MyAppBar(null),
                 endDrawer: Code.DrawerNative(context, _scaffoldkey),
                 body: BodyDetail(context, state));
           }
           return Scaffold(
-              backgroundColor: Coloring.third,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: MyAppBar(state.getTokenState!.token),
               endDrawer: state.getLoginState!.isLogin == true
@@ -152,8 +151,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                 children: [
                   SizedBox(height: 25),
                   CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    radius: Sizer.getWidth(context) / 10,
+                    backgroundColor: Coloring.third3,
+                    radius: Sizer.getWidth(context) / 8,
                     backgroundImage: state.profileDoctor!.doctorProfile!.doctor
                                 ?.profilePicture ==
                             null
@@ -171,7 +170,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       " ${state.profileDoctor!.doctorProfile!.doctor!.firstname} "
                       "${state.profileDoctor!.doctorProfile!.doctor!.lastname} ",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Coloring.primary,
                           fontSize: Sizer.getTextSize(context, 0.05),
                           fontFamily: Font.fontfamily,
                           fontWeight: FontWeight.bold),
@@ -189,7 +188,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       "${state.profileDoctor!.doctorProfile!.specialties![0].specialtyName} "
                       "-${state.profileDoctor!.doctorProfile!.specialties![0].subSpecialties![0].subSpecialtyName} ",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Coloring.third,
                           fontSize: Sizer.getTextSize(context, 0.04),
                           fontFamily: Font.fontfamily,
                           fontWeight: FontWeight.bold)),
@@ -216,7 +215,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       return Text(
                                           "${main.specialtyName} - ${e.subSpecialtyName!}",
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Coloring.third,
                                             fontSize: Sizer.getTextSize(
                                                 context, 0.05),
                                             fontFamily: Font.fontfamily,
@@ -234,7 +233,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           -Sizer.getWidth(context) / 3, 0),
                                       child: Text("${state2[2]}",
                                           style: TextStyle(
-                                              color: Colors.white,
+                                              color: Coloring.primary,
                                               fontSize: Sizer.getTextSize(
                                                   context, 0.05),
                                               fontFamily: Font.fontfamily,
@@ -243,7 +242,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                               }),
                         )
                       : SizedBox(),
-                  Divider(color: Colors.white, thickness: 2),
+                  Divider(color: Coloring.primary, thickness: 2),
                   // if active or non active :
                   state.profileDoctor?.doctorProfile!.clinicWorkingNow == null
                       ? Row(
@@ -255,7 +254,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             ),
                             Text("الطبيب غير متاح الآن ",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Coloring.primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: Sizer.getTextSize(context, 0.05),
                                   fontFamily: Font.fontfamily,
@@ -265,21 +264,29 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset("${Font.urlImage}online.png"),
-                            Text.rich(TextSpan(
-                                text: "  الطبيب متاح الآن في عيادة  ",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: Sizer.getTextSize(context, 0.05),
-                                  fontFamily: Font.fontfamily,
-                                ),
-                                children: <InlineSpan>[
+                            Padding(
+                              padding: EdgeInsets.all(10.r),
+                              child: Image.asset("${Font.urlImage}online.png"),
+                            ),
+                            Expanded(
+                              child: Text.rich(
+                                  textAlign: TextAlign.center,
                                   TextSpan(
-                                      text:
-                                          "${state.profileDoctor!.doctorProfile!.clinicWorkingNow!.clinicName}",
+                                      text: "  الطبيب متاح الآن في   ",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold))
-                                ])),
+                                        color: Coloring.primary,
+                                        fontSize:
+                                            Sizer.getTextSize(context, 0.05),
+                                        fontFamily: Font.fontfamily,
+                                      ),
+                                      children: <InlineSpan>[
+                                        TextSpan(
+                                            text:
+                                                "${state.profileDoctor!.doctorProfile!.clinicWorkingNow!.clinicName}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold))
+                                      ])),
+                            ),
                           ],
                         ),
                   Row(
@@ -292,7 +299,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       Text(
                           "التقييم: ${state.profileDoctor!.doctorProfile!.doctor!.evaluate} ",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               fontSize: Sizer.getTextSize(context, 0.05),
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold))
@@ -333,7 +340,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       : SizedBox(),
                   Container(
                       margin: EdgeInsets.only(top: 15.sp),
-                      child: Divider(color: Colors.white, thickness: 2)),
+                      child: Divider(color: Coloring.primary, thickness: 2)),
                   if (state.profileDoctor!.doctorProfile!.doctor?.phonenumber !=
                       null) ...[
                     Directionality(
@@ -358,7 +365,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           color: Coloring.primary),
                                       Text(phone!,
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Coloring.primary,
                                             fontSize: Sizer.getTextSize(
                                                 context, 0.05),
                                             fontFamily: Font.fontfamily,
@@ -377,7 +384,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       Offset(-Sizer.getWidth(context) / 6, 0),
                                   child: Text("عرض معلومات التّواصل",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.primary,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.05),
                                           fontFamily: Font.fontfamily,
@@ -385,7 +392,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 ));
                           }),
                     ),
-                    Divider(color: Colors.white, thickness: 2),
+                    Divider(color: Coloring.primary, thickness: 2),
                   ] else
                     SizedBox(),
                   if (state.profileDoctor!.doctorProfile!.doctor!.description !=
@@ -407,7 +414,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   Text(description!,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Coloring.primary,
                                         fontSize:
                                             Sizer.getTextSize(context, 0.05),
                                         fontFamily: Font.fontfamily,
@@ -424,7 +431,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       Offset(-Sizer.getWidth(context) / 4, 0),
                                   child: Text(" نبذة عن الطبيب",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.primary,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.05),
                                           fontFamily: Font.fontfamily,
@@ -435,8 +442,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                     Divider(color: Colors.white, thickness: 2),
                   ] else
                     SizedBox(),
-                  if (state.profileDoctor!.doctorProfile!.insurances !=
-                      null) ...[
+                  if (state.profileDoctor!.doctorProfile!.insurances != null &&
+                      state.profileDoctor!.doctorProfile!.insurances!
+                          .isNotEmpty) ...[
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: BlocBuilder<DoctorProfileBloc, List<String>>(
@@ -455,7 +463,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   return Text(e.companyName!,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Coloring.primary,
                                         fontSize:
                                             Sizer.getTextSize(context, 0.05),
                                         fontFamily: Font.fontfamily,
@@ -472,7 +480,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       Offset(-Sizer.getWidth(context) / 4, 0),
                                   child: Text("شركات التأمين ",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.primary,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.05),
                                           fontFamily: Font.fontfamily,
@@ -480,7 +488,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 ));
                           }),
                     ),
-                    Divider(color: Colors.white, thickness: 2),
+                    Divider(color: Coloring.primary, thickness: 2),
                   ] else
                     SizedBox(),
                   SizedBox(height: 15.sp),
@@ -498,10 +506,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             state.profileDoctor!.doctorProfile!.clinics![index];
                         return Row(
                           children: [
-                            Container(
-                              padding: EdgeInsets.all(10.sp),
-                              decoration: BoxDecoration(
-                                  color: Coloring.third3,
+                            Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)),
                               child: Column(
                                 children: [

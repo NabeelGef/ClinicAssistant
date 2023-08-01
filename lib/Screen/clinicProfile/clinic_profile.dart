@@ -85,7 +85,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                     context, _scaffoldkey, state.getTokenState!.token!)
                 : Code.DrawerNative(context, _scaffoldkey),
             appBar: MyAppBar(state.getTokenState!.token),
-            backgroundColor: Coloring.third,
+            backgroundColor: Coloring.loginWhite,
             body: MyBody(state),
           );
         }
@@ -129,14 +129,14 @@ class _ClinicProfileState extends State<ClinicProfile> {
                   Image.asset("${Font.urlImage}clinicavatar.png"),
                   Text(state.profileClinic!.clinic!.clinicName!,
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Coloring.primary,
                           fontSize: Sizer.getTextSize(context, 0.05),
                           fontWeight: FontWeight.bold,
                           fontFamily: Font.fontfamily)),
                   Text(
                     "اختصاص: ${state.profileClinic!.clinic!.specialty!.specialtyName!}",
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Coloring.third,
                         fontSize: Sizer.getTextSize(context, 0.04),
                         fontFamily: Font.fontfamily,
                         decoration: TextDecoration.underline,
@@ -152,7 +152,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                             Text(
                                 "مفتوحة الأن من قبل الطبيب ${state.profileClinic!.doctorWorkingNow!.firstname} ${state.profileClinic!.doctorWorkingNow!.lastname} ",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Coloring.primary,
                                     fontSize: Sizer.getTextSize(context, 0.04),
                                     fontWeight: FontWeight.bold,
                                     fontFamily: Font.fontfamily)),
@@ -160,7 +160,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         )
                       : SizedBox(),
                   Divider(
-                    color: Colors.white,
+                    color: Coloring.primary,
                     thickness: 2,
                   ),
                   Row(
@@ -183,7 +183,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                   Text(
                       "${state.profileClinic!.clinic!.area!.governorate!.name} - ${state.profileClinic!.clinic!.area!.name}",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Coloring.third,
                           fontSize: Sizer.getTextSize(context, 0.04),
                           fontWeight: FontWeight.bold,
                           fontFamily: Font.fontfamily)),
@@ -230,7 +230,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                   ///////////////////////////////////SHOW MAP ////////////////////////////
 
                   Divider(
-                    color: Colors.white,
+                    color: Coloring.primary,
                     thickness: 2,
                   ),
                   state.profileClinic!.clinic!.phonenumber == null
@@ -254,11 +254,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         var doctor = state.profileClinic!.doctors![index];
                         return Row(
                           children: [
-                            Container(
-                              width: Sizer.getWidth(context) / 2,
-                              decoration: BoxDecoration(
-                                  color: Coloring.third3,
+                            Card(
+                              shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)),
+                              elevation: 10,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,

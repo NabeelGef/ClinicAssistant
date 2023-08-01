@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-@immutable
-abstract class PersonalProfileEvents
-{
+abstract class PersonalProfileEvents {
   const PersonalProfileEvents();
 }
 
-class GetPersonalInformation extends PersonalProfileEvents
-{
-
+class LoadingPersonalProfile extends PersonalProfileEvents {
+  String token;
+  LoadingPersonalProfile({required this.token});
 }
 
-class LoadingPersonalProfile extends PersonalProfileEvents
-{
-
+class EditImageProfile extends PersonalProfileEvents {
+  File? image;
+  String token;
+  EditImageProfile({required this.image, required this.token});
 }

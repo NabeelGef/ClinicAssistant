@@ -18,4 +18,6 @@ class RouteName {
   static String MyBook = "/MyBook";
   static String personalProfile = "/PersonalProfile";
   static String Notification = "/notification";
+  static String filtering = "/Filtering";
+  static String forgetPassword = "/forgetpassword";
 }

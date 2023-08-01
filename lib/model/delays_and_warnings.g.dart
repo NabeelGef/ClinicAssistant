@@ -22,7 +22,7 @@ Map<String, dynamic> _$DelaysAndWarningsNotificationToJson(
 
 PatientDelay _$PatientDelayFromJson(Map<String, dynamic> json) => PatientDelay(
       message: json['message'] as String?,
-      createdAt: json['createdAt'] == null ? null : json['createdAt'] as String,
+      createdAt: json['createdAt'] as String?,
       doctor: json['doctor'] == null
           ? null
           : Doctors.fromJson(json['doctor'] as Map<String, dynamic>),

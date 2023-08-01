@@ -1,16 +1,18 @@
+import 'dart:io';
+
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Constant/sizer.dart';
-import 'package:clinicassistant/Screen/clinicsPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/doctorProfile/bloc/event.dart';
-import 'package:clinicassistant/Screen/doctorsPage/bloc/bloc.dart';
-import 'package:clinicassistant/Screen/doctorsPage/bloc/events.dart';
+import 'package:clinicassistant/Screen/personal_profile/bloc/bloc.dart';
+import 'package:clinicassistant/Screen/personal_profile/bloc/event.dart';
 import 'package:clinicassistant/blocNotification/bloc.dart';
 import 'package:clinicassistant/blocNotification/state.dart';
 import 'package:clinicassistant/blocShared/event.dart';
 import 'package:clinicassistant/blocShared/sharedBloc.dart';
 import 'package:clinicassistant/main.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:clinicassistant/repository/evaluate_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import '../Screen/clinicsPage/bloc/events.dart';
 import 'package:badges/badges.dart' as badges;
 import 'Route/routename.dart';
 import 'Route/router.dart';
@@ -223,9 +224,94 @@ class Code {
     );
   }
 
+  static Future<File?> _getImageFromGallery() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    }
+    return null;
+  }
+
+  static Future<File?> _getImageFromCamera() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    }
+    return null;
+  }
+
+  static Widget makeSheet(BuildContext context,
+      PersonalProfileBloc personalProfileBloc, String token) {
+    return GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+            width: Sizer.getWidth(context),
+            height: Sizer.getHeight(context) / 3,
+            decoration: BoxDecoration(
+                color: Coloring.third2,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    File? image = await _getImageFromCamera();
+                    personalProfileBloc
+                        .add(EditImageProfile(image: image, token: token));
+                    Navigator.pop(context);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "${Font.urlImage}cam.png",
+                      ),
+                      Text(
+                        "عبر الكاميرا",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: Font.fontfamily),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () async {
+                    File? image = await _getImageFromGallery();
+                    personalProfileBloc
+                        .add(EditImageProfile(image: image, token: token));
+                    Navigator.pop(context);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "${Font.urlImage}gallery.png",
+                      ),
+                      Text(
+                        "عبر المعرض ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: Font.fontfamily),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )));
+  }
+
   //Make Second drawer native for login one
   static Widget DrawerNativeSeconde(
-      BuildContext context, GlobalKey<ScaffoldState> key, String token) {
+      BuildContext context, GlobalKey<ScaffoldState> key, String? token) {
     return Align(
       alignment: Alignment.topRight,
       child: Container(
@@ -295,7 +381,8 @@ class Code {
             SizedBox(height: Sizer.getHeight(context) / 50),
             InkWell(
               onTap: () {
-                //Go To Home
+                RouterNav.fluroRouter
+                    .navigateTo(context, RouteName.Home, clearStack: true);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -320,7 +407,9 @@ class Code {
             SizedBox(height: Sizer.getHeight(context) / 50),
             InkWell(
               onTap: () {
-                // Go To Loginpage
+                RouterNav.fluroRouter.navigateTo(
+                    context, RouteName.personalProfile + "/${token}",
+                    routeSettings: RouteSettings(arguments: {'token': token}));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -331,17 +420,12 @@ class Code {
                   SizedBox(
                     width: 20,
                   ),
-                  InkWell(
-                    onTap: () {
-                      //RouterNav.fluroRouter.navigateTo(context, RouteName.login);
-                    },
-                    child: Text("الملف الشخصي",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: Font.fontfamily,
-                            fontSize: Sizer.getTextSize(context, 0.05),
-                            fontWeight: FontWeight.bold)),
-                  ),
+                  Text("الملف الشخصي",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: Font.fontfamily,
+                          fontSize: Sizer.getTextSize(context, 0.05),
+                          fontWeight: FontWeight.bold)),
                   SizedBox(width: 20),
                 ],
               ),
@@ -515,6 +599,7 @@ class Code {
   //Make a const FloatingPoint in Doctor and clinic page
 
   //Make a conts AppBar in Doctor and clinic page
+
   static Widget AppBarHome(GlobalKey<ScaffoldState> _scaffoldkey,
       BuildContext context, String? token) {
     return Stack(
@@ -637,6 +722,7 @@ class Code {
         backgroundColor: Coloring.primary,
         bottom: isTab == true
             ? TabBar(
+                isScrollable: true,
                 labelStyle: TextStyle(
                     fontFamily: Font.fontfamily,
                     fontSize: Sizer.getWidth(context) / 15),
@@ -702,7 +788,7 @@ class Code {
         leading: InkWell(
             onTap: () {
               RouterNav.fluroRouter.navigateTo(
-                  context, RouteName.MyBook + "/${token}",
+                  context, RouteName.Notification + "/${token}",
                   routeSettings: RouteSettings(arguments: {'token': token}));
             },
             child: Container(
@@ -762,158 +848,163 @@ class Code {
     );
   }
 
-  static Widget AppBarDoctorsAndClinics(
-      GlobalKey<ScaffoldState> _scaffoldkey,
-      GlobalKey<FormState> form,
-      BuildContext context,
-      TextEditingController textEditingController,
-      bool isDoctor,
-      String hint,
-      AllDoctorsBloc allDoctorsBloc,
-      AllClinicsBloc allClinicsBloc,
-      String? token) {
-    return AppBar(
-      toolbarHeight: Sizer.getHeight(context) / 6,
-      backgroundColor: Coloring.primary,
-      leading: InkWell(
-          onTap: () {
-            RouterNav.fluroRouter.navigateTo(
-                context, RouteName.MyBook + "/${token}",
-                routeSettings: RouteSettings(arguments: {'token': token}));
-          },
-          child: Container(
-            margin: EdgeInsets.only(top: 25.sp, left: 10.sp),
-            child: badges.Badge(
-              badgeAnimation: badges.BadgeAnimation.scale(),
-              position: badges.BadgePosition.topEnd(),
-              badgeStyle: badges.BadgeStyle(
-                badgeColor: Coloring.primary,
-              ),
-              badgeContent:
-                  BlocBuilder<NotificationSocketBloc, NotificationSocketState>(
-                      bloc: notificationSocketBloc,
-                      builder: (context, state) {
-                        return Text(
-                          "${state.getNumberOfUnReadState.num}",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 20.sp),
-                        );
-                      }),
-              child: Icon(Icons.notifications_none_outlined,
-                  size: Sizer.getTextSize(context, 0.1),
-                  color: Coloring.primary),
-            ),
-          )),
-      actions: [
-        isDoctor
-            ? Container(
-                margin: EdgeInsets.only(right: 6.sp),
-                child: Icon(Icons.filter_alt,
-                    size: Sizer.getTextSize(context, 0.08),
-                    color: Colors.white))
-            : Container(),
-        InkWell(
-            onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
-            child: Container(
-                margin: EdgeInsets.only(right: 6.sp),
-                child: Icon(Icons.menu,
-                    size: Sizer.getTextSize(context, 0.08),
-                    color: Colors.white)))
-      ],
-      centerTitle: true,
-      title: Row(
-        children: [
-          Expanded(
-            flex: 6,
-            child: Form(
-              key: form,
-              child: TextFormField(
-                  keyboardType: TextInputType.name,
-                  controller: textEditingController,
-                  inputFormatters: [LengthLimitingTextInputFormatter(21)],
-                  textDirection: TextDirection.rtl,
-                  cursorColor: Coloring.primary,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "يجب ملئ الحقل";
-                    }
-                    return null;
-                  },
-                  style: TextStyle(
-                      fontSize: Sizer.getTextSize(context, 0.05),
-                      fontWeight: FontWeight.bold,
-                      fontFamily: Font.fontfamily,
-                      color: Coloring.primary2),
-                  decoration: InputDecoration(
-                      errorStyle: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: Font.fontfamily),
-                      suffixIcon: InkWell(
-                          onTap: () {
-                            if (isDoctor) {
-                              if (form.currentState!.validate()) {
-                                allDoctorsBloc.add(LoadingDoctors(
-                                    textEditingController.text, null, null));
-                              }
-                            } else {
-                              if (form.currentState!.validate()) {
-                                allClinicsBloc.add(SearchEventClinic(
-                                    textEditingController.text));
-                              }
-                            }
-                          },
-                          child: Icon(Icons.search,
-                              size: 25.sp, color: Colors.grey)),
-                      fillColor: Colors.white,
-                      filled: true,
-                      contentPadding: EdgeInsets.zero,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 4)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 4)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 4)),
-                      errorMaxLines: 1,
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: Colors.red, width: 3)),
-                      isDense: true,
-                      hintText: hint,
-                      hintTextDirection: TextDirection.rtl,
-                      hintStyle: TextStyle(
-                        fontSize: Sizer.getTextSize(context, 0.038),
-                      ))),
-            ),
-          ),
-          /*InkWell(
-            onTap: () {
-              if(isDoctor){
-                if(form.currentState!.validate()) {
-                  allDoctorsBloc.add(
-                      LoadingDoctors(textEditingController.text,
-                          null, null));
-                }
-              }else{
-                //search on Clinic
-              }
-            },
-            child: Expanded(
-                child: Icon(Icons.search_rounded,
-                    size: Sizer.getTextSize(context, 0.08),
-                    color: Colors.white)),
-          )*/
-        ],
-      ),
-      elevation: 0,
-    );
-  }
+  // static Widget AppBarDoctorsAndClinics(
+  //     GlobalKey<ScaffoldState> _scaffoldkey,
+  //     GlobalKey<FormState> form,
+  //     BuildContext context,
+  //     TextEditingController textEditingController,
+  //     bool isDoctor,
+  //     String hint,
+  //     AllDoctorsBloc allDoctorsBloc,
+  //     AllClinicsBloc allClinicsBloc,
+  //     String? token) {
+  //   return AppBar(
+  //     toolbarHeight: Sizer.getHeight(context) / 6,
+  //     backgroundColor: Coloring.primary,
+  //     leading: InkWell(
+  //         onTap: () {
+  //           RouterNav.fluroRouter.navigateTo(
+  //               context, RouteName.MyBook + "/${token}",
+  //               routeSettings: RouteSettings(arguments: {'token': token}));
+  //         },
+  //         child: Container(
+  //           margin: EdgeInsets.only(top: 25.sp, left: 10.sp),
+  //           child: badges.Badge(
+  //             badgeAnimation: badges.BadgeAnimation.scale(),
+  //             position: badges.BadgePosition.topEnd(),
+  //             badgeStyle: badges.BadgeStyle(
+  //               badgeColor: Coloring.primary,
+  //             ),
+  //             badgeContent:
+  //                 BlocBuilder<NotificationSocketBloc, NotificationSocketState>(
+  //                     bloc: notificationSocketBloc,
+  //                     builder: (context, state) {
+  //                       return Text(
+  //                         "${state.getNumberOfUnReadState.num}",
+  //                         style:
+  //                             TextStyle(color: Colors.white, fontSize: 20.sp),
+  //                       );
+  //                     }),
+  //             child: Icon(Icons.notifications_none_outlined,
+  //                 size: Sizer.getTextSize(context, 0.1),
+  //                 color: Coloring.primary),
+  //           ),
+  //         )),
+  //     actions: [
+  //       isDoctor
+  //           ? InkWell(
+  //               onTap: () {
+  //                 RouterNav.fluroRouter
+  //                     .navigateTo(context, RouteName.filtering);
+  //               },
+  //               child: Container(
+  //                   margin: EdgeInsets.only(right: 6.sp),
+  //                   child: Icon(Icons.filter_alt,
+  //                       size: 15.r, color: Colors.white)),
+  //             )
+  //           : Container(),
+  //       InkWell(
+  //           onTap: () => _scaffoldkey.currentState!.openEndDrawer(),
+  //           child: Container(
+  //               margin: EdgeInsets.only(right: 6.sp),
+  //               child: Icon(Icons.menu,
+  //                   size: Sizer.getTextSize(context, 0.08),
+  //                   color: Colors.white)))
+  //     ],
+  //     centerTitle: true,
+  //     title: Row(
+  //       children: [
+  //         Expanded(
+  //           flex: 6,
+  //           child: Form(
+  //             key: form,
+  //             child: TextFormField(
+  //                 keyboardType: TextInputType.name,
+  //                 controller: textEditingController,
+  //                 inputFormatters: [LengthLimitingTextInputFormatter(21)],
+  //                 textDirection: TextDirection.rtl,
+  //                 cursorColor: Coloring.primary,
+  //                 validator: (value) {
+  //                   if (value!.isEmpty) {
+  //                     return "يجب ملئ الحقل";
+  //                   }
+  //                   return null;
+  //                 },
+  //                 style: TextStyle(
+  //                     fontSize: Sizer.getTextSize(context, 0.05),
+  //                     fontWeight: FontWeight.bold,
+  //                     fontFamily: Font.fontfamily,
+  //                     color: Coloring.primary2),
+  //                 decoration: InputDecoration(
+  //                     errorStyle: TextStyle(
+  //                         color: Colors.red,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontFamily: Font.fontfamily),
+  //                     suffixIcon: InkWell(
+  //                         onTap: () {
+  //                           if (isDoctor) {
+  //                             if (form.currentState!.validate()) {
+  //                               allDoctorsBloc.add(LoadingDoctors(
+  //                                   textEditingController.text, null, null));
+  //                             }
+  //                           } else {
+  //                             if (form.currentState!.validate()) {
+  //                               allClinicsBloc.add(SearchEventClinic(
+  //                                   textEditingController.text));
+  //                             }
+  //                           }
+  //                         },
+  //                         child: Icon(Icons.search,
+  //                             size: 25.sp, color: Colors.grey)),
+  //                     fillColor: Colors.white,
+  //                     filled: true,
+  //                     contentPadding: EdgeInsets.zero,
+  //                     border: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(50),
+  //                         borderSide:
+  //                             BorderSide(color: Colors.white, width: 4)),
+  //                     enabledBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(50),
+  //                         borderSide:
+  //                             BorderSide(color: Colors.white, width: 4)),
+  //                     focusedBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(50),
+  //                         borderSide:
+  //                             BorderSide(color: Colors.white, width: 4)),
+  //                     errorMaxLines: 1,
+  //                     errorBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(50),
+  //                         borderSide: BorderSide(color: Colors.red, width: 3)),
+  //                     isDense: true,
+  //                     hintText: hint,
+  //                     hintTextDirection: TextDirection.rtl,
+  //                     hintStyle: TextStyle(
+  //                       fontSize: Sizer.getTextSize(context, 0.038),
+  //                     ))),
+  //           ),
+  //         ),
+  //         /*InkWell(
+  //           onTap: () {
+  //             if(isDoctor){
+  //               if(form.currentState!.validate()) {
+  //                 allDoctorsBloc.add(
+  //                     LoadingDoctors(textEditingController.text,
+  //                         null, null));
+  //               }
+  //             }else{
+  //               //search on Clinic
+  //             }
+  //           },
+  //           child: Expanded(
+  //               child: Icon(Icons.search_rounded,
+  //                   size: Sizer.getTextSize(context, 0.08),
+  //                   color: Colors.white)),
+  //         )*/
+  //       ],
+  //     ),
+  //     elevation: 0,
+  //   );
+  // }
 
   static showRatingBar(DoctorProfileDataBloc doctorProfileDataBloc,
       BuildContext context, String token, String doctorId, double init) {

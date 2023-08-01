@@ -92,7 +92,7 @@ class _BookPageState extends State<BookPage> {
                     context, _scaffoldkey, state.getTokenState!.token!)
                 : Code.DrawerNative(context, _scaffoldkey),
             appBar: MyAppBar(state.getTokenState!.token),
-            backgroundColor: Coloring.third,
+            backgroundColor: Coloring.loginWhite,
             body: MyBody(),
           );
         }
@@ -117,7 +117,7 @@ class _BookPageState extends State<BookPage> {
                 return Center(child: Text(state.successDoctorClinicBook.error));
               } else {
                 return Center(
-                    child: CircularProgressIndicator(color: Colors.white));
+                    child: CircularProgressIndicator(color: Coloring.primary));
               }
             } else {
               return Column(
@@ -137,8 +137,9 @@ class _BookPageState extends State<BookPage> {
                             ),
                             Text(
                               "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.clinicName}",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Coloring.primary,
                                   fontSize: Sizer.getTextSize(context, 0.04),
                                   fontFamily: Font.fontfamily,
                                   fontWeight: FontWeight.bold),
@@ -180,7 +181,7 @@ class _BookPageState extends State<BookPage> {
                               "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctor!.firstname} ${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctor!.lastname}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Coloring.primary,
                                   fontSize: Sizer.getTextSize(context, 0.04),
                                   fontFamily: Font.fontfamily,
                                   fontWeight: FontWeight.bold),
@@ -200,7 +201,7 @@ class _BookPageState extends State<BookPage> {
                         Text(
                           "متواجد الآن",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               fontSize: Sizer.getTextSize(context, 0.04),
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold),
@@ -210,7 +211,7 @@ class _BookPageState extends State<BookPage> {
                         Text(
                           "غير متواجد الآن",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               fontSize: Sizer.getTextSize(context, 0.04),
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold),
@@ -218,7 +219,7 @@ class _BookPageState extends State<BookPage> {
                       ]
                     ],
                   ),
-                  Divider(color: Colors.white, thickness: 2),
+                  Divider(color: Coloring.primary, thickness: 2),
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: ExpansionTile(
@@ -257,7 +258,7 @@ class _BookPageState extends State<BookPage> {
                                   ? Text(
                                       "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.phonenumber}",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.third,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.04),
                                           fontFamily: Font.fontfamily,
@@ -267,7 +268,7 @@ class _BookPageState extends State<BookPage> {
                                   : Text(
                                       "غير متوفّر حالياً",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.third,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.04),
                                           fontFamily: Font.fontfamily,
@@ -278,7 +279,7 @@ class _BookPageState extends State<BookPage> {
                       ],
                     ),
                   ),
-                  Divider(color: Colors.white, thickness: 2),
+                  Divider(color: Coloring.primary, thickness: 2),
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: ExpansionTile(
@@ -306,7 +307,7 @@ class _BookPageState extends State<BookPage> {
                           child: Text(
                             "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.specialty!.specialtyName}",
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Coloring.third,
                                 fontSize: Sizer.getTextSize(context, 0.04),
                                 fontFamily: Font.fontfamily,
                                 fontWeight: FontWeight.bold),
@@ -315,7 +316,7 @@ class _BookPageState extends State<BookPage> {
                       ],
                     ),
                   ),
-                  Divider(color: Colors.white, thickness: 2),
+                  Divider(color: Coloring.primary, thickness: 2),
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: ExpansionTile(
@@ -348,7 +349,7 @@ class _BookPageState extends State<BookPage> {
                                 "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.area!.governorate!.name} - " +
                                     "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.clinic!.area!.name}",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Coloring.third,
                                     fontSize: Sizer.getTextSize(context, 0.04),
                                     fontFamily: Font.fontfamily,
                                     fontWeight: FontWeight.bold),
@@ -387,7 +388,7 @@ class _BookPageState extends State<BookPage> {
                       ],
                     ),
                   ),
-                  Divider(color: Colors.white, thickness: 2),
+                  Divider(color: Coloring.primary, thickness: 2),
 
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -415,7 +416,7 @@ class _BookPageState extends State<BookPage> {
                                   Text(
                                       "S.P ${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.checkupPrice}",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.third,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.04),
                                           fontFamily: Font.fontfamily,
@@ -440,7 +441,7 @@ class _BookPageState extends State<BookPage> {
                                   Text(
                                       "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.appointmentDuring} دقيقة",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Coloring.third,
                                           fontSize:
                                               Sizer.getTextSize(context, 0.04),
                                           fontFamily: Font.fontfamily,
@@ -462,12 +463,12 @@ class _BookPageState extends State<BookPage> {
                                         fontWeight: FontWeight.bold)),
                                 Row(
                                   children: [
-                                    Image.asset("${Font.urlImage}time.png"),
+                                    Icon(Icons.timer, color: Coloring.primary),
                                     SizedBox(width: 10.sp),
                                     Text(
                                         "${state.successDoctorClinicBook.doctorClinicBook!.doctorClinicDetails!.doctorClinics!.appointmentDuring} دقيقة",
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Coloring.third,
                                             fontSize: Sizer.getTextSize(
                                                 context, 0.04),
                                             fontFamily: Font.fontfamily,

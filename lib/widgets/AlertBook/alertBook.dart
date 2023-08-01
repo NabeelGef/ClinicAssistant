@@ -70,6 +70,7 @@ class _AlertBooking extends State<AlertBooking> {
               color: Colors.white,
             ),
             Text("في ${widget.clinicName}",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: Sizer.getTextSize(context, 0.05),

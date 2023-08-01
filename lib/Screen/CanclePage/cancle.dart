@@ -1,3 +1,5 @@
+import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Constant/Route/router.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/CanclePage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/CanclePage/bloc/event.dart';
@@ -116,7 +118,68 @@ class _CanclePageState extends State<CanclePage> {
         actionsAlignment: MainAxisAlignment.spaceEvenly,
         actions:  [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    cancleBloc.add(Cancling(Id: widget.id, token: widget.token));
+                    Navigator.pop(context);
+                    showDialog(context: context, builder: (context) {
+                      return BlocBuilder<CancleBloc , CancleStateAll>(
+                          bloc: cancleBloc,
+                          builder: (context, state) {
+                            if(state.cancleSuccessState==null){
+                              if(state.cancleSuccessState!.error!.isNotEmpty){
+                                return AlertDialog(
+                                  backgroundColor: Coloring.third,
+                                  title: Text("حصل خطأ",style: TextStyle(
+                                      color: Colors.red,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17.sp)),
+                                );
+                              }else{
+                                return AlertDialog(
+                                  backgroundColor: Coloring.third,
+                                  content:Center(child: CircularProgressIndicator(color: Colors.white)),
+                                );
+                              }
+                            }else{
+                              return AlertDialog(
+                                backgroundColor: Coloring.third,
+                                content: Text("تمّ إالغاء الحجز بنجاح",style: TextStyle(
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline,
+                                    fontFamily: Font.fontfamily,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.sp)),
+                                actionsAlignment: MainAxisAlignment.center,
+                                actions: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      RouterNav.fluroRouter.navigateTo(
+                                          context, RouteName.MyBook + "/${  widget.token}",
+                                          routeSettings: RouteSettings(arguments: {'token':widget.token}));
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: Sizer.getWidth(context) / 2,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(25),
+                                          color: Coloring.loginWhite),
+                                      child: Text("إغلاق",
+                                          style: TextStyle(
+                                              fontFamily: Font.fontfamily,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.sp)),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                          });
+                    });
+
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     width: Sizer.getWidth(context) / 5,
@@ -223,6 +286,10 @@ class _CanclePageState extends State<CanclePage> {
                             InkWell(
                               onTap: () {
                                 Navigator.pop(context);
+                                RouterNav.fluroRouter.navigateTo(
+                                    context, RouteName.MyBook + "/${  widget.token}",
+                                    routeSettings: RouteSettings(arguments: {'token':widget.token}));
+
                               },
                               child: Container(
                                 alignment: Alignment.center,

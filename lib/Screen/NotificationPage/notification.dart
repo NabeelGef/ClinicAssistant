@@ -87,12 +87,12 @@ class _NotificationPageState extends State<NotificationPage> {
               length: 2,
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
-                backgroundColor: Coloring.third2,
+                backgroundColor: Coloring.loginWhite,
                 key: _scaffoldkey,
                 appBar: PreferredSize(
                     preferredSize: Size.fromHeight(120.sp),
                     child: Code.AppBarWithMyNotification(
-                        _scaffoldkey, context, 'حجوزاتي ', true)),
+                        _scaffoldkey, context, 'الإشعارات ', true)),
                 endDrawer: Code.DrawerNative(context, _scaffoldkey),
                 body: BodyMyBook(),
               ),
@@ -102,12 +102,12 @@ class _NotificationPageState extends State<NotificationPage> {
             length: 2,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Coloring.third2,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: PreferredSize(
                   preferredSize: Size.fromHeight(120.sp),
                   child: Code.AppBarWithMyNotification(
-                      _scaffoldkey, context, 'حجوزاتي', true)),
+                      _scaffoldkey, context, 'الإشعارات', true)),
               endDrawer: state.getLoginState!.isLogin == true
                   ? Code.DrawerNativeSeconde(
                       context, _scaffoldkey, state.getTokenState!.token!)
@@ -130,6 +130,16 @@ class _NotificationPageState extends State<NotificationPage> {
     return BlocBuilder<NotificationBloc, NotificationState>(
         bloc: notificationBloc,
         builder: (context, state) {
+          if (state.delyasAndWarningsNotificationstate
+                  .delaysAndWarningsNotification ==
+              null) {
+            if (state.delyasAndWarningsNotificationstate.error!.isEmpty) {
+              return Center(
+                  child: CircularProgressIndicator(color: Coloring.primary2));
+            } else {
+              return Lottie.asset("${Font.urlLottie}notFoundAppointment.json");
+            }
+          }
           return Directionality(
             textDirection: TextDirection.rtl,
             child: ListView.separated(

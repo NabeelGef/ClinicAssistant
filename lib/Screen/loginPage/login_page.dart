@@ -212,20 +212,19 @@ class _LoginState extends State<Login> {
                             _passwordInput = value!;
                           },
                           obscureText: _obscureText,
-
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             fillColor: Colors.white,
-
                             suffixIcon: IconButton(
-                              icon: _obscureText ? Icon(Icons.visibility_off ) : Icon(Icons.visibility),
+                              icon: _obscureText
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility),
                               onPressed: () {
                                 setState(() {
                                   _obscureText = !_obscureText;
                                 });
                               },
-
                               color: Coloring.primary,
                             ),
                             filled: true,
@@ -251,8 +250,8 @@ class _LoginState extends State<Login> {
                       SizedBox(height: 7.sp),
                       InkWell(
                         onTap: () {
-                          RouterNav.fluroRouter
-                              .navigateTo(contextLogin, "/test");
+                          RouterNav.fluroRouter.navigateTo(
+                              contextLogin, RouteName.forgetPassword);
                         },
                         child: Text(
                           "هل نسيت كلمة المرور؟",
@@ -262,7 +261,6 @@ class _LoginState extends State<Login> {
                             fontFamily: Font.fontfamily,
                             color: Coloring.loginWhite,
                           ),
-
                         ),
                       ),
                       BlocConsumer<LoginBloc, LoginStates>(listener:
@@ -284,32 +282,29 @@ class _LoginState extends State<Login> {
                           print("Loading...");
                           //Code.showLoadingDialog(context);
                         }
-                        if(state is ErrorLoginStates)
-                          {
-                            if(state.errorMessage == "401")
-                              {
-                                showDialog(
-                                  context: contextLogin,
-                                  builder: (_) => AlertDialog(
-                                    title: Text('خطأ في البيانات'),
-                                    content: Text('تأكد من رقمك وكلمة السر قبل الإدخال من فضلك'),
-                                    backgroundColor: Colors.yellow,
-                                  ),
-                                );
-                              }
-
-                            else if (state.errorMessage == "400")
-                              {
-                                showDialog(
-                                  context: contextLogin,
-                                  builder: (_) => AlertDialog(
-                                    title: Text('خطأ في الرقم'),
-                                    content: Text('تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
-                                    backgroundColor: Colors.yellow,
-                                  ),
-                                );
-                              }
+                        if (state is ErrorLoginStates) {
+                          if (state.errorMessage == "401") {
+                            showDialog(
+                              context: contextLogin,
+                              builder: (_) => AlertDialog(
+                                title: Text('خطأ في البيانات'),
+                                content: Text(
+                                    'تأكد من رقمك وكلمة السر قبل الإدخال من فضلك'),
+                                backgroundColor: Colors.yellow,
+                              ),
+                            );
+                          } else if (state.errorMessage == "400") {
+                            showDialog(
+                              context: contextLogin,
+                              builder: (_) => AlertDialog(
+                                title: Text('خطأ في الرقم'),
+                                content: Text(
+                                    'تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
+                                backgroundColor: Colors.yellow,
+                              ),
+                            );
                           }
+                        }
                       }, builder: (BuildContext context, LoginStates state) {
                         return Container(
                           height: Sizer.getHeight(context) / 15,
@@ -382,7 +377,7 @@ class _LoginState extends State<Login> {
       _trimNumber = _numberInput.trim();
       _trimPassword = _passwordInput.trim();
 
-      print("the empty one $_trimPassword" + "the empty one $_trimNumber") ;
+      print("the empty one $_trimPassword" + "the empty one $_trimNumber");
 
       //هذا الشرط يعمل فقط في حالة كان الإدخال فقط فراغات
       if (_trimPassword.isEmpty || _trimNumber.isEmpty) {
@@ -391,11 +386,9 @@ class _LoginState extends State<Login> {
           builder: (_) => AlertDialog(
             title: Text('خطأ أثناء الإدخال'),
             content: Text('لا تقم بإدخال فراغات فقط في احد الخاناتين من فضلك'),
-
           ),
         );
-        Future.delayed(Duration(seconds: 5), () {
-        });
+        Future.delayed(Duration(seconds: 5), () {});
       } else {
         // Send data to server or do something with input value
         LoginBloc.get(contextLogin)
