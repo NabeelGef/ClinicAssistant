@@ -52,14 +52,14 @@ class _FilterPageState extends State<FilterPage> {
             isLoading = false;
             if (state.getLoginState == null) {
               return Scaffold(
-                  backgroundColor: Coloring.third,
+                  backgroundColor: Coloring.loginWhite,
                   key: _scaffoldkey,
                   appBar: MyAppBar(null),
                   endDrawer: Code.DrawerNative(context, _scaffoldkey),
                   body: Code.ConnectionWidget(context, false));
             }
             return Scaffold(
-                backgroundColor: Coloring.third,
+                backgroundColor: Coloring.loginWhite,
                 key: _scaffoldkey,
                 appBar: MyAppBar(state.getTokenState!.token),
                 endDrawer: state.getLoginState!.isLogin == true
@@ -80,7 +80,7 @@ class _FilterPageState extends State<FilterPage> {
             if (state.getLoginState == null) {
               //الاتصال ناجح مع عدم وجود تسجيل دخول
               return Scaffold(
-                  backgroundColor: Coloring.third,
+                  backgroundColor: Coloring.loginWhite,
                   key: _scaffoldkey,
                   appBar: MyAppBar(null),
                   endDrawer: Code.DrawerNative(context, _scaffoldkey),
@@ -88,7 +88,7 @@ class _FilterPageState extends State<FilterPage> {
             }
             return Scaffold(
                 // الاتصال ناجح مع عدم وجود تسجيل دخول
-                backgroundColor: Coloring.third,
+                backgroundColor: Coloring.loginWhite,
                 key: _scaffoldkey,
                 appBar: MyAppBar(state.getTokenState!.token),
                 endDrawer: state.getLoginState!.isLogin == true
@@ -126,17 +126,17 @@ class _FilterPageState extends State<FilterPage> {
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold,
                               fontSize: 15.r,
-                              color: Colors.white),
+                              color: Coloring.third),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               borderRadius: BorderRadius.circular(25)),
                           width: Sizer.getWidth(context) / 2,
                           height: Sizer.getHeight(context) / 20,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<SubSpecialties?>(
-                              dropdownColor: Colors.white,
+                              dropdownColor: Coloring.primary,
                               itemHeight: 60.r,
                               borderRadius: BorderRadius.circular(10),
                               isDense: true,
@@ -148,15 +148,15 @@ class _FilterPageState extends State<FilterPage> {
                                       .subSpecialties,
                               alignment: Alignment.center,
                               style: TextStyle(
-                                  color: Coloring.primary,
+                                  color: Coloring.loginWhite,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: Font.fontfamily,
                                   fontSize: 15.r),
                               icon: Icon(Icons.expand_more_rounded,
-                                  color: Coloring.primary, size: 20.r),
+                                  color: Coloring.loginWhite, size: 20.r),
                               hint: Text("الكل",
                                   style: TextStyle(
-                                      color: Coloring.primary,
+                                      color: Coloring.loginWhite,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: Font.fontfamily,
                                       fontSize: 15.r)),
@@ -222,17 +222,17 @@ class _FilterPageState extends State<FilterPage> {
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold,
                               fontSize: 15.r,
-                              color: Colors.white),
+                              color: Coloring.third),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               borderRadius: BorderRadius.circular(25)),
                           width: Sizer.getWidth(context) / 3.5,
                           height: Sizer.getHeight(context) / 20,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<Specialist?>(
-                              dropdownColor: Colors.white,
+                              dropdownColor: Coloring.primary,
                               borderRadius: BorderRadius.circular(10),
                               itemHeight: 60.r,
                               value: filteringBlocSpecialAndInsurance
@@ -242,15 +242,15 @@ class _FilterPageState extends State<FilterPage> {
                                   : filteringBlocSpecialAndInsurance.specialist,
                               alignment: Alignment.center,
                               style: TextStyle(
-                                  color: Coloring.primary,
+                                  color: Coloring.loginWhite,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: Font.fontfamily,
                                   fontSize: 15.r),
                               icon: Icon(Icons.expand_more_rounded,
-                                  color: Coloring.primary, size: 20.r),
+                                  color: Coloring.loginWhite, size: 20.r),
                               hint: Text("الكل",
                                   style: TextStyle(
-                                      color: Coloring.primary,
+                                      color: Coloring.loginWhite,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: Font.fontfamily,
                                       fontSize: 15.r)),
@@ -310,17 +310,17 @@ class _FilterPageState extends State<FilterPage> {
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold,
                               fontSize: 15.r,
-                              color: Colors.white),
+                              color: Coloring.third),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               borderRadius: BorderRadius.circular(25)),
                           width: Sizer.getWidth(context) / 2,
                           height: Sizer.getHeight(context) / 20,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<Insurances?>(
-                              dropdownColor: Colors.white,
+                              dropdownColor: Coloring.primary,
                               borderRadius: BorderRadius.circular(10),
                               itemHeight: 60.r,
                               value: filteringBlocSpecialAndInsurance
@@ -330,15 +330,15 @@ class _FilterPageState extends State<FilterPage> {
                                   : filteringBlocSpecialAndInsurance.insurance,
                               alignment: Alignment.center,
                               style: TextStyle(
-                                  color: Coloring.primary,
+                                  color: Coloring.loginWhite,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: Font.fontfamily,
                                   fontSize: 15.r),
                               icon: Icon(Icons.expand_more_rounded,
-                                  color: Coloring.primary, size: 20.r),
+                                  color: Coloring.loginWhite, size: 20.r),
                               hint: Text("الكل",
                                   style: TextStyle(
-                                      color: Coloring.primary,
+                                      color: Coloring.loginWhite,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: Font.fontfamily,
                                       fontSize: 15.r)),
@@ -383,17 +383,17 @@ class _FilterPageState extends State<FilterPage> {
                               fontFamily: Font.fontfamily,
                               fontWeight: FontWeight.bold,
                               fontSize: 15.r,
-                              color: Colors.white),
+                              color: Coloring.third),
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Coloring.primary,
                               borderRadius: BorderRadius.circular(25)),
                           width: Sizer.getWidth(context) / 3.5,
                           height: Sizer.getHeight(context) / 20,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String?>(
-                              dropdownColor: Colors.white,
+                              dropdownColor: Coloring.primary,
                               borderRadius: BorderRadius.circular(10),
                               value: filteringBlocSpecialAndInsurance.gender ==
                                       null
@@ -401,15 +401,15 @@ class _FilterPageState extends State<FilterPage> {
                                   : filteringBlocSpecialAndInsurance.gender,
                               alignment: Alignment.center,
                               style: TextStyle(
-                                  color: Coloring.primary,
+                                  color: Coloring.loginWhite,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: Font.fontfamily,
                                   fontSize: 15.r),
                               icon: Icon(Icons.expand_more_rounded,
-                                  color: Coloring.primary, size: 20.r),
+                                  color: Coloring.loginWhite, size: 20.r),
                               hint: Text("الكل",
                                   style: TextStyle(
-                                      color: Coloring.primary,
+                                      color: Coloring.loginWhite,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: Font.fontfamily,
                                       fontSize: 15.r)),
@@ -465,14 +465,14 @@ class _FilterPageState extends State<FilterPage> {
                     padding: EdgeInsets.all(5.r),
                     margin: EdgeInsets.only(top: 15.r),
                     decoration: BoxDecoration(
-                        color: Coloring.third3,
+                        color: Coloring.primary,
                         borderRadius: BorderRadius.circular(15)),
                     child: Text("إعادة تعيين",
                         style: TextStyle(
                             fontFamily: Font.fontfamily,
                             fontWeight: FontWeight.bold,
                             fontSize: 15.r,
-                            color: Coloring.primary)),
+                            color: Coloring.loginWhite)),
                   ),
                 )
               ],
@@ -526,106 +526,108 @@ class _FilterPageState extends State<FilterPage> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.r),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Coloring.third3),
-                              child: Row(
-                                textDirection: TextDirection.rtl,
-                                children: [
-                                  Expanded(
-                                      child: CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    radius: 25.r,
-                                    backgroundImage: state
-                                                .successFilterDoctorState
-                                                .doctor!
-                                                .doctor![index]
-                                                .profilePicture ==
-                                            null
-                                        ? null
-                                        : NetworkImage(state
-                                            .successFilterDoctorState
-                                            .doctor!
-                                            .doctor![index]
-                                            .profilePicture!),
-                                    child: state
-                                                .successFilterDoctorState
-                                                .doctor!
-                                                .doctor![index]
-                                                .profilePicture ==
-                                            null
-                                        ? Image.asset(
-                                            "${Font.urlImage}doctoravatar.png")
-                                        : null,
-                                  )),
-                                  Expanded(
-                                      flex: 4,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                              "الطبيب ${state.successFilterDoctorState.doctor!.doctor![index].firstname} ${state.successFilterDoctorState.doctor!.doctor![index].lastname}",
-                                              style: TextStyle(
-                                                  fontFamily: Font.fontfamily,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25.r,
-                                                  color: Coloring.primary)),
-                                          Text(
-                                              "اختصاص ${state.successFilterDoctorState.doctor!.doctor![index].specialties![0].specialtyName}",
-                                              style: TextStyle(
-                                                  fontFamily: Font.fontfamily,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.r,
-                                                  color: Coloring.primary)),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Image.asset(
-                                                  "${Font.urlImage}star.png",
-                                                  width: 25.r,
-                                                  height: 25.r,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                Text(
-                                                    "${state.successFilterDoctorState.doctor!.doctor![index].evaluate}",
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            Font.fontfamily,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20.r,
-                                                        color:
-                                                            Coloring.primary))
-                                              ])
-                                        ],
-                                      )),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        RouterNav.fluroRouter.navigateTo(
-                                            context,
-                                            routeSettings:
-                                                RouteSettings(arguments: {
-                                              'id': state
+                              child: Card(
+                                elevation: 15,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Row(
+                                  textDirection: TextDirection.rtl,
+                                  children: [
+                                    Expanded(
+                                        child: CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      radius: 25.r,
+                                      backgroundImage: state
                                                   .successFilterDoctorState
                                                   .doctor!
                                                   .doctor![index]
-                                                  .doctorId,
-                                              'token':
-                                                  "${sharedstate.getTokenState?.token}"
-                                            }),
-                                            RouteName.ProfileDoctor +
-                                                "/${state.successFilterDoctorState.doctor!.doctor![index].doctorId}/${sharedstate.getTokenState!.token}");
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_back,
-                                        color: Coloring.primary2,
+                                                  .profilePicture ==
+                                              null
+                                          ? null
+                                          : NetworkImage(state
+                                              .successFilterDoctorState
+                                              .doctor!
+                                              .doctor![index]
+                                              .profilePicture!),
+                                      child: state
+                                                  .successFilterDoctorState
+                                                  .doctor!
+                                                  .doctor![index]
+                                                  .profilePicture ==
+                                              null
+                                          ? Image.asset(
+                                              "${Font.urlImage}doctoravatar.png")
+                                          : null,
+                                    )),
+                                    Expanded(
+                                        flex: 4,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                                "${state.successFilterDoctorState.doctor!.doctor![index].firstname} ${state.successFilterDoctorState.doctor!.doctor![index].lastname}",
+                                                style: TextStyle(
+                                                    fontFamily: Font.fontfamily,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25.r,
+                                                    color: Coloring.primary)),
+                                            Text(
+                                                "اختصاص ${state.successFilterDoctorState.doctor!.doctor![index].specialties![0].specialtyName}",
+                                                style: TextStyle(
+                                                    fontFamily: Font.fontfamily,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.r,
+                                                    color: Coloring.third)),
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    "${Font.urlImage}star.png",
+                                                    width: 25.r,
+                                                    height: 25.r,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                  Text(
+                                                      "${state.successFilterDoctorState.doctor!.doctor![index].evaluate}",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              Font.fontfamily,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20.r,
+                                                          color:
+                                                              Coloring.primary))
+                                                ])
+                                          ],
+                                        )),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          RouterNav.fluroRouter.navigateTo(
+                                              context,
+                                              routeSettings:
+                                                  RouteSettings(arguments: {
+                                                'id': state
+                                                    .successFilterDoctorState
+                                                    .doctor!
+                                                    .doctor![index]
+                                                    .doctorId,
+                                                'token':
+                                                    "${sharedstate.getTokenState?.token}"
+                                              }),
+                                              RouteName.ProfileDoctor +
+                                                  "/${state.successFilterDoctorState.doctor!.doctor![index].doctorId}/${sharedstate.getTokenState!.token}");
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_back,
+                                          color: Coloring.primary2,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],

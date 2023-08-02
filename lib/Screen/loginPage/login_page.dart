@@ -277,12 +277,10 @@ class _LoginState extends State<Login> {
                               context,
                               routeSettings: RouteSettings(arguments: {}),
                               RouteName.Home);
-                        }
-                        if (state is LoadingLoginStates) {
+                        } else if (state is LoadingLoginStates) {
                           print("Loading...");
                           //Code.showLoadingDialog(context);
-                        }
-                        if (state is ErrorLoginStates) {
+                        } else if (state is ErrorLoginStates) {
                           if (state.errorMessage == "401") {
                             showDialog(
                               context: contextLogin,
@@ -297,10 +295,16 @@ class _LoginState extends State<Login> {
                             showDialog(
                               context: contextLogin,
                               builder: (_) => AlertDialog(
-                                title: Text('خطأ في الرقم'),
+                                title: Text('خطأ',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(color: Coloring.loginWhite)),
                                 content: Text(
-                                    'تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
-                                backgroundColor: Colors.yellow,
+                                  'حدث خطأ يرجى إعادة المحاولة',
+                                  style: TextStyle(color: Coloring.loginWhite),
+                                  textAlign: TextAlign.center,
+                                ),
+                                backgroundColor: Coloring.primary,
                               ),
                             );
                           }

@@ -55,6 +55,7 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents, DoctorsState> {
           yield DoctorsState(null, "Not Found any data");
         }
       }
+      yield DoctorsState(null, "Not Found");
     }
   }
 }
