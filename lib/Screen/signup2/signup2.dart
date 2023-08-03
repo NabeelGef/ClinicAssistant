@@ -41,7 +41,7 @@ class _SignUp2State extends State<SignUp2> {
   UserInformation? userInformation;
   List<int> years = [];
   List<String> days = [];
-  List<String> gender = ["ذكر", "انثى"];
+  List<String> gender = ["ذكر", "أنثى"];
   List<String> months = [];
   String? selectedDayItem;
   String? selectedMonthItem;
@@ -491,7 +491,7 @@ class _SignUp2State extends State<SignUp2> {
                         value: selectedGenderItem,
                         onChanged: (value) {
                           setState(() {
-                            selectedGenderItem = value as String;
+                            selectedGenderItem = value;
                           });
                         },
                         buttonStyleData: ButtonStyleData(
@@ -555,10 +555,10 @@ class _SignUp2State extends State<SignUp2> {
 
                       if (state is LoadingSignUp2States) {
                         print("Loading...");
-                        //Code.showLoadingDialog(context);
-                      }
+                        Code.showLoadingDialog(context);
+                      } else if (state is ErrorSignUp2States) {
+                        Navigator.pop(context);
 
-                      else if (state is ErrorSignUp2States) {
                         print("am in the  error sign up state");
 
                         if (state.errorMessage == "Error Number Form") {
@@ -649,7 +649,10 @@ class _SignUp2State extends State<SignUp2> {
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      if(selectedDayItem==null||selectedMonthItem==null||selectedMonthItem==null||selectedGenderItem==null){
+      if (selectedDayItem == null ||
+          selectedMonthItem == null ||
+          selectedMonthItem == null ||
+          selectedGenderItem == null) {
         showDialog(
           context: contextSignUp,
           builder: (_) => AlertDialog(
@@ -661,7 +664,6 @@ class _SignUp2State extends State<SignUp2> {
                     fontSize: 15.sp)),
             content: Text('يجب إدخال كافة الحقول من فضلك',
                 textAlign: TextAlign.center,
-
                 style: TextStyle(
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
@@ -708,73 +710,68 @@ class _SignUp2State extends State<SignUp2> {
                     fontSize: 15.sp)),
           ),
         );
-        *//* Future.delayed(Duration(seconds: 5), () {
+        */ /* Future.delayed(Duration(seconds: 5), () {
           Navigator.of(contextSignUp).pop();
 
-        });*//*
+        });*/ /*
 
         // this is for the right input
       }*/ /*else*/
-        //here should i put the confirm for the user that is the information can not be
-        //changes in the future ,, so are you sure?
-       else {
-      showDialog(
-        context: contextSignUp,
-        builder: (_) =>
-            AlertDialog(
-              title: Text('هل أنت متأكد',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: Font.fontfamily,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp)),
-              content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
-                  textAlign: TextAlign.center,
-
-                  style: TextStyle(
-                      fontFamily: Font.fontfamily,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp)),
-              actions: [
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      //تابع ارسال البيانات للداتا بيز
-                      SignUp2Bloc.get(contextSignUp).add(SignUp2DataSend(
-                          firstName: widget.receivedFirstName,
-                          lastName: widget.receivedLastName,
-                          userName: widget.receivedUserName,
-                          phoneNumber: _phoneNumberInput,
-                          password: widget.receivedPassword,
-                          year: selectedYearItem,
-                          month: selectedMonthItem,
-                          day: selectedDayItem,
-                          gender: selectedGenderItem));
-                      Navigator.pop(contextSignUp);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Coloring.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(230),
-                      ),
+      //here should i put the confirm for the user that is the information can not be
+      //changes in the future ,, so are you sure?
+      else {
+        showDialog(
+          context: contextSignUp,
+          builder: (_) => AlertDialog(
+            title: Text('هل أنت متأكد',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp)),
+            content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: Font.fontfamily,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp)),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    //تابع ارسال البيانات للداتا بيز
+                    SignUp2Bloc.get(contextSignUp).add(SignUp2DataSend(
+                        firstName: widget.receivedFirstName,
+                        lastName: widget.receivedLastName,
+                        userName: widget.receivedUserName,
+                        phoneNumber: _phoneNumberInput,
+                        password: widget.receivedPassword,
+                        year: selectedYearItem,
+                        month: selectedMonthItem,
+                        day: selectedDayItem,
+                        gender: selectedGenderItem));
+                    Navigator.pop(contextSignUp);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Coloring.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(230),
                     ),
-                    child: Text("إنشاء الحساب",
-                        style: TextStyle(
-                            fontFamily: Font.fontfamily,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp)),
                   ),
+                  child: Text("إنشاء الحساب",
+                      style: TextStyle(
+                          fontFamily: Font.fontfamily,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.sp)),
                 ),
-              ],
-            ),
-
-      );
-    }
-
-
+              ),
+            ],
+          ),
+        );
       }
     }
   }
+}
 
 
 

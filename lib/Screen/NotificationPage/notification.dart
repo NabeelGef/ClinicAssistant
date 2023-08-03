@@ -145,87 +145,99 @@ class _NotificationPageState extends State<NotificationPage> {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.all(5.sp),
-                    decoration: BoxDecoration(
-                        color: Coloring.third3,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            child: state
-                                        .delyasAndWarningsNotificationstate
-                                        .delaysAndWarningsNotification!
-                                        .patientDelays![index]
-                                        .doctor!
-                                        .profilePicture ==
-                                    null
-                                ? Image.asset(
-                                    "${Font.urlImage}doctoravatar.png")
-                                : Image.network(state
-                                    .delyasAndWarningsNotificationstate
-                                    .delaysAndWarningsNotification!
-                                    .patientDelays![index]
-                                    .doctor!
-                                    .profilePicture!),
-                          ),
-                          title: Text(
-                            "الطبيب ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].doctor!.firstname} ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].doctor!.lastname}",
-                            style: TextStyle(
-                                color: Coloring.primary,
-                                fontSize: 20.sp,
-                                fontFamily: Font.fontfamily,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            "عيادة ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].clinic!.clinicName}",
-                            style: TextStyle(
-                                color: Coloring.primary,
-                                fontSize: 15.sp,
-                                fontFamily: Font.fontfamily,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Card(
-                          color: Coloring.third2,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.messenger_outlined,
-                                color: Coloring.yellow,
-                              ),
-                              Text(
-                                "${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].message}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Coloring.primary,
-                                    fontSize: 15.sp,
-                                    fontFamily: Font.fontfamily,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.timer,
-                              color: Coloring.yellow,
+                    margin: EdgeInsets.all(15.sp),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      elevation: 15,
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(
+                              child: state
+                                          .delyasAndWarningsNotificationstate
+                                          .delaysAndWarningsNotification!
+                                          .patientDelays![index]
+                                          .doctor!
+                                          .profilePicture ==
+                                      null
+                                  ? Image.asset(
+                                      "${Font.urlImage}doctoravatar.png")
+                                  : Image.network(state
+                                      .delyasAndWarningsNotificationstate
+                                      .delaysAndWarningsNotification!
+                                      .patientDelays![index]
+                                      .doctor!
+                                      .profilePicture!),
                             ),
-                            Text(
-                              "${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].createdAt}",
+                            title: Text(
+                              " ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].doctor!.firstname} ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].doctor!.lastname}",
                               style: TextStyle(
-                                  color: Coloring.yellow,
+                                  color: Coloring.primary,
+                                  fontSize: 20.sp,
+                                  fontFamily: Font.fontfamily,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              " ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].clinic!.clinicName}",
+                              style: TextStyle(
+                                  color: Coloring.primary,
                                   fontSize: 15.sp,
                                   fontFamily: Font.fontfamily,
                                   fontWeight: FontWeight.bold),
                             ),
-                          ],
-                        ),
-                      ],
+                            trailing: Container(
+                              width: Sizer.getWidth(context) / 3,
+                              child: Row(
+                                textDirection: TextDirection.ltr,
+                                children: [
+                                  Icon(
+                                    Icons.timer,
+                                    color: Coloring.primary,
+                                  ),
+                                  Text(
+                                    "${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].createdAt}",
+                                    style: TextStyle(
+                                        color: Coloring.third,
+                                        fontSize: 15.sp,
+                                        fontFamily: Font.fontfamily,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            color: Coloring.third,
+                          ),
+                          Card(
+                            color: Coloring.loginWhite,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].message}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Coloring.primary,
+                                      fontSize: 15.sp,
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Image.asset(
+                                  "${Font.urlImage}message.png",
+                                  width: 35.sp,
+                                  height: 35.sp,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50.h,
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -255,46 +267,76 @@ class _NotificationPageState extends State<NotificationPage> {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.all(5.sp),
-                    decoration: BoxDecoration(
-                        color: Coloring.third3,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Column(
-                      children: [
-                        Text(
-                          "لاتنسى موعدك عند الطبيب ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].doctor!.firstname} ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].doctor!.lastname} \n في عيادة  ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].clinic!.clinicName}",
-                          style: TextStyle(
-                              color: Coloring.primary,
-                              fontSize: 15.sp,
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Divider(
-                          color: Coloring.yellow,
-                          thickness: 2,
-                        ),
-                        Text(
-                          "${state.remainderNotificationstate.remainderNotification!.patientReminders![index].createdAt}",
-                          style: TextStyle(
-                              color: Coloring.primary,
-                              fontSize: 10.sp,
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: Sizer.getWidth(context) / 1.5,
-                          child: Text(
-                            "وقت الحجز \n  في يوم ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].appointment!.workTime!.day} بتاريخ   \n ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].appointment!.workTime!.date} ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].appointment!.startingTime} ",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Coloring.primary,
-                                fontSize: 15.sp,
-                                fontFamily: Font.fontfamily,
-                                fontWeight: FontWeight.bold),
+                    margin: EdgeInsets.all(15.sp),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      elevation: 15,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "لاتنسى موعدك عند  ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].doctor!.firstname} ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].doctor!.lastname} \n في   ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].clinic!.clinicName}",
+                                  style: TextStyle(
+                                      color: Coloring.primary,
+                                      fontSize: 15.sp,
+                                      fontFamily: Font.fontfamily,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "${state.remainderNotificationstate.remainderNotification!.patientReminders![index].createdAt}",
+                                      style: TextStyle(
+                                          color: Coloring.third,
+                                          fontSize: 10.sp,
+                                          fontFamily: Font.fontfamily,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Icon(
+                                      Icons.timer_sharp,
+                                      color: Coloring.primary,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                          Divider(
+                            color: Coloring.third,
+                          ),
+                          Container(
+                            width: Sizer.getWidth(context) / 1.5,
+                            child: Card(
+                              elevation: 10,
+                              shadowColor: Coloring.primary,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.sp)),
+                              color: Coloring.loginWhite,
+                              child: Text(
+                                "وقت الحجز \n  في يوم ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].appointment!.workTime!.day} بتاريخ   \n ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].appointment!.workTime!.date} ${state.remainderNotificationstate.remainderNotification!.patientReminders![index].appointment!.startingTime} ",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Coloring.primary4,
+                                    fontSize: 15.sp,
+                                    fontFamily: Font.fontfamily,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },

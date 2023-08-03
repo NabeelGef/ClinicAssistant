@@ -1083,24 +1083,41 @@ class Code {
     showDialog(
       context: context,
       builder: (_) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
-                  child: CircularProgressIndicator(),
+        return Dialog(
+          backgroundColor: Coloring.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 32),
+                child: CircularProgressIndicator(
+                  color: Coloring.loginWhite,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+
+  static void showError(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('خطأ',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Coloring.loginWhite)),
+        content: Text(
+          'حدث خطأ يرجى إعادة المحاولة',
+          style: TextStyle(color: Coloring.loginWhite),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Coloring.primary,
+      ),
     );
   }
 }

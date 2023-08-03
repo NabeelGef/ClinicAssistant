@@ -20,10 +20,14 @@ class CheckSignUpBloc extends Bloc<CheckSignUpEvents, CheckSignUpStates> {
       //هنا عندما تعود البيانات نقوم بحفظها بالشيرد بريفيرينس
 
       //بعد الانتهاء من الادخال يجب اعادة بيانات للشاشو وهي نجاح العملية
-
-      String? successMessage = await _checkSignUpRepository.checkSignUpRepo(
-          events.patientId!, events.verificationCode!);
-      yield SuccessCheckSignUpStates(successMessage!);
+      try {
+        String? successMessage = await _checkSignUpRepository.checkSignUpRepo(
+            events.patientId!, events.verificationCode!);
+        yield SuccessCheckSignUpStates(successMessage!);
+      } catch (e, stack) {
+        print("Error In Check OTP is $e in $stack");
+        yield ErrorCheckSignUpStates();
+      }
     }
     // هنا اكتب الاحداث التي من المفترض أن تحدث مثلا ارسال بيانات التسجيل
   }

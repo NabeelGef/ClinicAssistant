@@ -4,7 +4,6 @@ import 'package:clinicassistant/model/doctor.dart';
 import 'package:clinicassistant/model/specialist.dart';
 import 'package:clinicassistant/repository/allDoctors_repo.dart';
 import 'package:clinicassistant/repository/allSpecialist_repo.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllDoctorsBloc extends Bloc<AllDoctorsEvents, DoctorsState> {
@@ -48,13 +47,6 @@ class AllDoctorsBloc extends Bloc<AllDoctorsEvents, DoctorsState> {
       }
     } catch (e, stack) {
       print("Catchhhhhhh in AllDoctorBloc $e in Line $stack");
-      if (e is DioException) {
-        if (e.response?.statusCode == 404) {
-          yield DoctorsState(null, "Not Found");
-        } else {
-          yield DoctorsState(null, "Not Found any data");
-        }
-      }
       yield DoctorsState(null, "Not Found");
     }
   }

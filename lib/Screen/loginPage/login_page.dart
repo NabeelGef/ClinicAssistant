@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
   }
 
   //Make Body
-  Widget LoginBody(BuildContext contextLogin) {
+  Widget LoginBody(BuildContext context) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -250,8 +250,8 @@ class _LoginState extends State<Login> {
                       SizedBox(height: 7.sp),
                       InkWell(
                         onTap: () {
-                          RouterNav.fluroRouter.navigateTo(
-                              contextLogin, RouteName.forgetPassword);
+                          RouterNav.fluroRouter
+                              .navigateTo(context, RouteName.forgetPassword);
                         },
                         child: Text(
                           "هل نسيت كلمة المرور؟",
@@ -265,7 +265,12 @@ class _LoginState extends State<Login> {
                       ),
                       BlocConsumer<LoginBloc, LoginStates>(listener:
                           (BuildContext context, LoginStates state) async {
-                        if (state is SuccessLoginStates) {
+                        if (state is LoadingLoginStates) {
+                          print("Loading...");
+                          Code.showLoadingDialog(context);
+                        } else if (state is SuccessLoginStates) {
+                          Navigator.pop(context);
+
                           context
                               .read<SharedBloc>()
                               .add(SaveDataToken(token: state.token));
@@ -277,36 +282,26 @@ class _LoginState extends State<Login> {
                               context,
                               routeSettings: RouteSettings(arguments: {}),
                               RouteName.Home);
-                        } else if (state is LoadingLoginStates) {
-                          print("Loading...");
-                          //Code.showLoadingDialog(context);
                         } else if (state is ErrorLoginStates) {
+                          Navigator.pop(context);
                           if (state.errorMessage == "401") {
                             showDialog(
-                              context: contextLogin,
+                              context: context,
                               builder: (_) => AlertDialog(
-                                title: Text('خطأ في البيانات'),
+                                title: Text('خطأ في البيانات',
+                                    style: TextStyle(
+                                        color: Coloring.loginWhite,
+                                        fontFamily: Font.fontfamily)),
                                 content: Text(
-                                    'تأكد من رقمك وكلمة السر قبل الإدخال من فضلك'),
-                                backgroundColor: Colors.yellow,
-                              ),
-                            );
-                          } else if (state.errorMessage == "400") {
-                            showDialog(
-                              context: contextLogin,
-                              builder: (_) => AlertDialog(
-                                title: Text('خطأ',
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        TextStyle(color: Coloring.loginWhite)),
-                                content: Text(
-                                  'حدث خطأ يرجى إعادة المحاولة',
-                                  style: TextStyle(color: Coloring.loginWhite),
-                                  textAlign: TextAlign.center,
-                                ),
+                                    'تأكد من رقمك وكلمة السر قبل الإدخال من فضلك',
+                                    style: TextStyle(
+                                        color: Coloring.loginWhite,
+                                        fontFamily: Font.fontfamily)),
                                 backgroundColor: Coloring.primary,
                               ),
                             );
+                          } else if (state.errorMessage == "400") {
+                            Code.showError(context);
                           }
                         }
                       }, builder: (BuildContext context, LoginStates state) {
@@ -347,7 +342,7 @@ class _LoginState extends State<Login> {
                             ),
                             onTap: () {
                               RouterNav.fluroRouter
-                                  .navigateTo(contextLogin, RouteName.signup);
+                                  .navigateTo(context, RouteName.signup);
                             },
                           ),
                           Text("ليس لديك حساب؟ اضغط على",

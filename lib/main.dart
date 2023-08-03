@@ -60,12 +60,19 @@ void main() async {
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setReconnectionDelay(5)
-          .setQuery({"token": "${sharedPreferences.getString('token')}"})
+          .setQuery({
+            "token": "${sharedPreferences.getString('token')}",
+            "role": "patient"
+          })
           .build());
   socket.onError((data) => print("Error in Connecting is : $data"));
   socket.onConnect((data) {
     print('connect...');
+    print("My Token is :${sharedPreferences.getString('token')}");
     // socket.emit('msg', 'test');
+  });
+  socket.on("error", (data) {
+    print("Error in Notification is : $data");
   });
   socket.on("notification", (data) {
     print("Notification Coming : $data");

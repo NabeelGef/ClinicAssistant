@@ -1,5 +1,4 @@
 import 'package:clinicassistant/Screen/signup2/bloc/states.dart';
-import 'package:clinicassistant/model/signup_post.dart';
 import 'package:clinicassistant/repository/signup_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,17 +31,13 @@ class SignUp2Bloc extends Bloc<SignUp2Events, SignUp2States> {
           events.gender!);
       // print(accessToken.accessToken?.accessToken);
 
-      if(signUpPost?.patientId == "يجب أن يكون الرقم من 10 خانات ويبدأ ب 09")
-        {
-          yield ErrorSignUp2States("Error Number Form");
-          return;
-        }
-
-      else if(signUpPost?.patientId == "this phone number already exist")
-        {
-          yield ErrorSignUp2States("Error number exist") ;
-          return;
-        }
+      if (signUpPost?.patientId == "يجب أن يكون الرقم من 10 خانات ويبدأ ب 09") {
+        yield ErrorSignUp2States("Error Number Form");
+        return;
+      } else if (signUpPost?.patientId == "this phone number already exist") {
+        yield ErrorSignUp2States("Error number exist");
+        return;
+      }
 
       yield SuccessSignUp2States(signUpPost!.patientId!);
     }

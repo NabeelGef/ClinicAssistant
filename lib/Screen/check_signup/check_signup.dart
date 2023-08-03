@@ -186,13 +186,15 @@ class _CheckSignUpState extends State<CheckSignUp> {
   Widget makeConnection() {
     return BlocConsumer<CheckSignUpBloc, CheckSignUpStates>(
         listener: (BuildContext context, CheckSignUpStates state) {
-      if (state is SuccessCheckSignUpStates) {
-        RouterNav.fluroRouter.navigateTo(context, RouteName.login);
-      }
-
       if (state is LoadingCheckSignUpStates) {
         print("Loading...");
-        // Code.showLoadingDialog(context);
+        Code.showLoadingDialog(context);
+      } else if (state is ErrorCheckSignUpStates) {
+        Navigator.pop(context);
+        Code.showError(context);
+      }
+      if (state is SuccessCheckSignUpStates) {
+        RouterNav.fluroRouter.navigateTo(context, RouteName.login);
       }
     }, builder: (BuildContext context, CheckSignUpStates state) {
       return Container(
