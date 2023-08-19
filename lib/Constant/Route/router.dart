@@ -11,6 +11,7 @@ import 'package:clinicassistant/Screen/forgetPassword/forget_password.dart';
 import 'package:clinicassistant/Screen/homePage/home.dart';
 import 'package:clinicassistant/Screen/myBookPage/myBook.dart';
 import 'package:clinicassistant/Screen/searchByLocation/search_by_location.dart';
+import 'package:clinicassistant/Screen/signup2/bloc/event.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom0.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcom4.dart';
 import 'package:clinicassistant/Screen/welcomePage/welcome1.dart';
@@ -97,6 +98,7 @@ class RouterNav {
     return CheckSignUp(
       phoneNumberFromSignUp: parameters['phoneNumberFromSignUp']![0],
       patientId: parameters['patientId']![0],
+      signUp2DataSend: parameters['data']![0] as SignUp2DataSend,
     );
   });
 
@@ -141,7 +143,7 @@ class RouterNav {
     fluroRouter.define(RouteName.signup,
         handler: signup, transitionType: TransitionType.inFromRight);
     fluroRouter.define(
-        RouteName.checkSignUp + "/:phoneNumberFromSignUp/:patientId",
+        RouteName.checkSignUp + "/:phoneNumberFromSignUp/:patientId/:data",
         handler: checkSignUp,
         transitionType: TransitionType.inFromRight);
     fluroRouter.define(

@@ -26,7 +26,7 @@ class EvaluateRepo {
     }
   }
 
-  static Future<String?>? getEvaluate(String? token, String doctorId) async {
+  static Future<String?> getEvaluate(String? token, String doctorId) async {
     final headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',

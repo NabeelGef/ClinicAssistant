@@ -112,6 +112,7 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
       print("Error In WorkTimesClock is : $e ,in $s");
       if (e is DioException) {
         if (e.response?.statusCode == 400 || e.response?.statusCode == 404) {
+          print("Here");
           yield StateAlertBook(
               successAlertBookClock: SuccessAlertBookClock(
                   workTimeClock: null, error: "Not Found"),
@@ -123,10 +124,6 @@ class AlertBookBloc extends Bloc<AlertBookEvent, StateAlertBook> {
               successAlertBook: state.successAlertBook);
         }
       }
-      yield StateAlertBook(
-          successAlertBookClock: SuccessAlertBookClock(
-              workTimeClock: null, error: "Not Found any data"),
-          successAlertBook: state.successAlertBook);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -133,16 +134,16 @@ class _MyBookState extends State<MyBook> {
               if (state.currentMyBookState.error == "Not Found") {
                 return Center(
                     child: Column(
-                      children: [
-                        Lottie.asset(
-                            "${Font.urlLottie}notFoundAppointment.json"),
-                        Text("لاتوجد بيانات بعد ",style: TextStyle(
+                  children: [
+                    Lottie.asset("${Font.urlLottie}notFoundAppointment.json"),
+                    Text("لاتوجد بيانات بعد ",
+                        style: TextStyle(
                             color: Coloring.primary,
                             fontSize: 20.sp,
                             fontFamily: Font.fontfamily,
                             fontWeight: FontWeight.bold))
-                      ],
-                    ));
+                  ],
+                ));
               }
               return Center(child: Text("${state.currentMyBookState.error}"));
             } else {
@@ -163,8 +164,7 @@ class _MyBookState extends State<MyBook> {
                     child: Card(
                       elevation: 15,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)
-                      ),
+                          borderRadius: BorderRadius.circular(25)),
                       child: Column(
                         children: [
                           Row(
@@ -180,13 +180,14 @@ class _MyBookState extends State<MyBook> {
                                         null
                                     ? Image.asset(
                                         "${Font.urlImage}doctoravatar.png")
-                                    : Image.network(state
-                                        .currentMyBookState
-                                        .currentAppointment!
-                                        .appointments![index]
-                                        .workTime!
-                                        .doctor!
-                                        .profilePicture!),
+                                    : Image.network(API.BaseUrlBack +
+                                        state
+                                            .currentMyBookState
+                                            .currentAppointment!
+                                            .appointments![index]
+                                            .workTime!
+                                            .doctor!
+                                            .profilePicture!),
                               ),
                               Expanded(
                                 flex: 3,
@@ -243,7 +244,9 @@ class _MyBookState extends State<MyBook> {
                               )
                             ],
                           ),
-                          Divider(color: Coloring.primary,),
+                          Divider(
+                            color: Coloring.primary,
+                          ),
                           SizedBox(
                             height: 15.sp,
                           ),
@@ -251,47 +254,44 @@ class _MyBookState extends State<MyBook> {
                             children: [
                               Expanded(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_month,
-                                        color: Coloring.primary,
-                                        size: 25.sp,
-                                      ),
-                                      Text(
-                                          "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.date}",
-                                          style: TextStyle(
-                                              color: Coloring.primary,
-                                              fontSize:
-                                                  Sizer.getWidth(context) / 25,
-                                              fontFamily: Font.fontfamily,
-                                              fontWeight: FontWeight.bold))
-                                    ],
-                                  )),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_month,
+                                    color: Coloring.primary,
+                                    size: 25.sp,
+                                  ),
+                                  Text(
+                                      "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.date}",
+                                      style: TextStyle(
+                                          color: Coloring.primary,
+                                          fontSize:
+                                              Sizer.getWidth(context) / 25,
+                                          fontFamily: Font.fontfamily,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              )),
                               SizedBox(
-                                width: 10.sp,
+                                width: 25.sp,
                               ),
                               Expanded(
                                   child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.timer_outlined,
-                                        color: Coloring.primary,
-                                        size: 25.sp,
-                                      ),
-                                      Text(
-                                          "${state.currentMyBookState.currentAppointment!.appointments![index].startingTime} ${state.currentMyBookState.currentAppointment!.appointments![index].finishingTime}",
-                                          style: TextStyle(
-                                              color: Coloring.primary,
-                                              fontSize:
-                                                  Sizer.getWidth(context) / 25,
-                                              fontFamily: Font.fontfamily,
-                                              fontWeight: FontWeight.bold))
-                                    ],
-                                  )),
-                              SizedBox(
-                                width: 10.sp,
-                              ),
+                                children: [
+                                  Icon(
+                                    Icons.timer_outlined,
+                                    color: Coloring.primary,
+                                    size: 25.sp,
+                                  ),
+                                  Text(
+                                      "${state.currentMyBookState.currentAppointment!.appointments![index].startingTime?.substring(0, state.currentMyBookState.currentAppointment!.appointments![index].startingTime!.length - 3)} إلى ${state.currentMyBookState.currentAppointment!.appointments![index].finishingTime?.substring(0, state.currentMyBookState.currentAppointment!.appointments![index].finishingTime!.length - 3)}",
+                                      style: TextStyle(
+                                          color: Coloring.primary,
+                                          fontSize:
+                                              Sizer.getWidth(context) / 25,
+                                          fontFamily: Font.fontfamily,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              )),
                             ],
                           ),
                           SizedBox(
@@ -304,24 +304,23 @@ class _MyBookState extends State<MyBook> {
                               ),
                               Expanded(
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        "${Font.urlImage}clinicavatar.png",
-                                        width: 35.sp,
-                                        height: 35.sp,
-                                      ),
-                                      Text(
-                                          "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicName}",
-                                          style: TextStyle(
-                                              color: Coloring.primary,
-                                              fontSize:
-                                                  Sizer.getWidth(context) / 25,
-                                              fontFamily: Font.fontfamily,
-                                              fontWeight: FontWeight.bold))
-                                    ],
-                                  )),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    "${Font.urlImage}clinicavatar.png",
+                                    width: 35.sp,
+                                    height: 35.sp,
+                                  ),
+                                  Text(
+                                      "${state.currentMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicName}",
+                                      style: TextStyle(
+                                          color: Coloring.primary,
+                                          fontSize:
+                                              Sizer.getWidth(context) / 25,
+                                          fontFamily: Font.fontfamily,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              )),
                               SizedBox(
                                 width: 10.sp,
                               ),
@@ -381,19 +380,19 @@ class _MyBookState extends State<MyBook> {
         builder: (context, state) {
           if (state.previousMyBookState.currentAppointment == null) {
             if (state.previousMyBookState.error.isNotEmpty) {
-              if (state.currentMyBookState.error == "Not Found") {
+              if (state.previousMyBookState.error == "Not Found") {
                 return Center(
                     child: Column(
-                      children: [
-                        Lottie.asset(
-                            "${Font.urlLottie}notFoundAppointment.json"),
-                        Text("لاتوجد بيانات بعد ",style: TextStyle(
+                  children: [
+                    Lottie.asset("${Font.urlLottie}notFoundAppointment.json"),
+                    Text("لاتوجد بيانات بعد ",
+                        style: TextStyle(
                             color: Coloring.primary,
                             fontSize: 20.sp,
                             fontFamily: Font.fontfamily,
                             fontWeight: FontWeight.bold))
-                      ],
-                    ));
+                  ],
+                ));
               }
               return Center(child: Text("${state.previousMyBookState.error}"));
             } else {
@@ -412,10 +411,8 @@ class _MyBookState extends State<MyBook> {
                         child: Card(
                           elevation: 10,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)
-                          ),
-                          child: Column(
-                              children: [
+                              borderRadius: BorderRadius.circular(25)),
+                          child: Column(children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -430,13 +427,14 @@ class _MyBookState extends State<MyBook> {
                                           null
                                       ? Image.asset(
                                           "${Font.urlImage}doctoravatar.png")
-                                      : Image.network(state
-                                          .previousMyBookState
-                                          .currentAppointment!
-                                          .appointments![index]
-                                          .workTime!
-                                          .doctor!
-                                          .profilePicture!),
+                                      : Image.network(API.BaseUrlBack +
+                                          state
+                                              .previousMyBookState
+                                              .currentAppointment!
+                                              .appointments![index]
+                                              .workTime!
+                                              .doctor!
+                                              .profilePicture!),
                                 ),
                                 Expanded(
                                   flex: 3,
@@ -476,7 +474,8 @@ class _MyBookState extends State<MyBook> {
                                         context,
                                         RouteName.Booking +
                                             "/${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.doctor!.doctorId}/${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.clinic!.clinicId}/${widget.token}",
-                                        routeSettings: RouteSettings(arguments: {
+                                        routeSettings:
+                                            RouteSettings(arguments: {
                                           'doctorId': state
                                               .previousMyBookState
                                               .currentAppointment!
@@ -517,45 +516,43 @@ class _MyBookState extends State<MyBook> {
                             ),
                             Row(
                               children: [
-
                                 Expanded(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.calendar_month,
-                                          color: Coloring.primary,
-                                          size: 25.sp,
-                                        ),
-                                        Text(
-                                            "${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.date}",
-                                            style: TextStyle(
-                                                color: Coloring.primary,
-                                                fontSize:
-                                                    Sizer.getWidth(context) / 25,
-                                                fontFamily: Font.fontfamily,
-                                                fontWeight: FontWeight.bold))
-                                      ],
-                                    )),
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_month,
+                                      color: Coloring.primary,
+                                      size: 25.sp,
+                                    ),
+                                    Text(
+                                        "${state.previousMyBookState.currentAppointment!.appointments![index].workTime!.date}",
+                                        style: TextStyle(
+                                            color: Coloring.primary,
+                                            fontSize:
+                                                Sizer.getWidth(context) / 25,
+                                            fontFamily: Font.fontfamily,
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                )),
                                 Expanded(
                                     child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.timer_outlined,
-                                          color: Coloring.primary,
-                                          size: 25.sp,
-                                        ),
-                                        Text(
-                                            "${state.previousMyBookState.currentAppointment!.appointments![index].startingTime} - ${state.previousMyBookState.currentAppointment!.appointments![index].finishingTime} ",
-                                            style: TextStyle(
-                                                color: Coloring.primary,
-                                                fontSize:
-                                                    Sizer.getWidth(context) / 25,
-                                                fontFamily: Font.fontfamily,
-                                                fontWeight: FontWeight.bold))
-                                      ],
-                                    )),
-
+                                  children: [
+                                    Icon(
+                                      Icons.timer_outlined,
+                                      color: Coloring.primary,
+                                      size: 25.sp,
+                                    ),
+                                    Text(
+                                        "${state.previousMyBookState.currentAppointment!.appointments![index].startingTime} - ${state.previousMyBookState.currentAppointment!.appointments![index].finishingTime} ",
+                                        style: TextStyle(
+                                            color: Coloring.primary,
+                                            fontSize:
+                                                Sizer.getWidth(context) / 25,
+                                            fontFamily: Font.fontfamily,
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                )),
                               ],
                             ),
                             SizedBox(
@@ -566,12 +563,14 @@ class _MyBookState extends State<MyBook> {
                               width: Sizer.getWidth(context) / 3,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color:state
-                                      .previousMyBookState
-                                      .currentAppointment!
-                                      .appointments![index]
-                                      .missedAppointment ==
-                                      false ? Coloring.yellow : Colors.red),
+                                  color: state
+                                              .previousMyBookState
+                                              .currentAppointment!
+                                              .appointments![index]
+                                              .missedAppointment ==
+                                          false
+                                      ? Coloring.yellow
+                                      : Colors.red),
                               child: Text(
                                   state
                                               .previousMyBookState

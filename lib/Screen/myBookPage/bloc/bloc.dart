@@ -47,7 +47,9 @@ class MyBookBloc extends Bloc<MyBookEvent, MyBookState> {
       }
     } catch (e, s) {
       if (e is DioException) {
-        if (e.response?.statusCode == 400) {
+        if (e.response?.statusCode == 400 ||
+            e.response?.statusCode == 404 ||
+            e.response?.statusCode == 500) {
           yield MyBookState(
               previousMyBookState: PreviousMyBookState(
                   error: state.previousMyBookState.error,
@@ -101,7 +103,9 @@ class MyBookBloc extends Bloc<MyBookEvent, MyBookState> {
       }
     } catch (e, s) {
       if (e is DioException) {
-        if (e.response!.statusCode == 400) {
+        if (e.response!.statusCode == 400 ||
+            e.response!.statusCode == 404 ||
+            e.response!.statusCode == 500) {
           yield MyBookState(
               previousMyBookState: PreviousMyBookState(
                   error: "Not Found", currentAppointment: null),

@@ -1,5 +1,6 @@
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -343,8 +344,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                                     child: Center(
                                                         child: Text(
                                                       sub.specialtyName!,
-
-                                                          textAlign:
+                                                      textAlign:
                                                           TextAlign.center,
                                                     )));
                                               }).toList()),
@@ -581,10 +581,9 @@ class _AllDoctorsState extends State<AllDoctors> {
                                                         .profilePicture ==
                                                     null
                                                 ? null
-                                                : NetworkImage(state
-                                                    .doctor!
-                                                    .doctor![index]
-                                                    .profilePicture!),
+                                                : NetworkImage(API.BaseUrlBack +
+                                                    state.doctor!.doctor![index]
+                                                        .profilePicture!),
                                             child: state.doctor!.doctor![index]
                                                         .profilePicture ==
                                                     null
@@ -636,7 +635,7 @@ class _AllDoctorsState extends State<AllDoctors> {
                                                 MainAxisAlignment.center,
                                             textDirection: TextDirection.rtl,
                                             children: [
-                                              Text(" :التقييم",
+                                              Text("التقييم:",
                                                   style: TextStyle(
                                                       color: Coloring.primary,
                                                       fontFamily:

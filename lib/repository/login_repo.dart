@@ -9,10 +9,15 @@ class LoginRepository {
     var accessToken;
     var response;
     print("Email : $email , PAssword : $password");
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
     try {
       response = await API.dio.post(
           '${API.BaseUrlBack}' + '${API.patientsBack}' + '/${API.loginBack}',
-          data: {'phoneNumber': email, 'password': password});
+          data: {'phoneNumber': email, 'password': password},
+          options: Options(headers: headers));
 
       if (response.statusCode == 201) {
         accessToken = AccessToken.fromJson(response.data);

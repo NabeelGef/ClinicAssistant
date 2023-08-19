@@ -1,4 +1,5 @@
 import 'package:clinicassistant/Constant/Route/routename.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -271,8 +272,9 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                                 .profilePicture ==
                                             null
                                         ? null
-                                        : NetworkImage(state.profileClinic!
-                                            .doctors![index].profilePicture!),
+                                        : NetworkImage(API.BaseUrlBack +
+                                            state.profileClinic!.doctors![index]
+                                                .profilePicture!),
                                     child: state.profileClinic!.doctors![index]
                                                 .profilePicture ==
                                             null

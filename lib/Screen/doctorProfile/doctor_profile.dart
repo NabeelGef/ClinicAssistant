@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -157,8 +158,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 ?.profilePicture ==
                             null
                         ? null
-                        : NetworkImage(state.profileDoctor!.doctorProfile!
-                            .doctor!.profilePicture!),
+                        : NetworkImage(API.BaseUrlBack +
+                            state.profileDoctor!.doctorProfile!.doctor!
+                                .profilePicture!),
                     child: state.profileDoctor!.doctorProfile!.doctor
                                 ?.profilePicture ==
                             null
@@ -362,12 +364,11 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(Icons.phone_android_sharp,
-                                          color: Coloring.primary),
+                                          color: Coloring.third),
                                       Text(phone!,
                                           style: TextStyle(
-                                            color: Coloring.primary,
-                                            fontSize: Sizer.getTextSize(
-                                                context, 0.05),
+                                            color: Coloring.third,
+                                            fontSize: 15.sp,
                                             fontFamily: Font.fontfamily,
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -414,9 +415,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   Text(description!,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: Coloring.primary,
-                                        fontSize:
-                                            Sizer.getTextSize(context, 0.05),
+                                        color: Coloring.third,
+                                        fontSize: 15.sp,
                                         fontFamily: Font.fontfamily,
                                         fontWeight: FontWeight.bold,
                                       ))
@@ -439,7 +439,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 ));
                           }),
                     ),
-                    Divider(color: Colors.white, thickness: 2),
+                    Divider(color: Coloring.primary, thickness: 2),
                   ] else
                     SizedBox(),
                   if (state.profileDoctor!.doctorProfile!.insurances != null &&
@@ -463,9 +463,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   return Text(e.companyName!,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: Coloring.primary,
-                                        fontSize:
-                                            Sizer.getTextSize(context, 0.05),
+                                        color: Coloring.third,
+                                        fontSize: 15.sp,
                                         fontFamily: Font.fontfamily,
                                         fontWeight: FontWeight.bold,
                                       ));

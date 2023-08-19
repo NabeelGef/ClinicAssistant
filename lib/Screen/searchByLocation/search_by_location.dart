@@ -18,6 +18,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'bloc/bloc.dart';
 
@@ -41,7 +42,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
           null));
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
   bool isLoading = false;
-
+  late Uint8List markerIcon;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SharedBloc, SharedState>(builder: (context, state) {
@@ -55,7 +56,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
             if (state.getLoginState == null) {
               return Scaffold(
                   resizeToAvoidBottomInset: false,
-                  backgroundColor: Coloring.third2,
+                  backgroundColor: Coloring.loginWhite,
                   key: _scaffoldkey,
                   appBar: PreferredSize(
                       preferredSize: Size.fromHeight(100.sp),
@@ -66,7 +67,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
             }
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Coloring.third2,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: PreferredSize(
                   preferredSize: Size.fromHeight(100.sp),
@@ -88,7 +89,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
             if (state.getLoginState == null) {
               return Scaffold(
                   resizeToAvoidBottomInset: false,
-                  backgroundColor: Coloring.third2,
+                  backgroundColor: Coloring.loginWhite,
                   key: _scaffoldkey,
                   appBar: PreferredSize(
                       preferredSize: Size.fromHeight(100.sp),
@@ -99,7 +100,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
             }
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Coloring.third2,
+              backgroundColor: Coloring.loginWhite,
               key: _scaffoldkey,
               appBar: PreferredSize(
                   preferredSize: Size.fromHeight(100.sp),
@@ -138,7 +139,8 @@ class _SearchByLocationState extends State<SearchByLocation> {
                           fontSize: 25.sp,
                           color: Colors.white)));
             } else {
-              return CircularProgressIndicator(color: Colors.white);
+              return Center(
+                  child: CircularProgressIndicator(color: Coloring.primary));
             }
           }
           double? lat;
@@ -160,6 +162,7 @@ class _SearchByLocationState extends State<SearchByLocation> {
                 state.getClinicState.clinic!.clinics![0].latitude!);
             long = double.parse(
                 state.getClinicState.clinic!.clinics![0].longitude!);
+            print("LAt : ${lat} , ${long}");
             mapController?.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
@@ -180,99 +183,105 @@ class _SearchByLocationState extends State<SearchByLocation> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
                       width: Sizer.getWidth(context) / 2.1,
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<Area>(
-                          alignment: Alignment.center,
-                          isExpanded: true,
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: Coloring.primary,
-                            size: 35.sp,
-                          ),
-                          menuMaxHeight: Sizer.getHeight(context) / 3,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.04)),
-                          hint: Text("تحديد المنطقة ",
-                              style: TextStyle(
-                                  fontFamily: Font.fontfamily,
-                                  fontSize: 15.sp,
-                                  color: Colors.black)),
-                          value: searchByLocationBloc.dropdownareas == null
-                              ? null
-                              : searchByLocationBloc.dropdownareas,
-                          onChanged: (value) {
-                            searchByLocationBloc
-                                .add(ChangeDropDownAreaEvent(dropdown: value!));
-                          },
-                          items: state.getAreaState.allArea == null
-                              ? null
-                              : state.getAreaState.allArea!.areas!.map((item) {
-                                  return DropdownMenuItem<Area>(
-                                    value: item,
-                                    child: Center(
-                                      child: Text(
-                                        item.name!,
+                      child: Card(
+                        elevation: 15.sp,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<Area>(
+                            alignment: Alignment.center,
+                            isExpanded: true,
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: Coloring.primary,
+                              size: 35.sp,
+                            ),
+                            menuMaxHeight: Sizer.getHeight(context) / 3,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Font.fontfamily,
+                                fontSize: Sizer.getTextSize(context, 0.04)),
+                            hint: Text("تحديد المنطقة ",
+                                style: TextStyle(
+                                    fontFamily: Font.fontfamily,
+                                    fontSize: 15.sp,
+                                    color: Colors.black)),
+                            value: searchByLocationBloc.dropdownareas == null
+                                ? null
+                                : searchByLocationBloc.dropdownareas,
+                            onChanged: (value) {
+                              searchByLocationBloc.add(
+                                  ChangeDropDownAreaEvent(dropdown: value!));
+                            },
+                            items: state.getAreaState.allArea == null
+                                ? null
+                                : state.getAreaState.allArea!.areas!
+                                    .map((item) {
+                                    return DropdownMenuItem<Area>(
+                                      value: item,
+                                      child: Center(
+                                        child: Text(
+                                          item.name!,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }).toList(),
+                                    );
+                                  }).toList(),
+                          ),
                         ),
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
                       width: Sizer.getWidth(context) / 2.1,
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<Governorate>(
-                          alignment: Alignment.center,
-                          isExpanded: true,
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: Coloring.primary,
-                            size: 35.sp,
-                          ),
-                          menuMaxHeight: Sizer.getHeight(context) / 3,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Font.fontfamily,
-                              fontSize: Sizer.getTextSize(context, 0.04)),
-                          hint: Text("تحديد المحافظة",
-                              style: TextStyle(
-                                  fontFamily: Font.fontfamily,
-                                  fontSize: 15.sp,
-                                  color: Colors.black)),
-                          value: searchByLocationBloc.dropdowngovernate == null
-                              ? null
-                              : searchByLocationBloc.dropdowngovernate,
-                          onChanged: (value) {
-                            searchByLocationBloc.add(
-                                ChangeDropDownGovernorateEvent(
-                                    dropdown: value!));
-                          },
-                          items: state
-                              .getGovernorateState.allGovernorate!.governorates!
-                              .map((item) {
-                            return DropdownMenuItem<Governorate>(
-                              value: item,
-                              child: Center(
-                                child: Text(
-                                  item.name!,
+                      child: Card(
+                        elevation: 15.sp,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<Governorate>(
+                            alignment: Alignment.center,
+                            isExpanded: true,
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: Coloring.primary,
+                              size: 35.sp,
+                            ),
+                            menuMaxHeight: Sizer.getHeight(context) / 3,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Font.fontfamily,
+                                fontSize: Sizer.getTextSize(context, 0.04)),
+                            hint: Text("تحديد المحافظة",
+                                style: TextStyle(
+                                    fontFamily: Font.fontfamily,
+                                    fontSize: 15.sp,
+                                    color: Colors.black)),
+                            value:
+                                searchByLocationBloc.dropdowngovernate == null
+                                    ? null
+                                    : searchByLocationBloc.dropdowngovernate,
+                            onChanged: (value) {
+                              searchByLocationBloc.add(
+                                  ChangeDropDownGovernorateEvent(
+                                      dropdown: value!));
+                            },
+                            items: state.getGovernorateState.allGovernorate!
+                                .governorates!
+                                .map((item) {
+                              return DropdownMenuItem<Governorate>(
+                                value: item,
+                                child: Center(
+                                  child: Text(
+                                    item.name!,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -288,50 +297,53 @@ class _SearchByLocationState extends State<SearchByLocation> {
                         children: [
                           Container(
                             width: Sizer.getWidth(context) / 2.1,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<Specialist>(
-                                  borderRadius: BorderRadius.circular(10),
-                                  alignment: Alignment.center,
-                                  dropdownColor: Colors.white,
-                                  hint: Text("الاختصاص الرّئيسي",
-                                      style: TextStyle(
-                                          color: Coloring.primary,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: Font.fontfamily,
-                                          fontSize: Sizer.getTextSize(
-                                              context, 0.039))),
-                                  icon: Icon(Icons.expand_more_rounded,
-                                      color: Coloring.primary,
-                                      size: Sizer.getTextSize(context, 0.09)),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: Font.fontfamily,
-                                      fontSize:
-                                          Sizer.getTextSize(context, 0.04)),
-                                  value: apiSpecialistBloc.dropdownmain,
-                                  isExpanded: true,
-                                  itemHeight: 60.r,
-                                  onChanged: (value) {
-                                    int index = -1;
-                                    apiSpecialistBloc
-                                        .add(ChooseSpecialist(index, value!));
-                                  },
-                                  items: statespecial.specialists == null
-                                      ? null
-                                      : statespecial.specialists!.specialties!
-                                          .map((sub) {
-                                          return DropdownMenuItem<Specialist>(
-                                              value: sub,
-                                              child: Center(
-                                                  child: Text(
-                                                sub.specialtyName!,
-                                                textAlign: TextAlign.center,
-                                              )));
-                                        }).toList()),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              elevation: 15.sp,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<Specialist>(
+                                    borderRadius: BorderRadius.circular(10),
+                                    alignment: Alignment.center,
+                                    dropdownColor: Colors.white,
+                                    hint: Text("الاختصاص الرّئيسي",
+                                        style: TextStyle(
+                                            color: Coloring.primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: Font.fontfamily,
+                                            fontSize: Sizer.getTextSize(
+                                                context, 0.039))),
+                                    icon: Icon(Icons.expand_more_rounded,
+                                        color: Coloring.primary,
+                                        size: Sizer.getTextSize(context, 0.09)),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: Font.fontfamily,
+                                        fontSize:
+                                            Sizer.getTextSize(context, 0.04)),
+                                    value: apiSpecialistBloc.dropdownmain,
+                                    isExpanded: true,
+                                    itemHeight: 60.r,
+                                    onChanged: (value) {
+                                      int index = -1;
+                                      apiSpecialistBloc
+                                          .add(ChooseSpecialist(index, value!));
+                                    },
+                                    items: statespecial.specialists == null
+                                        ? null
+                                        : statespecial.specialists!.specialties!
+                                            .map((sub) {
+                                            return DropdownMenuItem<Specialist>(
+                                                value: sub,
+                                                child: Center(
+                                                    child: Text(
+                                                  sub.specialtyName!,
+                                                  textAlign: TextAlign.center,
+                                                )));
+                                          }).toList()),
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -344,29 +356,31 @@ class _SearchByLocationState extends State<SearchByLocation> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
+                      child: Card(
+                        elevation: 15.sp,
+                        color: state.isClickArea == null ||
+                                state.isClickArea == false
+                            ? Colors.white
+                            : Coloring.third3,
+                        shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                bottomLeft: Radius.circular(25)),
-                            color: state.isClickArea == null ||
-                                    state.isClickArea == false
-                                ? Colors.white
-                                : Coloring.third3),
+                          topLeft: Radius.circular(25),
+                          bottomLeft: Radius.circular(25),
+                        )),
                         child: InkWell(
                           onTap: () {
                             if (searchByLocationBloc.dropdownareas == null) {
-                              /* Fluttertoast.showToast(
+                              Fluttertoast.showToast(
                                   msg: "يجب إدخال منطقة محددة",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
-                                  backgroundColor: Coloring.primary);*/
+                                  backgroundColor: Coloring.primary);
                             } else if (apiSpecialistBloc.dropdownmain == null) {
-                              /*Fluttertoast.showToast(
+                              Fluttertoast.showToast(
                                   msg: "يجب إدخال اختصاص محدّد",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
-                                  backgroundColor: Coloring.primary);*/
+                                  backgroundColor: Coloring.primary);
                             } else {
                               searchByLocationBloc.add(SearchByLocationEvent(
                                   areaId: searchByLocationBloc
@@ -389,27 +403,32 @@ class _SearchByLocationState extends State<SearchByLocation> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
+                      child: Card(
+                        elevation: 15.sp,
+                        color: state.isClickArea == null ||
+                                state.isClickArea == true
+                            ? Colors.white
+                            : Coloring.third3,
+                        shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(25),
-                                bottomRight: Radius.circular(25)),
-                            color: state.isClickArea == null ||
-                                    state.isClickArea == true
-                                ? Colors.white
-                                : Coloring.third3),
+                                bottomRight: Radius.circular(25))),
                         child: InkWell(
                           onTap: () {
                             if (apiSpecialistBloc.dropdownmain == null) {
-                              /* Fluttertoast.showToast(
+                              Fluttertoast.showToast(
                                   msg: "يجب إدخال اختصاص محدّد",
                                   toastLength: Toast.LENGTH_LONG,
                                   textColor: Colors.white,
-                                  backgroundColor: Coloring.primary);*/
+                                  backgroundColor: Coloring.primary);
                             } else {
                               searchByLocationBloc.add(SearchByMYLocationEvent(
-                                  Latitude: 33.48970433857038, // Default Lat
-                                  Longitude: 36.28592427251614, // Default Long
+                                  Latitude: state.Mylocation!
+                                      .latitude,
+                                      //33.533652000000, // Default Lat
+                                  Longitude: state.Mylocation!
+                                      .longitude,
+                                      //36.235538000000000, // Default Long
                                   specialId: apiSpecialistBloc
                                       .dropdownmain!.specialtyId!));
                             }
@@ -454,16 +473,22 @@ class _SearchByLocationState extends State<SearchByLocation> {
                             ? Set<Marker>.of(
                                 state.getClinicState.clinic!.clinics!.map((e) {
                                   return Marker(
+                                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                                        BitmapDescriptor.hueBlue),
                                     markerId:
                                         MarkerId('myLocation${e.clinicId}'),
                                     position: LatLng(double.parse(e.latitude!),
                                         double.parse(e.longitude!)),
-                                    infoWindow:
-                                        InfoWindow(title: '${e.clinicName}'),
+                                    infoWindow: InfoWindow(
+                                        title: '${e.clinicName} ',
+                                        snippet:
+                                            "${apiSpecialistBloc.dropdownmain?.specialtyName}"),
                                   );
                                 }).toList(),
                               )
-                            : Set()),
+                            : Set(),
+                        myLocationEnabled: true, // Enable my location button
+                        myLocationButtonEnabled: true),
                   ),
                 ),
                 SizedBox(

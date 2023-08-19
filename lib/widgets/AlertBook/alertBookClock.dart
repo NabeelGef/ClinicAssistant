@@ -11,6 +11,7 @@ import 'package:clinicassistant/widgets/AlertBook/bloc/bloc.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/event.dart';
 import 'package:clinicassistant/widgets/AlertBook/bloc/state.dart';
 import 'package:clinicassistant/widgets/AlertBook/bookNow.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../Constant/color.dart';
 import '../../Constant/font.dart';
@@ -49,7 +50,7 @@ class _AlertBookClockState extends State<AlertBookClock> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Coloring.third,
+      backgroundColor: Coloring.primary,
       content: Container(
         width: Sizer.getWidth(context) / 1.2,
         height: Sizer.getHeight(context) / 2,
@@ -108,6 +109,24 @@ class _AlertBookClockState extends State<AlertBookClock> {
                           if (state.successAlertBookClock!.workTimeClock ==
                               null) {
                             if (state.successAlertBookClock!.error.isNotEmpty) {
+                              if (state.successAlertBookClock?.error ==
+                                  "Not Found") {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Lottie.asset(
+                                        "${Font.urlLottie}notFoundAppointment.json",
+                                        width: Sizer.getWidth(context) / 2,
+                                        height: Sizer.getHeight(context) / 5),
+                                    Text(
+                                      "انتهت مواعيد اليوم",
+                                      style: TextStyle(
+                                          fontFamily: Font.fontfamily,
+                                          color: Coloring.loginWhite),
+                                    )
+                                  ],
+                                );
+                              }
                               return Center(
                                 child: Text(
                                     "${state.successAlertBookClock?.error}",

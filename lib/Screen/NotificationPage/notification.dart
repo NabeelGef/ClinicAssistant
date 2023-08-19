@@ -1,3 +1,4 @@
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -154,6 +155,8 @@ class _NotificationPageState extends State<NotificationPage> {
                         children: [
                           ListTile(
                             leading: CircleAvatar(
+                              radius: Sizer.getWidth(context) / 15,
+                              backgroundColor: Colors.transparent,
                               child: state
                                           .delyasAndWarningsNotificationstate
                                           .delaysAndWarningsNotification!
@@ -163,12 +166,13 @@ class _NotificationPageState extends State<NotificationPage> {
                                       null
                                   ? Image.asset(
                                       "${Font.urlImage}doctoravatar.png")
-                                  : Image.network(state
-                                      .delyasAndWarningsNotificationstate
-                                      .delaysAndWarningsNotification!
-                                      .patientDelays![index]
-                                      .doctor!
-                                      .profilePicture!),
+                                  : Image.network(API.BaseUrlBack +
+                                      state
+                                          .delyasAndWarningsNotificationstate
+                                          .delaysAndWarningsNotification!
+                                          .patientDelays![index]
+                                          .doctor!
+                                          .profilePicture!),
                             ),
                             title: Text(
                               " ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].doctor!.firstname} ${state.delyasAndWarningsNotificationstate.delaysAndWarningsNotification!.patientDelays![index].doctor!.lastname}",
@@ -187,7 +191,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                   fontWeight: FontWeight.bold),
                             ),
                             trailing: Container(
-                              width: Sizer.getWidth(context) / 3,
+                              width: Sizer.getWidth(context) / 3.5,
                               child: Row(
                                 textDirection: TextDirection.ltr,
                                 children: [

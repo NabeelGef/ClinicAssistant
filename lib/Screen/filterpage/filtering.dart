@@ -1,5 +1,6 @@
 import 'package:clinicassistant/Constant/Route/routename.dart';
 import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/code.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -299,155 +300,147 @@ class _FilterPageState extends State<FilterPage> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Column(
                   children: [
-                    Column(
-                      children: [
-                        Text(
-                          "شركات التّامين",
-                          style: TextStyle(
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.r,
-                              color: Coloring.third),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Coloring.primary,
-                              borderRadius: BorderRadius.circular(25)),
-                          width: Sizer.getWidth(context) / 2,
-                          height: Sizer.getHeight(context) / 20,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<Insurances?>(
-                              dropdownColor: Coloring.primary,
-                              borderRadius: BorderRadius.circular(10),
-                              itemHeight: 60.r,
-                              value: filteringBlocSpecialAndInsurance
-                                          .insurance ==
-                                      null
+                    Text(
+                      "شركات التّامين",
+                      style: TextStyle(
+                          fontFamily: Font.fontfamily,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.r,
+                          color: Coloring.third),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Coloring.primary,
+                          borderRadius: BorderRadius.circular(25)),
+                      width: Sizer.getWidth(context) / 1.1,
+                      height: Sizer.getHeight(context) / 20,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<Insurances?>(
+                          dropdownColor: Coloring.primary,
+                          borderRadius: BorderRadius.circular(10),
+                          itemHeight: 60.r,
+                          value:
+                              filteringBlocSpecialAndInsurance.insurance == null
                                   ? null
                                   : filteringBlocSpecialAndInsurance.insurance,
-                              alignment: Alignment.center,
-                              style: TextStyle(
-                                  color: Coloring.loginWhite,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Font.fontfamily,
-                                  fontSize: 15.r),
-                              icon: Icon(Icons.expand_more_rounded,
-                                  color: Coloring.loginWhite, size: 20.r),
-                              hint: Text("الكل",
-                                  style: TextStyle(
-                                      color: Coloring.loginWhite,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: Font.fontfamily,
-                                      fontSize: 15.r)),
-                              onChanged: (value) {
-                                insuranceId = int.parse(value!.insuranceId!);
-                                filteringBlocSpecialAndInsurance
-                                    .add(ChooseInsurance(insurance: value));
-                                filteringBloc.add(LoadingDoctorsFiltirng(
-                                    subSpecialtyId: subSpecialtyId,
-                                    insuranceId: insuranceId,
-                                    gender: gender));
-                              },
-                              isExpanded: true,
-                              items:
-                                  state.successInsurancesState.insurance == null
-                                      ? null
-                                      : state.successInsurancesState.insurance!
-                                          .insurances!
-                                          .map((ins) {
-                                          return DropdownMenuItem(
-                                              value: ins,
-                                              child: Center(
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  child: Text(
-                                                    ins.companyName!,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ));
-                                        }).toList(),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "الجنس",
+                          alignment: Alignment.center,
                           style: TextStyle(
-                              fontFamily: Font.fontfamily,
+                              color: Coloring.loginWhite,
                               fontWeight: FontWeight.bold,
-                              fontSize: 15.r,
-                              color: Coloring.third),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Coloring.primary,
-                              borderRadius: BorderRadius.circular(25)),
-                          width: Sizer.getWidth(context) / 3.5,
-                          height: Sizer.getHeight(context) / 20,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String?>(
-                              dropdownColor: Coloring.primary,
-                              borderRadius: BorderRadius.circular(10),
-                              value: filteringBlocSpecialAndInsurance.gender ==
-                                      null
-                                  ? null
-                                  : filteringBlocSpecialAndInsurance.gender,
-                              alignment: Alignment.center,
+                              fontFamily: Font.fontfamily,
+                              fontSize: 15.r),
+                          icon: Icon(Icons.expand_more_rounded,
+                              color: Coloring.loginWhite, size: 20.r),
+                          hint: Text("الكل",
                               style: TextStyle(
                                   color: Coloring.loginWhite,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: Font.fontfamily,
-                                  fontSize: 15.r),
-                              icon: Icon(Icons.expand_more_rounded,
-                                  color: Coloring.loginWhite, size: 20.r),
-                              hint: Text("الكل",
-                                  style: TextStyle(
-                                      color: Coloring.loginWhite,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: Font.fontfamily,
-                                      fontSize: 15.r)),
-                              onChanged: (value) {
-                                filteringBlocSpecialAndInsurance
-                                    .add(ChooseGender(gender: value!));
-                                // subSpecialtyId = int.parse(state
-                                //     .successSpecialistsState
-                                //     .specialists!
-                                //     .specialties![
-                                //         filteringBlocSpecialAndInsurance
-                                //             .clickspecialist]
-                                //     .subSpecialties![0]
-                                //     .subSpecialtyId!);
-                                gender = value;
-                                filteringBloc.add(LoadingDoctorsFiltirng(
-                                    subSpecialtyId: subSpecialtyId,
-                                    insuranceId: insuranceId,
-                                    gender: gender));
-                              },
-                              isExpanded: true,
-                              items: state.gender.map((gen) {
-                                return DropdownMenuItem(
-                                    value: gen,
-                                    child: Center(
-                                      child: Container(
+                                  fontSize: 15.r)),
+                          onChanged: (value) {
+                            insuranceId = int.parse(value!.insuranceId!);
+                            filteringBlocSpecialAndInsurance
+                                .add(ChooseInsurance(insurance: value));
+                            filteringBloc.add(LoadingDoctorsFiltirng(
+                                subSpecialtyId: subSpecialtyId,
+                                insuranceId: insuranceId,
+                                gender: gender));
+                          },
+                          isExpanded: true,
+                          items: state.successInsurancesState.insurance == null
+                              ? null
+                              : state
+                                  .successInsurancesState.insurance!.insurances!
+                                  .map((ins) {
+                                  return DropdownMenuItem(
+                                      value: ins,
+                                      child: Center(
+                                        child: Container(
                                           width: double.infinity,
                                           child: Text(
-                                            gen,
+                                            ins.companyName!,
                                             textAlign: TextAlign.center,
-                                          )),
-                                    ));
-                              }).toList(),
-                            ),
-                          ),
-                        )
-                      ],
+                                          ),
+                                        ),
+                                      ));
+                                }).toList(),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "الجنس",
+                      style: TextStyle(
+                          fontFamily: Font.fontfamily,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.r,
+                          color: Coloring.third),
                     ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Coloring.primary,
+                          borderRadius: BorderRadius.circular(25)),
+                      width: Sizer.getWidth(context) / 3.5,
+                      height: Sizer.getHeight(context) / 20,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String?>(
+                          dropdownColor: Coloring.primary,
+                          borderRadius: BorderRadius.circular(10),
+                          value: filteringBlocSpecialAndInsurance.gender == null
+                              ? null
+                              : filteringBlocSpecialAndInsurance.gender,
+                          alignment: Alignment.center,
+                          style: TextStyle(
+                              color: Coloring.loginWhite,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Font.fontfamily,
+                              fontSize: 15.r),
+                          icon: Icon(Icons.expand_more_rounded,
+                              color: Coloring.loginWhite, size: 20.r),
+                          hint: Text("الكل",
+                              style: TextStyle(
+                                  color: Coloring.loginWhite,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Font.fontfamily,
+                                  fontSize: 15.r)),
+                          onChanged: (value) {
+                            filteringBlocSpecialAndInsurance
+                                .add(ChooseGender(gender: value!));
+                            // subSpecialtyId = int.parse(state
+                            //     .successSpecialistsState
+                            //     .specialists!
+                            //     .specialties![
+                            //         filteringBlocSpecialAndInsurance
+                            //             .clickspecialist]
+                            //     .subSpecialties![0]
+                            //     .subSpecialtyId!);
+                            gender = value;
+                            filteringBloc.add(LoadingDoctorsFiltirng(
+                                subSpecialtyId: subSpecialtyId,
+                                insuranceId: insuranceId,
+                                gender: gender));
+                          },
+                          isExpanded: true,
+                          items: state.gender.map((gen) {
+                            return DropdownMenuItem(
+                                value: gen,
+                                child: Center(
+                                  child: Container(
+                                      width: double.infinity,
+                                      child: Text(
+                                        gen,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                ));
+                          }).toList(),
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 InkWell(
@@ -544,11 +537,12 @@ class _FilterPageState extends State<FilterPage> {
                                                   .profilePicture ==
                                               null
                                           ? null
-                                          : NetworkImage(state
-                                              .successFilterDoctorState
-                                              .doctor!
-                                              .doctor![index]
-                                              .profilePicture!),
+                                          : NetworkImage(API.BaseUrlBack +
+                                              state
+                                                  .successFilterDoctorState
+                                                  .doctor!
+                                                  .doctor![index]
+                                                  .profilePicture!),
                                       child: state
                                                   .successFilterDoctorState
                                                   .doctor!
@@ -560,13 +554,14 @@ class _FilterPageState extends State<FilterPage> {
                                           : null,
                                     )),
                                     Expanded(
-                                        flex: 4,
+                                        flex: 2,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Text(
                                                 "${state.successFilterDoctorState.doctor!.doctor![index].firstname} ${state.successFilterDoctorState.doctor!.doctor![index].lastname}",
+                                                textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontFamily: Font.fontfamily,
                                                     fontWeight: FontWeight.bold,
@@ -574,6 +569,7 @@ class _FilterPageState extends State<FilterPage> {
                                                     color: Coloring.primary)),
                                             Text(
                                                 "اختصاص ${state.successFilterDoctorState.doctor!.doctor![index].specialties![0].specialtyName}",
+                                                textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontFamily: Font.fontfamily,
                                                     fontWeight: FontWeight.bold,

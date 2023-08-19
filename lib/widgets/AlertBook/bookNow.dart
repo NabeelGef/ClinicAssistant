@@ -186,7 +186,21 @@ class _BookNowState extends State<BookNow> {
                             builder: (context, state) {
                               if (state.successBook!.message == null) {
                                 if (state.successBook!.error.isNotEmpty) {
-                                  Navigator.pop(context);
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    Navigator.pop(context);
+                                    //print("Sucesssssss");
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          " فشل عملية الحجز بسبب تبقي اقل من ساعة",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Coloring.primary,
+                                      textColor: Colors.white,
+                                      fontSize: 25.sp,
+                                    );
+                                  });
                                   return SizedBox();
                                 } else {
                                   return AlertDialog(

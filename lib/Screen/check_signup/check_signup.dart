@@ -3,6 +3,7 @@ import 'package:clinicassistant/Screen/check_signup/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/check_signup/bloc/event.dart';
 import 'package:clinicassistant/Screen/check_signup/bloc/states.dart';
 import 'package:clinicassistant/repository/check_signup_repo.dart';
+import 'package:clinicassistant/repository/signup_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:clinicassistant/Constant/color.dart';
 import 'package:clinicassistant/Constant/font.dart';
@@ -13,12 +14,19 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 import '../../Constant/Route/router.dart';
 import '../../Constant/code.dart';
+import '../signup2/bloc/bloc.dart';
+import '../signup2/bloc/event.dart';
+import '../signup2/bloc/states.dart';
 
 class CheckSignUp extends StatefulWidget {
   final String phoneNumberFromSignUp;
   final String patientId;
+  final SignUp2DataSend signUp2DataSend;
   const CheckSignUp(
-      {Key? key, required this.phoneNumberFromSignUp, required this.patientId})
+      {Key? key,
+      required this.phoneNumberFromSignUp,
+      required this.patientId,
+      required this.signUp2DataSend})
       : super(key: key);
 
   @override
@@ -40,9 +48,14 @@ class _CheckSignUpState extends State<CheckSignUp> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(360, 690));
-    return BlocProvider<CheckSignUpBloc>(
-      create: (BuildContext context) =>
-          CheckSignUpBloc(CheckSignUpRepository()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (BuildContext context) =>
+                CheckSignUpBloc(CheckSignUpRepository())),
+        BlocProvider<SignUp2Bloc>(
+            create: (BuildContext context) => SignUp2Bloc(SignUp2Repository()))
+      ],
       child: Stack(
         children: [
           Container(
@@ -76,110 +89,170 @@ class _CheckSignUpState extends State<CheckSignUp> {
 
   //Make Body
   Widget CheckSignUpBody(BuildContext contextCheckSignUp) {
-    return Center(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // MyAppBar(contextLogin),
-
-            //This is the logo
-            Stack(
-              alignment: Alignment.bottomCenter,
+    return BlocConsumer<SignUp2Bloc, SignUp2States>(
+      builder: (context, state) {
+        return Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  width: 260.w,
-                  height: 364.h,
-                  decoration: BoxDecoration(
-                      color: Coloring.loginMainContainer,
-                      borderRadius: BorderRadius.circular(25),
-                      border:
-                          Border.all(width: 1.3.w, color: Coloring.primary)),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10.sp,
-                      ),
-                      Container(
-                        child: Text(
-                          "OTP تحقق ",
-                          style: TextStyle(
-                            color: Coloring.loginWhite,
-                            fontSize: 18.sp,
-                            fontFamily: Font.fontfamily,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        margin: EdgeInsets.only(top: 42),
-                      ),
-                      Container(
-                        child: Text(
-                          "لقد ارسلنا رسالة تتضمن رمزاً إلى الرقم",
-                          style: TextStyle(
-                              color: Coloring.loginWhite,
-                              fontSize: 15.sp,
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "+963  " + widget.phoneNumberFromSignUp,
-                          style: TextStyle(
-                              color: Coloring.loginWhite,
-                              fontSize: 18.sp,
-                              fontFamily: Font.fontfamily,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15.sp,
-                      ),
-                      OtpTextField(
-                        numberOfFields: 5,
-                        borderColor: Coloring.loginWhite,
-                        focusedBorderColor: Coloring.primary,
-                        //set to true to show as box or false to show as dash
-                        //runs when a code is typed in
-                        onCodeChanged: (String code) {
-                          //handle validation or checks here
-                        },
-                        filled: true,
-                        decoration: InputDecoration(
+                // MyAppBar(contextLogin),
 
-                            /*enabledBorder: OutlineInputBorder(
-                         borderRadius: BorderRadius.circular(25)
-                       )*/
+                //This is the logo
+                Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      width: 260.w,
+                      height: 364.h,
+                      decoration: BoxDecoration(
+                          color: Coloring.loginMainContainer,
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                              width: 1.3.w, color: Coloring.primary)),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10.sp,
+                          ),
+                          Container(
+                            child: Text(
+                              "OTP تحقق ",
+                              style: TextStyle(
+                                color: Coloring.loginWhite,
+                                fontSize: 18.sp,
+                                fontFamily: Font.fontfamily,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                        fillColor: Coloring.loginWhite,
-                        //runs when every textfield is filled
-                        onSubmit: (String verificationCode) {
-                          code = verificationCode;
-                        }, // end onSubmit
+                            margin: EdgeInsets.only(top: 42),
+                          ),
+                          Container(
+                            child: Text(
+                              "لقد ارسلنا رسالة تتضمن رمزاً إلى الرقم",
+                              style: TextStyle(
+                                  color: Coloring.loginWhite,
+                                  fontSize: 15.sp,
+                                  fontFamily: Font.fontfamily,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "+963  " + widget.phoneNumberFromSignUp,
+                              style: TextStyle(
+                                  color: Coloring.loginWhite,
+                                  fontSize: 18.sp,
+                                  fontFamily: Font.fontfamily,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.sp,
+                          ),
+                          OtpTextField(
+                            numberOfFields: 5,
+                            borderColor: Coloring.loginWhite,
+                            focusedBorderColor: Coloring.primary,
+                            //set to true to show as box or false to show as dash
+                            //runs when a code is typed in
+                            onCodeChanged: (String code) {
+                              //handle validation or checks here
+                            },
+                            filled: true,
+                            decoration: InputDecoration(
+
+                                /*enabledBorder: OutlineInputBorder(
+                           borderRadius: BorderRadius.circular(25)
+                         )*/
+                                ),
+                            fillColor: Coloring.loginWhite,
+                            //runs when every textfield is filled
+                            onSubmit: (String verificationCode) {
+                              code = verificationCode;
+                            }, // end onSubmit
+                          ),
+                          SizedBox(height: 10.sp),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                child: Text(
+                                  "إعادة الإرسال  ",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Font.fontfamily,
+                                      fontSize: 15.sp,
+                                      color: Coloring.loginWhite,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                                onTap: () {
+                                  SignUp2Bloc.get(context)
+                                      .add(widget.signUp2DataSend);
+                                },
+                              ),
+                              Text("ألم يصلك الرمز ؟ ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Font.fontfamily,
+                                      fontSize: 13.sp,
+                                      fontStyle: FontStyle.italic)),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15.sp,
+                          ),
+                          makeConnection(),
+                        ],
                       ),
-                      SizedBox(height: 25.sp),
-                      makeConnection(),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 20, bottom: 280),
-                  child: Image.asset(
-                    alignment: Alignment.topRight,
-                    height: 244.h,
-                    width: 378.w,
-                    Font.urlImage + 'lock_signup.png',
-                  ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 20, bottom: 280),
+                      child: Image.asset(
+                        alignment: Alignment.topRight,
+                        height: 244.h,
+                        width: 378.w,
+                        Font.urlImage + 'lock_signup.png',
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
-      ),
+            ),
+          ),
+        );
+      },
+      listener: (context, state) {
+        if (state is LoadingSignUp2States) {
+          Code.showLoadingDialog(context);
+        } else if (state is ErrorSignUp2States) {
+          Navigator.pop(context);
+          print("Error is Otp : ${state.errorMessage}");
+        } else {
+          Navigator.pop(context);
+
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              backgroundColor: Coloring.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              title: Text('تمّ إعادة الإرسال بنجاح',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Coloring.loginWhite,
+                      fontFamily: Font.fontfamily)),
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -206,7 +279,7 @@ class _CheckSignUpState extends State<CheckSignUp> {
             CheckSignUpBloc.get(context).add(CheckSignUpDataSend(
                 patientId: widget.patientId, verificationCode: code));
           },
-          child: Text("Verify",
+          child: Text("تأكيد",
               style: TextStyle(
                   color: Coloring.loginWhite,
                   fontSize: 18.sp,

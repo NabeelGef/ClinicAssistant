@@ -1,4 +1,5 @@
 import 'package:clinicassistant/Constant/Route/router.dart';
+import 'package:clinicassistant/Constant/api.dart';
 import 'package:clinicassistant/Constant/font.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/bookingPage/bloc/event.dart';
@@ -160,12 +161,13 @@ class _BookPageState extends State<BookPage> {
                                           .profilePicture ==
                                       null
                                   ? null
-                                  : NetworkImage(state
-                                      .successDoctorClinicBook
-                                      .doctorClinicBook!
-                                      .doctorClinicDetails!
-                                      .doctor!
-                                      .profilePicture!),
+                                  : NetworkImage(API.BaseUrlBack +
+                                      state
+                                          .successDoctorClinicBook
+                                          .doctorClinicBook!
+                                          .doctorClinicDetails!
+                                          .doctor!
+                                          .profilePicture!),
                               child: state
                                           .successDoctorClinicBook
                                           .doctorClinicBook!
@@ -480,7 +482,7 @@ class _BookPageState extends State<BookPage> {
                           ),
                         ]
                       ]),
-                  Divider(color: Colors.white, thickness: 2),
+                  Divider(color: Coloring.primary, thickness: 2),
                   // Center(
                   //   child: Text("الحجوزات المتاحة",
                   //       style: TextStyle(

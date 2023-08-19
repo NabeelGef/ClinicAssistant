@@ -4,6 +4,7 @@ class API {
   //That is end points of Api
   //static String BaseUrl = "https://nabee4.free.beeceptor.com/";
   static String IP = "192.168.1.104";
+  static String IP2 = "192.168.43.206";
   static String IPLOCAL = "10.0.2.2";
   static String BaseUrlBack = "http://$IPLOCAL:3000/";
   static String clinicsBack = "clinics";

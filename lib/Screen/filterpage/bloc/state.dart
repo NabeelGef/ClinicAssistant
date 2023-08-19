@@ -40,7 +40,7 @@ class SuccessInsurancesState {
 class SpecialAndInsuranceState {
   SuccessSpecialistsState successSpecialistsState;
   SuccessInsurancesState successInsurancesState;
-  List<String> gender = ["ذكر", " انثى"];
+  List<String> gender = ["ذكر", "انثى"];
   SpecialAndInsuranceState({
     required this.successSpecialistsState,
     required this.successInsurancesState,

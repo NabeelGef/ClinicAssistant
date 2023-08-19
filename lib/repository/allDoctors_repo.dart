@@ -11,9 +11,14 @@ class AllDoctorsRepository {
       'subSpecialtyId': subSpecialtyId,
       'filterName': filterName,
     };
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
     Response response = await API.dio.post(
         "${API.BaseUrlBack}" + "${API.doctorsBack}" + "/${API.alldoctorsBack}",
-        data: data);
+        data: data,
+        options: Options(headers: headers));
     if (response.statusCode == 201) {
       return Doctor.fromJson(response.data);
     }
@@ -24,7 +29,7 @@ class AllDoctorsRepository {
       int? subSpecialtyId, int? insuranceId, String? gender) async {
     if (gender == "ذكر") {
       gender = "male";
-    } else {
+    } else if (gender == "انثى") {
       gender = "female";
     }
     Map<String, dynamic> data = {
@@ -32,9 +37,15 @@ class AllDoctorsRepository {
       'gender': gender,
       'insuranceId': insuranceId,
     };
+    print("DATA : $data");
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
     Response response = await API.dio.post(
         "${API.BaseUrlBack}" + "${API.doctorsBack}" + "/${API.filterDoctor}",
-        data: data);
+        data: data,
+        options: Options(headers: headers));
     if (response.statusCode == 201) {
       return Doctor.fromJson(response.data);
     }

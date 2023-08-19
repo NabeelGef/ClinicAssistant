@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:clinicassistant/Constant/sizer.dart';
+import 'package:clinicassistant/Screen/check_signup/check_signup.dart';
 import 'package:clinicassistant/Screen/signup2/bloc/bloc.dart';
 import 'package:clinicassistant/Screen/signup2/bloc/event.dart';
 import 'package:clinicassistant/Screen/signup2/bloc/states.dart';
@@ -39,6 +40,7 @@ class _SignUp2State extends State<SignUp2> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   UserInformation? userInformation;
+  late SignUp2DataSend signUp2DataSend;
   List<int> years = [];
   List<String> days = [];
   List<String> gender = ["ذكر", "أنثى"];
@@ -543,14 +545,33 @@ class _SignUp2State extends State<SignUp2> {
                     child: BlocConsumer<SignUp2Bloc, SignUp2States>(
                         listener: (BuildContext context, SignUp2States state) {
                       if (state is SuccessSignUp2States) {
-                        RouterNav.fluroRouter.navigateTo(
+                        signUp2DataSend = SignUp2DataSend(
+                            firstName: widget.receivedFirstName,
+                            lastName: widget.receivedLastName,
+                            userName: widget.receivedUserName,
+                            phoneNumber: _phoneNumberInput,
+                            password: widget.receivedPassword,
+                            year: selectedYearItem,
+                            month: selectedMonthItem,
+                            day: selectedDayItem,
+                            gender: selectedGenderItem);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CheckSignUp(
+                              phoneNumberFromSignUp: _phoneNumberInput,
+                              patientId: state.successMessage,
+                              signUp2DataSend: signUp2DataSend);
+                        }));
+                        /*RouterNav.fluroRouter.navigateTo(
                             context,
                             routeSettings: RouteSettings(arguments: {
                               'phoneNumberFromSignUp': _phoneNumberInput,
+                              'data': signUp2DataSend
                             }),
                             RouteName.checkSignUp +
                                 "/$_phoneNumberInput" +
-                                "/${state.successMessage}");
+                                "/${state.successMessage}" +
+                                "/${signUp2DataSend}");*/
                       }
 
                       if (state is LoadingSignUp2States) {
@@ -561,18 +582,32 @@ class _SignUp2State extends State<SignUp2> {
 
                         print("am in the  error sign up state");
 
-                        if (state.errorMessage == "Error Number Form") {
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: Text('خطأ في إدخال الرقم'),
-                              content: Text(
-                                  'تأكد من أن الرقم يبدأ ب 09 ويتكون من 10 ارقام'),
-                              backgroundColor: Colors.green,
+                        //if (state.errorMessage == "Error Number Form") {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            backgroundColor: Coloring.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          );
-                        } else if (state.errorMessage == "Error number exist") {
-                          showDialog(
+                            title: Text('خطأ في إدخال الرقم',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Coloring.loginWhite,
+                                    fontFamily: Font.fontfamily)),
+                            content: Text(
+                              '${state.errorMessage}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Coloring.loginWhite,
+                                  fontFamily: Font.fontfamily),
+                            ),
+                          ),
+                        );
+                        //} else if (state.errorMessage == "Error number exist") {
+                        /*showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
                               title: Text('خطأ في الرقم'),
@@ -581,7 +616,7 @@ class _SignUp2State extends State<SignUp2> {
                               backgroundColor: Colors.green,
                             ),
                           );
-                        }
+                        }*/
                       }
                     }, builder: (BuildContext context, SignUp2States state) {
                       return ElevatedButton(
@@ -656,15 +691,21 @@ class _SignUp2State extends State<SignUp2> {
         showDialog(
           context: contextSignUp,
           builder: (_) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            backgroundColor: Coloring.primary,
             title: Text('خطأ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                    color: Coloring.loginWhite,
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
             content: Text('يجب إدخال كافة الحقول من فضلك',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                    color: Coloring.loginWhite,
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
@@ -675,7 +716,7 @@ class _SignUp2State extends State<SignUp2> {
                     Navigator.pop(contextSignUp);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Coloring.primary,
+                    backgroundColor: Coloring.loginWhite,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(230),
                     ),
@@ -684,6 +725,7 @@ class _SignUp2State extends State<SignUp2> {
                       style: TextStyle(
                           fontFamily: Font.fontfamily,
                           fontWeight: FontWeight.bold,
+                          color: Coloring.primary,
                           fontSize: 15.sp)),
                 ),
               ),
@@ -723,15 +765,21 @@ class _SignUp2State extends State<SignUp2> {
         showDialog(
           context: contextSignUp,
           builder: (_) => AlertDialog(
+            backgroundColor: Coloring.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             title: Text('هل أنت متأكد',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                    color: Coloring.loginWhite,
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
             content: Text('لن تكون لك القدرة على تعديل البيانات المدخلة',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                    color: Coloring.loginWhite,
                     fontFamily: Font.fontfamily,
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp)),
@@ -753,7 +801,7 @@ class _SignUp2State extends State<SignUp2> {
                     Navigator.pop(contextSignUp);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Coloring.primary,
+                    backgroundColor: Coloring.loginWhite,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(230),
                     ),
@@ -762,6 +810,7 @@ class _SignUp2State extends State<SignUp2> {
                       style: TextStyle(
                           fontFamily: Font.fontfamily,
                           fontWeight: FontWeight.bold,
+                          color: Coloring.primary,
                           fontSize: 15.sp)),
                 ),
               ),
