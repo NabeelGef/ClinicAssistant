@@ -6,7 +6,7 @@ class API {
   static String IP = "192.168.1.104";
   static String IP2 = "192.168.43.206";
   static String IPLOCAL = "10.0.2.2";
-  static String BaseUrlBack = "http://$IPLOCAL:3000/";
+  static String BaseUrlBack = "http://$IP2:3000/";
   static String clinicsBack = "clinics";
   static String areas = "areas";
   static String area = "area";

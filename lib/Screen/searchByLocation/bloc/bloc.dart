@@ -323,7 +323,9 @@ class SearchByLocationBloc
       }).onError((error, stackTrace) {
         print('error: ${error.toString()}');
       });
-    } else {}
+    } else {
+      print("Errrorororoor");
+    }
     yield SearchByLocationState(
         GetGovernorateState(
             allGovernorate: state.getGovernorateState.allGovernorate,

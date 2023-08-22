@@ -19,13 +19,18 @@ class SearchByLocation {
   static Future<Clinic?> searchByMyLocation(
       double Latitude, double Longitude, String specialId) async {
     Clinic? clinic;
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
     Response response = await API.dio.post(
         "${API.BaseUrlBack}" +
             "${API.clinicsBack}" +
             "/${API.longitude_latitude}" +
             "/${API.specialty}" +
             "/${specialId}",
-        data: {"Latitude": Latitude, "Longitude": Longitude});
+        data: {"Latitude": Latitude, "Longitude": Longitude},
+        options: Options(headers: headers));
     if (response.statusCode == 201) {
       clinic = Clinic.fromJson(response.data);
       print("Response My Location : ${response.data}");

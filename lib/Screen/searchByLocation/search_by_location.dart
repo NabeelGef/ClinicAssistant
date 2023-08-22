@@ -423,12 +423,14 @@ class _SearchByLocationState extends State<SearchByLocation> {
                                   backgroundColor: Coloring.primary);
                             } else {
                               searchByLocationBloc.add(SearchByMYLocationEvent(
-                                  Latitude: state.Mylocation!
-                                      .latitude,
-                                      //33.533652000000, // Default Lat
-                                  Longitude: state.Mylocation!
-                                      .longitude,
-                                      //36.235538000000000, // Default Long
+                                  Latitude: /*state.Mylocation!
+                                      .latitude,*/
+                                      33.492932000000000,
+                                  //33.533652000000, // Default Lat
+                                  Longitude: /*state.Mylocation!
+                                      .longitude,*/
+                                      36.317981000000000,
+                                  //36.235538000000000, // Default Long
                                   specialId: apiSpecialistBloc
                                       .dropdownmain!.specialtyId!));
                             }
